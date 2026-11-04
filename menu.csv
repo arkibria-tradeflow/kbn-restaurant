@@ -24,19 +24,19 @@ SP02,Meat,হাঁসের মাংসের ভুনা,হাঁসের 
 SP03,Meat,গরুর বট,গরুর বট,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,22,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/gorur-bot.jpg,gorur-bot.jpg,230
 SP04,Meat,গরুর মাংস ও আলু,গরুর মাংস ও আলু,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,22,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/gorur-mangsho-alu.jpg,gorur-mangsho-alu.jpg,240
 SP05,Meat,চিকেন রোস্ট,চিকেন রোস্ট,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,22,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/chicken-roast.jpg,chicken-roast.jpg,250
-VG01,Vegetables,তিত করলা ভাজি,তিত করলা ভাজি,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,8,yes,,tita-korola-bhaji.jpg,260
-VG02,Vegetables,মিক্স সবজি,মিক্স সবজি,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,8,yes,,mix-sobji.jpg,270
+VG01,Vegetables,তিত করলা ভাজি,তিত করলা ভাজি,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,8,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/korola-bhaji-v2.jpg,tita-korola-bhaji.jpg,260
+VG02,Vegetables,মিক্স সবজি,মিক্স সবজি,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,8,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/pachmishali-sobji-v2.jpg,mix-sobji.jpg,270
 ME04,Meat,গরুর রসা,গরুর রসা,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/gorur-rosha.jpg,gorur-rosha.jpg,115
 CH02,Meat,মুরগির রসা,মুরগির রসা,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/murgir-rosha.jpg,murgir-rosha.jpg,145
 CH03,Meat,মুরগি ও আলু,মুরগি ও আলু,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/murgi-alu.jpg,murgi-alu.jpg,146
 CH04,Meat,চিকেন ঝালফ্রাই,চিকেন ঝালফ্রাই,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/chicken-jhal-fry.jpg,chicken-jhal-fry.jpg,147
-VG03,Vegetables,পাঁচমিশালি সবজি,পাঁচমিশালি সবজি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/pachmishali-sobji.jpg,pachmishali-sobji.jpg,280
-VG04,Vegetables,আলু ফুলকপির তরকারি,আলু ফুলকপির তরকারি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/alu-phulkopi-torkari.jpg,alu-phulkopi-torkari.jpg,290
-VG05,Vegetables,লাউয়ের তরকারি,লাউয়ের তরকারি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/lauyer-torkari.jpg,lauyer-torkari.jpg,300
-VG06,Vegetables,বাঁধাকপি ভাজি,বাঁধাকপি ভাজি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/bandhakopi-bhaji.jpg,bandhakopi-bhaji.jpg,310
-VG07,Vegetables,করলা ভাজি,করলা ভাজি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/korola-bhaji.jpg,korola-bhaji.jpg,320
-VG08,Vegetables,বেগুন ভাজি,বেগুন ভাজি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/begun-bhaji.jpg,begun-bhaji.jpg,330
-VG09,Vegetables,ঢেঁড়স ভাজি,ঢেঁড়স ভাজি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/dherosh-bhaji.jpg,dherosh-bhaji.jpg,340
-VG10,Vegetables,আলু পটলের তরকারি,আলু পটলের তরকারি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/alu-potol-torkari.jpg,alu-potol-torkari.jpg,350
-VG11,Vegetables,মিষ্টি কুমড়া ভাজি,মিষ্টি কুমড়া ভাজি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/mishti-kumra-bhaji.jpg,mishti-kumra-bhaji.jpg,360
-VG12,Vegetables,শিম আলুর চচ্চড়ি,শিম আলুর চচ্চড়ি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/shim-alu-chocchori.jpg,shim-alu-chocchori.jpg,370
+VG03,Vegetables,পাঁচমিশালি সবজি,পাঁচমিশালি সবজি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/pachmishali-sobji-v2.jpg,pachmishali-sobji.jpg,280
+VG04,Vegetables,আলু ফুলকপির তরকারি,আলু ফুলকপির তরকারি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/alu-phulkopi-torkari-v2.jpg,alu-phulkopi-torkari.jpg,290
+VG05,Vegetables,লাউয়ের তরকারি,লাউয়ের তরকারি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/lauyer-torkari-v2.jpg,lauyer-torkari.jpg,300
+VG06,Vegetables,বাঁধাকপি ভাজি,বাঁধাকপি ভাজি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/bandhakopi-bhaji-v2.jpg,bandhakopi-bhaji.jpg,310
+VG07,Vegetables,করলা ভাজি,করলা ভাজি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/korola-bhaji-v2.jpg,korola-bhaji.jpg,320
+VG08,Vegetables,বেগুন ভাজি,বেগুন ভাজি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/begun-bhaji-v2.jpg,begun-bhaji.jpg,330
+VG09,Vegetables,ঢেঁড়স ভাজি,ঢেঁড়স ভাজি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/dherosh-bhaji-v2.jpg,dherosh-bhaji.jpg,340
+VG10,Vegetables,আলু পটলের তরকারি,আলু পটলের তরকারি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/alu-potol-torkari-v2.jpg,alu-potol-torkari.jpg,350
+VG11,Vegetables,মিষ্টি কুমড়া ভাজি,মিষ্টি কুমড়া ভাজি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/mishti-kumra-bhaji-v2.jpg,mishti-kumra-bhaji.jpg,360
+VG12,Vegetables,শিম আলুর চচ্চড়ি,শিম আলুর চচ্চড়ি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/shim-alu-chocchori-v2.jpg,shim-alu-chocchori.jpg,370
