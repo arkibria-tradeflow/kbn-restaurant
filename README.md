@@ -31,3 +31,25 @@ Open http://localhost:8080.
 - Orders are **not placed or recorded automatically**. Customer must tap **Send** inside WhatsApp. Never show an automatic order confirmation.
 - Publishing to GitHub **does not deploy a live site**. Cloudflare Pages connection is a separate step.
 - The repo does not yet contain the image logo; supply it at `assets/kbn-logo.png`.
+
+
+## KBN Google Sheets database (created 2026-11-04)
+
+- Editable database: https://docs.google.com/spreadsheets/d/1Lb1q6TPS1ccpvId6BT93ew5cyWcMDEQtEpOK-6vi97g/edit
+- Menu tab name: `Menu Items`; numeric tab ID: `1326610010`
+- Additional tabs: Categories, Restaurant Settings, Instructions.
+- The database contains *sample* items/prices; do not represent them as confirmed dishes.
+
+### Complete live connection safely
+
+GitHub Pages cannot access a private Google Sheet anonymously. Publishing the entire database could expose other tabs, so publish **only** the `Menu Items` tab:
+
+1. Open the database → **File → Share → Publish to web**.
+2. Select **Menu Items** (not Entire Document) and output format **Comma-separated values (.csv)**; click **Publish**.
+3. Copy the generated published CSV URL. Test it in a private/incognito browser: it should display CSV without requiring a Google sign-in.
+4. Paste that exact URL into `config.json` as `sheetCsvUrl`. Existing site reads the published sheet on page load.
+5. Update real restaurant phone, WhatsApp, address and opening hours. Review menu prices before launching customer orders.
+
+**Security:** The menu tab is public once published. Never store phone numbers of customers, passwords, private notes, costs or personal details in the published menu tab.
+
+**Limitations:** Google Sheet publishing is eventually consistent, and changes may take a few minutes to become public. Browser access to a specific Google publication URL may be affected by CORS; if it cannot be fetched, use a public CSV proxy or publish a static `menu.csv` export to this repository. Do not assume connection works until it is tested in the browser.
