@@ -14,7 +14,9 @@
       phoneError:'সঠিক মোবাইল নম্বর দিন।',locationError:'লোকেশন নিন অথবা একটি ডেলিভারি ঠিকানা লিখুন।',
       mapError:'সঠিক Google Maps লিংক দিন অথবা ঘরটি খালি রাখুন।',
       noItems:'কার্টে অন্তত একটি খাবার যোগ করুন।', empty:'কার্ট খালি। মেনু থেকে খাবার যোগ করুন।',
-      orderTitle:'আপনার অর্ডার', optionalNotes:'বিশেষ নির্দেশনা (ঐচ্ছিক)'
+      orderTitle:'আপনার অর্ডার', optionalNotes:'বিশেষ নির্দেশনা (ঐচ্ছিক)',
+      reviewTitle:'ডেলিভারির তথ্য',reviewPhone:'ফোন',reviewLocation:'লোকেশন / ঠিকানা',reviewMissing:'এখনো যোগ করা হয়নি',
+      subOrder:'খাবার ও মোট দাম দেখুন',subDelivery:'ফোন ও লোকেশন',subConfirm:'WhatsApp-এ পাঠান',waUnavailable:'রেস্টুরেন্টের WhatsApp নম্বর পাওয়া যাচ্ছে না।'
     },
     en:{
       stepOrder:'1. Order summary',stepDelivery:'2. Delivery details',stepConfirm:'3. Confirm order',
@@ -28,7 +30,9 @@
       phoneError:'Enter a valid phone number.',locationError:'Share your location or provide a delivery address.',
       mapError:'Enter a valid Google Maps link or leave it blank.',
       noItems:'Add at least one food item to your cart.',empty:'Your cart is empty. Add items from the menu.',
-      orderTitle:'Your order',optionalNotes:'Special instructions (optional)'
+      orderTitle:'Your order',optionalNotes:'Special instructions (optional)',
+      reviewTitle:'Delivery details',reviewPhone:'Phone',reviewLocation:'Location / address',reviewMissing:'Not added yet',
+      subOrder:'Review your food and total',subDelivery:'Phone and location',subConfirm:'Send via WhatsApp',waUnavailable:'The restaurant WhatsApp number is unavailable.'
     }
   };
   const $=id=>document.getElementById(id);
@@ -36,40 +40,79 @@
   const phoneOk=v=>/^[+\d\s()\-]+$/.test(v)&&v.replace(/\D/g,'').length>=8&&v.replace(/\D/g,'').length<=15;
   function stepLabels() {
     document.querySelectorAll('[data-checkout-label]').forEach(el=>{el.textContent=text(el.dataset.checkoutLabel)});
+    document.querySelectorAll('[data-checkout-subtitle]').forEach(el=>{el.textContent=text('sub'+el.dataset.checkoutSubtitle.slice(4))});
     const n=cartCount(),summary=$('stepOrderMini');
     if(summary)summary.textContent=n+' '+text('items')+' · '+money(cartTotal());
     if($('confirmCount'))$('confirmCount').textContent=n+' '+text('items');
     if($('confirmTotal'))$('confirmTotal').textContent=money(cartTotal());
+    updateConfirmReview();
     if($('cartEmptyNotice'))$('cartEmptyNotice').textContent=text('empty');
     if($('apiNotice'))$('apiNotice').textContent=text('confirm');
     if($('sendOrder')){$('sendOrder').textContent=text('submit');$('sendOrder').disabled=false;}
     if($('checkoutArea'))$('cartEmptyNotice').hidden=cartCount()>0;
   }
-  function validateDelivery() {
+  function clearValidation() {
     clearCheckoutError();
+    for(const id of ['customerPhoneError','customerMapsError','customerLocationError']){
+      const el=$(id);if(el){el.hidden=true;el.textContent=''}
+    }
+    for(const id of ['customerPhone','customerMaps','customerAddress']){
+      $(id)?.removeAttribute('aria-invalid');
+    }
+  }
+  function clearOneError(...ids){
+    for(const id of ids){
+      const el=$(id);if(el){el.hidden=true;el.textContent=''}
+    }
+    if(ids.includes('customerPhoneError'))$('customerPhone')?.removeAttribute('aria-invalid');
+    if(ids.includes('customerMapsError'))$('customerMaps')?.removeAttribute('aria-invalid');
+    if(ids.includes('customerLocationError'))$('customerAddress')?.removeAttribute('aria-invalid');
+  }
+  function updateConfirmReview(){
+    const phone=$('customerPhone')?.value.trim()||'';
+    const address=$('customerAddress')?.value.trim()||'';
+    const link=mapsUrl($('customerMaps')?.value.trim()||'');
+    if($('confirmPhone'))$('confirmPhone').textContent=text('reviewPhone')+': '+(phone||text('reviewMissing'));
+    if($('confirmLocation'))$('confirmLocation').textContent=text('reviewLocation')+': '+(address||(link?(lang==='bn'?'Google Maps লোকেশন':'Google Maps location'):text('reviewMissing')));
+  }
+  function openStep(id,scroll=true){
+    for(const step of document.querySelectorAll('details.kbn-step'))step.open=step.id===id;
+    if(scroll)requestAnimationFrame(()=>$(id)?.scrollIntoView({block:'start',behavior:'smooth'}));
+  }
+  function raise(key,focusId,errorId){
+    openStep('stepDelivery',false);
+    clearOneError('customerPhoneError','customerMapsError','customerLocationError');
+    const message=text(key);
+    const inline=$(errorId);
+    if(inline){inline.textContent=message;inline.hidden=false}
+    else {$('checkoutError').hidden=false;$('checkoutError').textContent=message}
+    const focus=$(focusId);
+    if(errorId==='customerMapsError')$('locationManual').open=true;
+    if(focus?.matches('input,textarea'))focus.setAttribute('aria-invalid','true');
+    if(key==='locationError')$('customerAddress').setAttribute('aria-invalid','true');
+    requestAnimationFrame(()=>{
+      const el=$(errorId)||focus;
+      if(el&&!el.hidden)el.scrollIntoView({block:'center',behavior:'smooth'});
+      if(focus)focus.focus({preventScroll:true});
+    });
+  }
+  function validateDelivery(){
+    clearValidation();
     const phone=$('customerPhone').value.trim(),
       address=$('customerAddress').value.trim(),
       rawMap=$('customerMaps').value.trim(),
       map=mapsUrl(rawMap);
-    if(!phoneOk(phone)){raise('phoneError','customerPhone');return null}
-    if(rawMap&&!map){raise('mapError','customerMaps');$('locationManual').open=true;return null}
-    if(!address&&!map){raise('locationError','useCurrentLocation');return null}
+    if(!phoneOk(phone)){raise('phoneError','customerPhone','customerPhoneError');return null}
+    if(rawMap&&!map){raise('mapError','customerMaps','customerMapsError');return null}
+    if(!address&&!map){raise('locationError','useCurrentLocation','customerLocationError');return null}
     return {phone,address,maps:map,name:$('customerName').value.trim(),notes:$('customerNotes').value.trim()};
   }
-  function raise(key,focusId) {
-    const e=$('checkoutError');e.hidden=false;e.textContent=text(key);
-    const f=$(focusId);
-    if(f){if(f.matches('input,textarea'))f.setAttribute('aria-invalid','true');f.focus();f.scrollIntoView({block:'center',behavior:'smooth'})}
-  }
-  function openStep(id) {
-    for(const step of document.querySelectorAll('details.kbn-step'))step.open=step.id===id;
-    $(id).scrollIntoView({block:'start',behavior:'smooth'});
-  }
   function shareOrderWhatsApp() {
-    const d=validateDelivery();if(!d){openStep('stepDelivery');return}
-    if(!cartCount()){raise('noItems','stepOrder');return}
+    if(!cartCount()){alert(text('noItems'));openStep('stepOrder');return}
+    const d=validateDelivery();if(!d)return;
+    updateConfirmReview();
     const digits=String(config.whatsapp||'').replace(/\D/g,'');
-    if(!/^\d{8,15}$/.test(digits))return;
+    if(!/^\d{8,15}$/.test(digits)){alert(text('waUnavailable'));return}
     const lines=['*'+config.name+' — নতুন অর্ডার*','',
       ...menu.filter(x=>cart[x.id]).map(x=>cart[x.id]+' × '+(x.name_bn||x.name_en)+' — '+money(cart[x.id]*x.price)),
       '','*মোট: '+money(cartTotal())+'*','', 'ফোন: '+d.phone];
@@ -91,11 +134,15 @@
     for(const d of document.querySelectorAll('details.kbn-step')){
       d.addEventListener('toggle',()=>{if(d.open){for(const other of document.querySelectorAll('details.kbn-step'))if(other!==d)other.open=false}});
     }
-    $('nextStepConfirm').onclick=()=>{if(validateDelivery())openStep('stepConfirm')};
+    $('nextStepConfirm').onclick=()=>{if(validateDelivery()){updateConfirmReview();openStep('stepConfirm')}};
     $('sendOrder').onclick=shareOrderWhatsApp;
-    $('customerPhone').addEventListener('input',clearCheckoutError);
-    $('customerAddress').addEventListener('input',clearCheckoutError);
-    $('customerMaps').addEventListener('input',clearCheckoutError);
+    $('customerPhone').addEventListener('input',()=>{clearOneError('customerPhoneError');clearCheckoutError()});
+    $('customerAddress').addEventListener('input',()=>{clearOneError('customerLocationError');clearCheckoutError()});
+    $('customerMaps').addEventListener('input',()=>{clearOneError('customerMapsError','customerLocationError');clearCheckoutError()});
+    const gpsStatus=$('locationStatus');
+    if(gpsStatus&&typeof MutationObserver!=='undefined'){
+      new MutationObserver(()=>{if(gpsStatus.dataset.state==='success')clearOneError('customerMapsError','customerLocationError')}).observe(gpsStatus,{attributes:true,attributeFilter:['data-state']});
+    }
     window.addEventListener('pageshow',()=>{stepLabels()});
     stepLabels();
   }

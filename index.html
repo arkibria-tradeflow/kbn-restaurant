@@ -70,6 +70,7 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(25px,4vw,37px);letter-spacing:-1px}h2
 <link rel="stylesheet" href="./homepage-v4.css">
 <link rel="stylesheet" href="./menu-mobile-v5.css">
 <link rel="stylesheet" href="./menu-accordion-v6.css">
+<link rel="stylesheet" href="./checkout-v3.css">
 </head>
 <body><div class="site">
 <header class="site-header">
@@ -203,34 +204,35 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(25px,4vw,37px);letter-spacing:-1px}h2
 <p id="cartEmptyNotice" hidden>কার্ট খালি। মেনু থেকে খাবার যোগ করুন।</p>
 <div id="checkoutArea">
   <details id="stepOrder" class="kbn-step">
-    <summary><span data-checkout-label="stepOrder">১. অর্ডারের সারাংশ</span><span class="step-mini" id="stepOrderMini"></span></summary>
+    <summary><span class="kbn-step-left"><span class="kbn-step-icon"><svg viewBox="0 0 24 24" aria-hidden="true" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.5 12h-11L5 8zM9 9V6a3 3 0 0 1 6 0v3"/></svg></span><span class="kbn-step-copy"><span class="kbn-step-title" data-checkout-label="stepOrder">১. অর্ডারের সারাংশ</span><span class="kbn-step-subtitle" data-checkout-subtitle="stepOrder">খাবার ও মোট দাম দেখুন</span></span></span><span class="kbn-step-right"><span class="step-mini" id="stepOrderMini"></span><svg class="kbn-step-chevron" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
     <div class="step-content">
       <div id="cartItems"></div>
-      <div class="notice" style="background:var(--yellow);border:0;font-weight:850">🍚 প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি</div>
+      <div class="kbn-rice-offer">🍚 প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি</div>
       <div class="summary"><div class="summary-row"><span data-i18n="subtotal">সাবটোটাল</span><strong id="subtotal"></strong></div><div class="summary-row total"><span data-i18n="total">মোট</span><span id="total"></span></div></div>
     </div>
   </details>
   <details id="stepDelivery" class="kbn-step" open>
-    <summary><span data-checkout-label="stepDelivery">২. ডেলিভারি তথ্য</span></summary>
+    <summary><span class="kbn-step-left"><span class="kbn-step-icon"><svg viewBox="0 0 24 24" aria-hidden="true" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-7 7-12a7 7 0 0 0-14 0c0 5 7 12 7 12z"/><circle cx="12" cy="9" r="2.4"/></svg></span><span class="kbn-step-copy"><span class="kbn-step-title" data-checkout-label="stepDelivery">২. ডেলিভারি তথ্য</span><span class="kbn-step-subtitle" data-checkout-subtitle="stepDelivery">ফোন ও লোকেশন</span></span></span><span class="kbn-step-right"><svg class="kbn-step-chevron" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
     <div class="step-content">
       <p class="kbn-mini-label" data-checkout-label="deliveryHint">শুধু ফোন নম্বর এবং লোকেশন বা ঠিকানা দিলেই হবে।</p>
-      <div class="field"><label for="customerPhone" data-checkout-label="phone">মোবাইল নম্বর *</label><input id="customerPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="25" placeholder="+971 5X XXX XXXX" required></div>
+      <div class="field"><label for="customerPhone" data-checkout-label="phone">মোবাইল নম্বর *</label><input id="customerPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="25" placeholder="+971 5X XXX XXXX" aria-describedby="customerPhoneError" required><p id="customerPhoneError" class="kbn-field-error" role="alert" hidden></p></div>
       <div class="field">
         <button type="button" id="useCurrentLocation" class="location-button"><span aria-hidden="true">📍</span><span data-i18n="useLocation">আমার বর্তমান লোকেশন নিন</span></button>
-        <p id="locationStatus" class="location-status" data-state="hint" role="status" aria-live="polite">ট্যাপ করলে ফোনের লোকেশন ব্যবহারের অনুমতি চাইবে।</p>
+        <p id="locationStatus" class="location-status" data-state="hint" role="status" aria-live="polite">ট্যাপ করলে ফোনের লোকেশন ব্যবহারের অনুমতি চাইবে।</p><p id="customerLocationError" class="kbn-field-error" role="alert" hidden></p>
         <a id="locationPreview" class="location-preview" href="#" target="_blank" rel="noopener noreferrer" hidden data-i18n="viewLocation">Google Maps-এ লোকেশন দেখুন ↗</a>
       </div>
       <div class="field"><label for="customerAddress" data-i18n="yourAddress">বিল্ডিং / ফ্ল্যাট / দোকান (ঐচ্ছিক)</label><textarea id="customerAddress" autocomplete="street-address" maxlength="250" rows="2" placeholder="বিল্ডিং, ফ্ল্যাট, দোকান — GPS না হলে বিস্তারিত ঠিকানা দিন"></textarea></div>
-      <details class="kbn-small" id="locationManual"><summary data-checkout-label="manualLocation">লোকেশন লিংক হাতে লিখুন / পেস্ট করুন</summary><div class="inside"><div class="field"><label for="customerMaps" data-i18n="yourMaps">Google Maps লিংক (ঐচ্ছিক)</label><input id="customerMaps" type="url" inputmode="url" maxlength="1000" placeholder="Google Maps লিংক পেস্ট করুন" aria-describedby="locationStatus"></div></div></details>
+      <details class="kbn-small" id="locationManual"><summary data-checkout-label="manualLocation">লোকেশন লিংক হাতে লিখুন / পেস্ট করুন</summary><div class="inside"><div class="field"><label for="customerMaps" data-i18n="yourMaps">Google Maps লিংক (ঐচ্ছিক)</label><input id="customerMaps" type="url" inputmode="url" maxlength="1000" placeholder="Google Maps লিংক পেস্ট করুন" aria-describedby="locationStatus customerMapsError"><p id="customerMapsError" class="kbn-field-error" role="alert" hidden></p></div></div></details>
       <details class="kbn-small" id="deliveryOptional"><summary data-checkout-label="optionalMore">আরও তথ্য (ঐচ্ছিক)</summary><div class="inside"><div class="field"><label for="customerName" data-i18n="yourName">আপনার নাম (ঐচ্ছিক)</label><input id="customerName" autocomplete="name" maxlength="80" placeholder="আপনার নাম"></div><div class="field"><label for="customerNotes" data-i18n="notes">বিশেষ নির্দেশনা (ঐচ্ছিক)</label><textarea id="customerNotes" maxlength="350" placeholder="যেমন: ঝাল কম, দরজায় ফোন দিন..."></textarea></div></div></details>
       <p id="checkoutError" class="checkout-error" role="alert" hidden></p>
       <button id="nextStepConfirm" type="button" class="kbn-action kbn-next" data-checkout-label="next">পরের ধাপ: অর্ডার নিশ্চিত করুন</button>
     </div>
   </details>
   <details id="stepConfirm" class="kbn-step">
-    <summary><span data-checkout-label="stepConfirm">৩. অর্ডার নিশ্চিত করুন</span></summary>
+    <summary><span class="kbn-step-left"><span class="kbn-step-icon"><svg viewBox="0 0 24 24" aria-hidden="true" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8.2 12.1 2.7 2.6 5.2-5.5"/></svg></span><span class="kbn-step-copy"><span class="kbn-step-title" data-checkout-label="stepConfirm">৩. অর্ডার নিশ্চিত করুন</span><span class="kbn-step-subtitle" data-checkout-subtitle="stepConfirm">WhatsApp-এ পাঠান</span></span></span><span class="kbn-step-right"><svg class="kbn-step-chevron" aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary>
     <div class="step-content">
       <div class="kbn-proof"><div><div data-checkout-label="orderTitle">আপনার অর্ডার</div><span id="confirmCount" class="kbn-mini-label"></span></div><strong id="confirmTotal"></strong></div>
+      <div class="kbn-confirm-review" aria-live="polite"><span class="kbn-review-title" data-checkout-label="reviewTitle">ডেলিভারির তথ্য</span><div id="confirmPhone" class="kbn-review-line"></div><div id="confirmLocation" class="kbn-review-line"></div></div>
       
       <button id="sendOrder" type="button" class="kbn-action kbn-main" data-checkout-label="submit">হোয়াটসঅ্যাপে অর্ডার শেয়ার করুন</button>
       <p id="apiNotice" class="kbn-info" role="status">WhatsApp খুলবে। অর্ডার পাঠাতে সেখানে Send চাপুন।</p>
