@@ -183,8 +183,8 @@
  border:0;
 }
 #cart .kbn-action.kbn-next:hover{background:#69000a}
-#cart .kbn-action.kbn-main{background:#168253;color:#fff;border:0}
-#cart .kbn-action.kbn-main:hover{background:#096a41}
+#cart .kbn-action.kbn-main{background:#8b000d;color:#fff;border:0}
+#cart .kbn-action.kbn-main:hover{background:#6e000a}
 #cart .kbn-action:focus-visible{outline:3px solid #d2ad58;outline-offset:2px}
 #cart .kbn-step .checkout-error{
  border:1px solid #e8b1b6;
@@ -270,3 +270,5 @@
 @media(prefers-reduced-motion:reduce){
  #cart .kbn-step-chevron{transition:none}
 }
+#cart #sendOrder:disabled{background:#9d5b62;color:#fff;opacity:.75;cursor:progress}
+#cart .kbn-info[data-state=error]{background:#fff3f3;color:#a1212f;border:1px solid #e7afb5;border-radius:9px;padding:9px;text-align:left}

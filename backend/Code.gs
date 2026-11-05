@@ -10,6 +10,7 @@
 var ORDER_SHEET_ID = '18oODmgnzwak5XsszFbB67rG3qat1lDroua8V0BTq2V8';
 var MENU_SHEET_ID = '1Lb1q6TPS1ccpvId6BT93ew5cyWcMDEQtEpOK-6vi97g';
 var RETURN_URL = 'https://arkibria-tradeflow.github.io/kbn-restaurant/';
+var RESTAURANT_WHATSAPP = '971547429022';
 var TZ = 'Asia/Dubai';
 
 function doGet() {
@@ -28,11 +29,10 @@ function doPost(e) {
     response = acceptOrder_(e);
   } catch (error) {
     console.error('Order submission failed: ' + String(error));
-    return receipt_(false, '', 0,
-      'অর্ডারটি গ্রহণ করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন। '+
-      ('Invalid input' === error.message ? 'তথ্য যাচাই করুন।' : 'অর্ডার না হলে রেস্টুরেন্টে কল করুন।'));
+    return receipt_(false, null,
+      'অর্ডারটি গ্রহণ করা যায়নি। তথ্য যাচাই করুন অথবা রেস্টুরেন্টে যোগাযোগ করুন।');
   }
-  return receipt_(true,response.id,response.total,'আপনার অর্ডারটি রেস্টুরেন্টের ড্যাশবোর্ডে জমা হয়েছে।');
+  return receipt_(true,response,'আপনার অর্ডারটি রেস্টুরেন্টে জমা হয়েছে।');
 }
 
 function acceptOrder_(e) {
@@ -81,8 +81,14 @@ function acceptOrder_(e) {
     if (last>=2) {
       var same=sheet.getRange(2,13,last-1,1).createTextFinder(requestId).matchEntireCell(true).findNext();
       if (same) {
-        var existing=sheet.getRange(same.getRow(),1,1,10).getValues()[0];
-        return {id:String(existing[0]),total:Number(existing[9])};
+        var existing=sheet.getRange(same.getRow(),1,1,16).getValues()[0];
+        return {
+          id:String(existing[0]),createdAt:existing[1],status:String(existing[2]||'New'),
+          phone:String(existing[3]||''),name:String(existing[4]||''),
+          address:String(existing[5]||''),maps:String(existing[6]||''),
+          items:String(existing[7]||'').split('\n'),qty:Number(existing[8]),
+          total:Number(existing[9])
+        };
       }
     }
     var throttle=CacheService.getScriptCache();
@@ -116,7 +122,8 @@ function acceptOrder_(e) {
     SpreadsheetApp.flush();
     rowIndex=sheet.getLastRow();
     throttle.put(throttleKey,'1',45);
-    entry={id:newId,total:total,phone:phone,address:address,maps:maps,items:textLines};
+    entry={id:newId,createdAt:now,status:'New',total:total,qty:qty,
+      phone:phone,name:name,address:address,maps:maps,items:textLines};
   } finally {
     lock.releaseLock();
   }
@@ -150,19 +157,80 @@ function validMap_(value) {
   return /(^|\.)google\.(com|[a-z]{2}|com\.[a-z]{2}|co\.[a-z]{2})$/.test(host) ||
     host==='maps.app.goo.gl' || (host==='goo.gl' && path.indexOf('/maps')===0);
 }
-function receipt_(ok,id,total,message) {
-  var safeId=String(id||'').replace(/[<>&"']/g,'');
-  var back=RETURN_URL;
-  var html='<!doctype html><html lang="bn"><head><meta name="viewport" content="width=device-width,initial-scale=1">'+
-    '<meta charset="utf-8"><title>KBN Restaurant — Order</title>'+
-    '<style>body{font:16px system-ui;background:#f7f7f7;margin:0;padding:26px;color:#111}'+
-    'main{max-width:460px;margin:55px auto;background:white;padding:26px;border-radius:20px;box-shadow:0 4px 30px #0001;text-align:center}'+
-    'h1{font-size:23px}.mark{font-size:38px}a{display:block;background:#ffc400;color:#111;font-weight:800;text-decoration:none;border-radius:13px;padding:16px;margin-top:20px}small{color:#555}</style></head>'+
-    '<body><main><div class="mark">'+(ok?'✅':'⚠️')+'</div><h1>'+(ok?'অর্ডার গ্রহণ করা হয়েছে':'অর্ডার গ্রহণ হয়নি')+'</h1>'+
-    '<p>'+message+'</p>'+(ok?'<h2>'+safeId+'</h2><p>মোট: AED '+Number(total).toFixed(2)+'</p>':'')+
-    '<small>'+(ok?'ডেলিভারি নিশ্চিত করতে রেস্টুরেন্ট ফোন করতে পারে।':'সমস্যা থাকলে রেস্টুরেন্টে যোগাযোগ করুন।')+'</small>'+
-    '<a href="'+back+'">রেস্টুরেন্ট মেনুতে ফিরুন</a></main></body></html>';
-  return HtmlService.createHtmlOutput(html).setTitle('KBN Restaurant Order');
+function escapeHtml_(value) {
+  return String(value==null?'':value).replace(/[&<>"']/g, function(c) {
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  });
+}
+/**
+ * Render an actual server-confirmed receipt, never a browser-generated
+ * "success" state. The optional WhatsApp button is shown only for orders
+ * that were saved in the private Orders sheet.
+ */
+function receipt_(ok,order,message) {
+  var isValid=ok && order && String(order.id||'');
+  var html=[];
+  var home=RETURN_URL;
+  html.push('<!doctype html><html lang="bn"><head><meta charset="utf-8">');
+  html.push('<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">');
+  html.push('<title>KBN Restaurant — Order Receipt</title>');
+  html.push('<style>');
+  html.push('*{box-sizing:border-box}body{margin:0;background:#f8f8f7;color:#272122;font:15px/1.55 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}');
+  html.push('header{background:linear-gradient(110deg,#78000b,#98000e);color:#fff;padding:15px 18px;display:flex;align-items:center;justify-content:center;gap:12px}');
+  html.push('header img{width:45px;height:45px;background:#fff9e9;border-radius:10px;object-fit:contain;padding:3px}');
+  html.push('header strong{font-size:18px;line-height:1.2}header small{display:block;font-size:11px;opacity:.85}');
+  html.push('main{max-width:520px;margin:24px auto;padding:0 14px 32px}');
+  html.push('.receipt{background:#fff;border:1px solid #e6e0dc;border-radius:18px;overflow:hidden;box-shadow:0 4px 18px #32000b12}');
+  html.push('.success{padding:22px 18px 12px;text-align:center}.success .mark{width:48px;height:48px;display:grid;place-items:center;margin:auto auto 12px;border-radius:50%;background:#e8f5ed;color:#16633d;font-size:28px}');
+  html.push('.failure .mark{background:#fff0ea;color:#a12525}.success h1{font-size:23px;line-height:1.3;margin:0 0 6px;color:#222}.success p{color:#656263;font-size:13px;margin:0}');
+  html.push('.slip{padding:0 18px 20px}.slip-head{display:flex;justify-content:space-between;gap:12px;border-top:1px dashed #ddd5d1;border-bottom:1px dashed #ddd5d1;padding:14px 0;margin:15px 0}');
+  html.push('.slip-head b{display:block;color:#78000c;font-size:16px}.slip-head small{display:block;color:#6f6b69;font-size:11px;margin-top:3px}.status{background:#e8f5ed;color:#175d3f;font-size:11px;font-weight:800;padding:5px 9px;border-radius:30px;align-self:start;white-space:nowrap}');
+  html.push('.section-title{font-weight:850;font-size:13px;color:#4a4143;margin:13px 0 7px}.items{padding:0;margin:0;list-style:none}');
+  html.push('.items li{padding:9px 0;border-bottom:1px solid #eee9e6;font-size:13px;overflow-wrap:anywhere}');
+  html.push('.total{display:flex;justify-content:space-between;align-items:center;gap:10px;border-radius:11px;background:#fff0d5;color:#79000b;padding:13px;margin:14px 0;font-weight:900}');
+  html.push('.total b{font-size:21px}.delivery{border:1px solid #eee8e6;border-radius:11px;padding:12px 14px;font-size:13px;color:#5a5454;overflow-wrap:anywhere}.delivery p{margin:5px 0}');
+  html.push('.actions{padding:0 18px 20px;display:grid;gap:10px}.button{display:flex;align-items:center;justify-content:center;min-height:49px;text-decoration:none;border-radius:12px;padding:12px 14px;text-align:center;font-size:14px;font-weight:850}');
+  html.push('.wa{background:#128453;color:#fff}.back{background:#fff;border:1px solid #a1071a;color:#85000d}.error{font-size:13px;color:#9d2222;margin:10px 18px 20px}');
+  html.push('.note{text-align:center;color:#757172;font-size:12px;line-height:1.5;padding:13px 4px;margin:0}');
+  html.push('@media print{header,.actions,.note{display:none!important}main{margin:0;padding:0}.receipt{box-shadow:none;border:1px solid #bbb}}');
+  html.push('</style></head><body>');
+  html.push('<header><img src="'+home+'assets/kbn-logo.svg" alt="KBN Logo"><span><strong>KBN Restaurant</strong><small>বাংলাদেশি খাবার</small></span></header>');
+  html.push('<main><div class="receipt"><div class="success'+(isValid?'':' failure')+'"><span class="mark">'+(isValid?'✓':'!')+'</span>');
+  html.push('<h1>'+(isValid?'অর্ডার জমা হয়েছে':'অর্ডার জমা হয়নি')+'</h1><p>'+escapeHtml_(message)+'</p></div>');
+  if (isValid) {
+    var safeId=escapeHtml_(order.id);
+    var total=Number(order.total||0);
+    var lineItems=Array.isArray(order.items)?order.items:[];
+    var orderDate=order.createdAt instanceof Date?order.createdAt:new Date();
+    var time=Utilities.formatDate(orderDate,TZ,'dd MMM yyyy, hh:mm a');
+    html.push('<div class="slip"><div class="slip-head"><div><small>অর্ডার নম্বর</small><b>'+safeId+'</b><small>'+escapeHtml_(time)+' · Dubai</small></div><span class="status">Submitted</span></div>');
+    html.push('<div class="section-title">অর্ডারের বিবরণ</div><ul class="items">');
+    lineItems.forEach(function(line){if(line)html.push('<li>'+escapeHtml_(line)+'</li>');});
+    html.push('</ul><div class="total"><span>মোট ('+Number(order.qty||0)+'টি খাবার)</span><b>AED '+total.toFixed(2)+'</b></div>');
+    html.push('<div class="section-title">ডেলিভারির তথ্য</div><div class="delivery">');
+    html.push('<p>ফোন: '+escapeHtml_(order.phone)+'</p>');
+    if(order.name)html.push('<p>নাম: '+escapeHtml_(order.name)+'</p>');
+    if(order.address)html.push('<p>ঠিকানা: '+escapeHtml_(order.address)+'</p>');
+    if(order.maps)html.push('<p>GPS: <a href="'+escapeHtml_(order.maps)+'" target="_blank" rel="noopener noreferrer">Google Maps দেখুন</a></p>');
+    html.push('</div></div>');
+    var digits=String(RESTAURANT_WHATSAPP||'').replace(/\D/g,'');
+    var waLines=['*KBN Restaurant — অর্ডার '+String(order.id)+'*',''];
+    waLines=waLines.concat(lineItems);
+    waLines.push('','*মোট: AED '+total.toFixed(2)+'*','ফোন: '+String(order.phone||''));
+    if(order.address)waLines.push('ডেলিভারি: '+String(order.address));
+    if(order.maps)waLines.push('Google Maps: '+String(order.maps));
+    waLines.push('','অর্ডারটি ওয়েবসাইটে ইতোমধ্যে জমা হয়েছে। অনুগ্রহ করে দ্রুত নিশ্চিত করুন।');
+    var waLink=/^\d{8,15}$/.test(digits)?'https://wa.me/'+digits+'?text='+encodeURIComponent(waLines.join('\n')):'';
+    html.push('<div class="actions">');
+    if(waLink)html.push('<a class="button wa" href="'+escapeHtml_(waLink)+'" target="_blank" rel="noopener noreferrer">WhatsApp-এ শেয়ার করুন (ঐচ্ছিক)</a>');
+    html.push('<a class="button back" href="'+home+'?newOrder=1" target="_top">নতুন অর্ডার করুন</a></div>');
+    html.push('<p class="note">WhatsApp-এ শেয়ার করা ঐচ্ছিক। এটি অর্ডার জমা হওয়ার বিকল্প নয়। রেস্টুরেন্ট থেকে নিশ্চিতকরণের জন্য যোগাযোগ করা হতে পারে।</p>');
+  } else {
+    html.push('<p class="error">অর্ডার নম্বর তৈরি হয়নি। আবার অর্ডার পাঠানোর আগে তথ্য যাচাই করুন।</p>');
+    html.push('<div class="actions"><a class="button back" href="'+home+'" target="_top">মেনুতে ফিরে যান</a></div>');
+  }
+  html.push('</div></main></body></html>');
+  return HtmlService.createHtmlOutput(html.join('')).setTitle('KBN Restaurant — Order Receipt');
 }
 /**
  * OPTIONAL: Requires a Meta-approved utility template to the consenting
