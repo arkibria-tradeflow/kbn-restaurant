@@ -40,13 +40,13 @@ VG09,Vegetables,ঢেঁড়স ভাজি,ঢেঁড়স ভাজি,বা
 VG10,Vegetables,আলু পটলের তরকারি,আলু পটলের তরকারি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/alu-potol-torkari-v2.jpg,alu-potol-torkari-v2.jpg,350
 VG11,Vegetables,মিষ্টি কুমড়া ভাজি,মিষ্টি কুমড়া ভাজি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/mishti-kumra-bhaji-v2.jpg,mishti-kumra-bhaji-v2.jpg,360
 VG12,Vegetables,শিম আলুর চচ্চড়ি,শিম আলুর চচ্চড়ি,বাংলা সবজি ও ভাজি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/shim-alu-chocchori-v2.jpg,shim-alu-chocchori-v2.jpg,370
-BH01,Bhorta,আলু ভর্তা,আলু ভর্তা,বাংলা হোটেল-স্টাইল ভর্তা · দাম অস্থায়ী · ভাত ও ডাল ফ্রি,5,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/alu-bhorta-v1.webp,alu-bhorta-v1.webp,410
-BH02,Bhorta,বেগুন ভর্তা,বেগুন ভর্তা,বাংলা হোটেল-স্টাইল ভর্তা · দাম অস্থায়ী · ভাত ও ডাল ফ্রি,5,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/begun-bhorta-v1.webp,begun-bhorta-v1.webp,420
-BH03,Bhorta,শুঁটকি ভর্তা,শুঁটকি ভর্তা,বাংলা হোটেল-স্টাইল ভর্তা · দাম অস্থায়ী · ভাত ও ডাল ফ্রি,8,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/shutki-bhorta-v1.webp,shutki-bhorta-v1.webp,430
-BH04,Bhorta,ডাল ভর্তা,ডাল ভর্তা,বাংলা হোটেল-স্টাইল ভর্তা · দাম অস্থায়ী · ভাত ও ডাল ফ্রি,5,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/dal-bhorta-v1.webp,dal-bhorta-v1.webp,440
-BH05,Bhorta,টমেটো ভর্তা,টমেটো ভর্তা,বাংলা হোটেল-স্টাইল ভর্তা · দাম অস্থায়ী · ভাত ও ডাল ফ্রি,5,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/tomato-bhorta-v1.webp,tomato-bhorta-v1.webp,450
-BH06,Bhorta,ডিম ভর্তা,ডিম ভর্তা,বাংলা হোটেল-স্টাইল ভর্তা · দাম অস্থায়ী · ভাত ও ডাল ফ্রি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/dim-bhorta-v1.webp,dim-bhorta-v1.webp,460
-BH07,Bhorta,ধনেপাতা ভর্তা,ধনেপাতা ভর্তা,বাংলা হোটেল-স্টাইল ভর্তা · দাম অস্থায়ী · ভাত ও ডাল ফ্রি,5,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/dhonepata-bhorta-v1.webp,dhonepata-bhorta-v1.webp,470
+BH01,Bhorta,আলু ভর্তা,আলু ভর্তা,বাংলা হোটেল-স্টাইল ভর্তা · ভাত ও ডাল ফ্রি,5,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/alu-bhorta-v1.webp,alu-bhorta-v1.webp,410
+BH02,Bhorta,বেগুন ভর্তা,বেগুন ভর্তা,বাংলা হোটেল-স্টাইল ভর্তা · ভাত ও ডাল ফ্রি,5,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/begun-bhorta-v1.webp,begun-bhorta-v1.webp,420
+BH03,Bhorta,শুঁটকি ভর্তা,শুঁটকি ভর্তা,বাংলা হোটেল-স্টাইল ভর্তা · ভাত ও ডাল ফ্রি,8,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/shutki-bhorta-v1.webp,shutki-bhorta-v1.webp,430
+BH04,Bhorta,ডাল ভর্তা,ডাল ভর্তা,বাংলা হোটেল-স্টাইল ভর্তা · ভাত ও ডাল ফ্রি,5,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/dal-bhorta-v1.webp,dal-bhorta-v1.webp,440
+BH05,Bhorta,টমেটো ভর্তা,টমেটো ভর্তা,বাংলা হোটেল-স্টাইল ভর্তা · ভাত ও ডাল ফ্রি,5,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/tomato-bhorta-v1.webp,tomato-bhorta-v1.webp,450
+BH06,Bhorta,ডিম ভর্তা,ডিম ভর্তা,বাংলা হোটেল-স্টাইল ভর্তা · ভাত ও ডাল ফ্রি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/dim-bhorta-v1.webp,dim-bhorta-v1.webp,460
+BH07,Bhorta,ধনেপাতা ভর্তা,ধনেপাতা ভর্তা,বাংলা হোটেল-স্টাইল ভর্তা · ভাত ও ডাল ফ্রি,5,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/dhonepata-bhorta-v1.webp,dhonepata-bhorta-v1.webp,470
 SN01,Snacks & Drinks,পরোটা,পরোটা,বাংলা নাশতা,1,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/parota-v1.webp,parota-v1.webp,510
 SN02,Snacks & Drinks,রুটি,রুটি,বাংলা নাশতা,1,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/ruti-v1.webp,ruti-v1.webp,520
 SN03,Snacks & Drinks,বুটের ডাল,বুটের ডাল,বাংলা নাশতা,2,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/buter-dal-v1.webp,buter-dal-v1.webp,530
