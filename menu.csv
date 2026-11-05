@@ -9,17 +9,17 @@ FI07,Fish,কাতলা মাছ,কাতলা মাছ,প্রতিট
 FI08,Fish,কচুশাক চিংড়ি,কচুশাক চিংড়ি,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,20,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/kochushak-chingri.jpg,kochushak-chingri.jpg,80
 FI09,Fish,কচুর লতি চিংড়ি,কচুর লতি চিংড়ি,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,22,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/kochur-loti-chingri.jpg,kochur-loti-chingri.jpg,90
 FI10,Fish,ভেন্ডি চিংড়ি,ভেন্ডি চিংড়ি,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,20,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/bhendi-chingri.jpg,bhendi-chingri.jpg,100
-ME01,Meat,গরুর কষা ভুনা,গরুর কষা ভুনা,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,22,yes,,gorur-kosha-bhuna.jpg,110
+ME01,Meat,গরুর কষা ভুনা,গরুর কষা ভুনা,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,22,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/gorur-kosha-bhuna-v3.jpg,gorur-kosha-bhuna-v3.jpg,110
 ME02,Meat,গরুর কালা ভুনা,গরুর কালা ভুনা,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,22,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/gorur-kala-bhuna.jpg,gorur-kala-bhuna.jpg,120
-ME03,Meat,খাসির ভুনা,খাসির ভুনা,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,25,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/khashir-mangsho.jpg,khashir-mangsho.jpg,130
-CH01,Meat,মুরগির রান ফ্রাই,মুরগির রান ফ্রাই,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,20,yes,,murgir-ran-fry.jpg,140
-BI01,Rice & Biryani,বিফ বিরিয়ানি,বিফ বিরিয়ানি,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,22,yes,,beef-biryani.jpg,150
-BI02,Rice & Biryani,চিকেন বিরিয়ানি,চিকেন বিরিয়ানি,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,22,yes,,chicken-biryani.jpg,160
-BI03,Rice & Biryani,মাটন বিরিয়ানি,মাটন বিরিয়ানি,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,25,yes,,mutton-biryani.jpg,170
-PO01,Rice & Biryani,বিফ পোলাও,বিফ পোলাও,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,25,yes,,beef-polao.jpg,180
-PO02,Rice & Biryani,মাটন পোলাও,মাটন পোলাও,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,28,yes,,mutton-polao.jpg,190
-PO03,Rice & Biryani,মোরগ পোলাও,মোরগ পোলাও,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,25,yes,,morog-polao.jpg,200
-SP01,Meat,দেশি মুরগি,দেশি মুরগি,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,26,yes,,deshi-murgi.jpg,210
+ME03,Meat,খাসির ভুনা,খাসির ভুনা,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,25,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/khashir-bhuna-v3.jpg,khashir-bhuna-v3.jpg,130
+CH01,Meat,মুরগির রান ফ্রাই,মুরগির রান ফ্রাই,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,20,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/murgir-ran-fry-v3.jpg,murgir-ran-fry-v3.jpg,140
+BI01,Rice & Biryani,বিফ বিরিয়ানি,বিফ বিরিয়ানি,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,22,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/beef-biryani-v3.jpg,beef-biryani-v3.jpg,150
+BI02,Rice & Biryani,চিকেন বিরিয়ানি,চিকেন বিরিয়ানি,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,22,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/chicken-biryani-v3.jpg,chicken-biryani-v3.jpg,160
+BI03,Rice & Biryani,মাটন বিরিয়ানি,মাটন বিরিয়ানি,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,25,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/mutton-biryani-v3.jpg,mutton-biryani-v3.jpg,170
+PO01,Rice & Biryani,বিফ পোলাও,বিফ পোলাও,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,25,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/beef-polao-v3.jpg,beef-polao-v3.jpg,180
+PO02,Rice & Biryani,মাটন পোলাও,মাটন পোলাও,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,28,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/mutton-polao-v3.jpg,mutton-polao-v3.jpg,190
+PO03,Rice & Biryani,মোরগ পোলাও,মোরগ পোলাও,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,25,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/morog-polao-v3.jpg,morog-polao-v3.jpg,200
+SP01,Meat,দেশি মুরগি,দেশি মুরগি,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,26,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/deshi-murgi-v3.jpg,deshi-murgi-v3.jpg,210
 SP02,Meat,হাঁসের মাংসের ভুনা,হাঁসের মাংসের ভুনা,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,23,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/hanser-bhuna.jpg,hanser-bhuna.jpg,220
 SP03,Meat,গরুর বট,গরুর বট,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,22,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/gorur-bot.jpg,gorur-bot.jpg,230
 SP04,Meat,গরুর মাংস ও আলু,গরুর মাংস ও আলু,প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি,22,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/gorur-mangsho-alu.jpg,gorur-mangsho-alu.jpg,240
