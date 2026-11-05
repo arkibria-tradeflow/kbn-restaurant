@@ -70,7 +70,7 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(25px,4vw,37px);letter-spacing:-1px}h2
 <link rel="stylesheet" href="./homepage-v4.css">
 <link rel="stylesheet" href="./menu-mobile-v5.css">
 <link rel="stylesheet" href="./menu-accordion-v6.css">
-<link rel="stylesheet" href="./checkout-v3.css">
+<link rel="stylesheet" href="./checkout-v3.css?v=20261105-receipt2">
 </head>
 <body><div class="site">
 <header class="site-header">
@@ -236,11 +236,31 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(25px,4vw,37px);letter-spacing:-1px}h2
       
       <button id="sendOrder" type="button" class="kbn-action kbn-main" data-checkout-label="submit">অর্ডার সাবমিট করুন</button>
       <p id="apiNotice" class="kbn-info" role="status">অর্ডার জমা হলে একটি Order Slip দেখাবে। তারপর চাইলে WhatsApp-এ শেয়ার করতে পারবেন।</p>
+      <div id="kbnSubmissionStatus" class="kbn-submit-status" role="status" aria-live="polite" hidden>
+        <span id="kbnSubmissionText">অর্ডারের অবস্থা যাচাই করা হচ্ছে…</span>
+        <button id="kbnCheckStatus" type="button" hidden>অর্ডারের অবস্থা পরীক্ষা করুন</button>
+      </div>
       
       
     </div>
   </details>
 </div>
+<section id="kbnReceipt" class="kbn-receipt" hidden aria-live="polite" aria-label="Order receipt">
+  <div class="kbn-receipt-success"><span class="kbn-receipt-check" aria-hidden="true">✓</span><h2 id="kbnReceiptHeading">অর্ডার জমা হয়েছে</h2><p id="kbnReceiptNote">আপনার অর্ডার রেস্টুরেন্টের ড্যাশবোর্ডে জমা হয়েছে।</p></div>
+  <div class="kbn-receipt-paper">
+    <div class="kbn-receipt-head"><div><span id="kbnReceiptIdLabel">অর্ডার নম্বর</span><strong id="kbnReceiptId"></strong><small id="kbnReceiptDate"></small></div><span id="kbnReceiptStatus" class="kbn-receipt-status">Submitted</span></div>
+    <h3 id="kbnReceiptItemsLabel">অর্ডারের বিবরণ</h3>
+    <ul id="kbnReceiptItems" class="kbn-receipt-items"></ul>
+    <div class="kbn-receipt-total"><span id="kbnReceiptTotalLabel">মোট</span><strong id="kbnReceiptTotal"></strong></div>
+    <h3 id="kbnReceiptDeliveryLabel">ডেলিভারির তথ্য</h3>
+    <div class="kbn-receipt-delivery"><p id="kbnReceiptPhone"></p><p id="kbnReceiptAddress"></p><a id="kbnReceiptMaps" target="_blank" rel="noopener noreferrer" hidden>Google Maps-এ লোকেশন দেখুন</a></div>
+  </div>
+  <div class="kbn-receipt-actions">
+    <a id="kbnReceiptWhats" class="kbn-receipt-wa" href="#" target="_blank" rel="noopener noreferrer">WhatsApp-এ শেয়ার করুন (ঐচ্ছিক)</a>
+    <button id="kbnAnotherOrder" class="kbn-receipt-another" type="button">নতুন অর্ডার করুন</button>
+  </div>
+  <p id="kbnReceiptDisclaimer" class="kbn-receipt-disclaimer">অর্ডার জমা হয়েছে। দ্রুত নিশ্চিতকরণের জন্য চাইলে WhatsApp-এ শেয়ার করুন।</p>
+</section>
 </section>
 <section id="about" class="view">
 <h1 data-i18n="about">আমাদের সম্পর্কে</h1>
@@ -253,7 +273,8 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(25px,4vw,37px);letter-spacing:-1px}h2
 </div>
 </section>
 </main>
-<form id="kbnOrderForm" method="POST" enctype="application/x-www-form-urlencoded" accept-charset="UTF-8" style="display:none" aria-hidden="true">
+<iframe id="kbnOrderTransport" name="kbnOrderTransport" title="Background KBN order submission" aria-hidden="true" tabindex="-1" class="kbn-order-transport"></iframe>
+<form id="kbnOrderForm" target="kbnOrderTransport" method="POST" enctype="application/x-www-form-urlencoded" accept-charset="UTF-8" style="display:none" aria-hidden="true">
   <input name="payload" id="kbnOrderPayload" type="hidden">
   <input name="website" type="hidden" value="">
 </form>
@@ -455,4 +476,4 @@ $('menuResults').addEventListener('click',e=>{
 });
 $('menuSort').addEventListener('change',e=>{menuSort=e.target.value;renderMenu()});
 init();
-</script><script defer src="./checkout-v2.js"></script><script defer src="./homepage-v4.js"></script></body></html>
+</script><script defer src="./checkout-v2.js?v=20261105-receipt2"></script><script defer src="./homepage-v4.js"></script></body></html>

@@ -13,12 +13,46 @@ var RETURN_URL = 'https://arkibria-tradeflow.github.io/kbn-restaurant/';
 var RESTAURANT_WHATSAPP = '971547429022';
 var TZ = 'Asia/Dubai';
 
-function doGet() {
+/**
+ * Public read-only confirmation lookup. Only returns non-personal receipt
+ * metadata for a high-entropy request ID; never expose customer details.
+ * Fixed callback name avoids arbitrary script injection through JSONP.
+ */
+function doGet(e) {
+  if (e && e.parameter && e.parameter.action === 'status') {
+    var id=String(e.parameter.requestId||'');
+    var reply={requestId:id,found:false};
+    if (/^[A-Za-z0-9_-]{12,90}$/.test(id)) {
+      try {
+        var sheet=SpreadsheetApp.openById(ORDER_SHEET_ID).getSheetByName('Orders');
+        if (!sheet) throw new Error('Orders tab missing');
+        var last=sheet.getLastRow();
+        if(last>=2){
+          var match=sheet.getRange(2,13,last-1,1).createTextFinder(id).matchEntireCell(true).findNext();
+          if(match){
+            var row=sheet.getRange(match.getRow(),1,1,10).getValues()[0];
+            var received=row[1] instanceof Date?row[1]:new Date(row[1]);
+            reply={
+              requestId:id,found:true,orderId:String(row[0]),
+              status:String(row[2]||'New'),qty:Number(row[8]),
+              total:Number(row[9]),receivedAt:Utilities.formatDate(received,TZ,'yyyy-MM-dd HH:mm')
+            };
+          }
+        }
+      }catch(err){
+        console.error('Order status check failed: '+String(err));
+        reply={requestId:id,found:false,serviceError:true};
+      }
+    }
+    var script='KBNOrderStatus('+JSON.stringify(reply)
+      .replace(/</g,'\\u003c').replace(/\\u2028/g,'\\\\u2028')
+      .replace(/\\u2029/g,'\\\\u2029')+');';
+    return ContentService.createTextOutput(script).setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
   return HtmlService.createHtmlOutput(
     '<!doctype html><html lang="bn"><meta name="viewport" content="width=device-width,initial-scale=1">'+
     '<title>KBN Orders</title><body style="font-family:system-ui;padding:24px">'+
     '<h2>KBN Restaurant Order Service</h2><p>Backend is ready to receive checkout orders.</p>'+
-    '<p>Customer and order information is available only in the private Orders spreadsheet.</p>'+
     '<a href="'+RETURN_URL+'">Return to KBN Restaurant</a></body></html>'
   );
 }

@@ -272,3 +272,124 @@
 }
 #cart #sendOrder:disabled{background:#9d5b62;color:#fff;opacity:.75;cursor:progress}
 #cart .kbn-info[data-state=error]{background:#fff3f3;color:#a1212f;border:1px solid #e7afb5;border-radius:9px;padding:9px;text-align:left}
+
+/* KBN same-page receipt and hidden cross-origin order transport */
+.kbn-order-transport{
+  position:absolute!important;left:-9999px!important;top:0!important;
+  width:1px!important;height:1px!important;border:0!important;
+  opacity:0!important;pointer-events:none!important;
+}
+#cart .kbn-receipt[hidden],#cart .kbn-submit-status[hidden],
+#cart .kbn-receipt [hidden],#cart .kbn-submit-status [hidden]{
+  display:none!important;
+}
+#cart .kbn-submit-status{
+  margin:12px 0 0;border-radius:11px;
+  background:#fff7e7;border:1px solid #e5d5b5;color:#755520;
+  padding:11px 12px;font-size:12px;line-height:1.55;text-align:left;
+}
+#cart .kbn-submit-status[data-state=error]{
+  background:#fff4f3;border-color:#e8c0bd;color:#932c2a;
+}
+#cart .kbn-submit-status button{
+  display:block;min-height:38px;margin-top:9px;padding:8px 11px;
+  border:1px solid #8d0010;border-radius:9px;color:#8d0010;
+  background:#fff;font-size:12px;font-weight:800;
+}
+#cart .kbn-receipt{
+  max-width:520px;margin:0 auto 18px;
+  border:1px solid #e9e4e1;
+  border-radius:18px;background:#fff;overflow:hidden;
+  box-shadow:0 5px 23px #45000c12;
+}
+#cart .kbn-receipt-success{
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;padding:22px 17px 16px;
+}
+#cart .kbn-receipt-check{
+  display:grid;place-items:center;
+  width:50px;height:50px;border-radius:50%;
+  background:#e5f5eb;color:#16633f;
+  font-size:29px;font-weight:800;line-height:1;
+  margin:0 0 12px;
+}
+#cart .kbn-receipt-success h2{
+  margin:0 0 5px;color:#192c23;font-size:23px;
+  font-weight:900;line-height:1.32;
+}
+#cart .kbn-receipt-success p{
+  margin:0;color:#6a6868;font-size:12px;line-height:1.6;
+}
+#cart .kbn-receipt-paper{padding:0 16px 16px}
+#cart .kbn-receipt-head{
+  display:flex;justify-content:space-between;gap:10px;
+  align-items:flex-start;padding:13px 0;
+  border-top:1px dashed #dcd6d3;border-bottom:1px dashed #dcd6d3;
+}
+#cart .kbn-receipt-head>div{min-width:0}
+#cart .kbn-receipt-head span:first-child{
+  display:block;color:#706969;font-size:11px;
+}
+#cart .kbn-receipt-head strong{
+  display:block;margin:3px 0;color:#8d0010;
+  font-weight:900;font-size:clamp(14px,3.8vw,17px);
+  overflow-wrap:anywhere;
+}
+#cart .kbn-receipt-head small{display:block;color:#797272;font-size:11px}
+#cart .kbn-receipt-status{
+  display:inline-block;background:#e8f5eb;color:#216440;
+  font-weight:800;border-radius:30px;
+  font-size:11px;padding:5px 9px;white-space:nowrap;
+}
+#cart .kbn-receipt-paper h3{
+  margin:15px 0 7px;color:#3e3436;
+  font-size:13px;font-weight:850;
+}
+#cart .kbn-receipt-items{list-style:none;margin:0;padding:0}
+#cart .kbn-receipt-items li{
+  padding:8px 0;border-bottom:1px solid #efece8;
+  color:#373031;font-size:13px;line-height:1.55;
+  overflow-wrap:anywhere;
+}
+#cart .kbn-receipt-total{
+  margin:13px 0;display:flex;align-items:center;
+  justify-content:space-between;gap:8px;
+  background:#fff0d3;border-radius:12px;color:#7f000e;
+  font-weight:900;padding:11px 13px;
+}
+#cart .kbn-receipt-total strong{font-size:20px;white-space:nowrap}
+#cart .kbn-receipt-delivery{
+  padding:11px 13px;border:1px solid #ebe6e3;
+  border-radius:11px;color:#605a59;
+  font-size:13px;line-height:1.6;
+}
+#cart .kbn-receipt-delivery p{
+  margin:4px 0;overflow-wrap:anywhere;
+}
+#cart .kbn-receipt-delivery a{
+  display:inline-block;color:#086774;
+  margin:5px 0 0;text-decoration:underline;
+  text-underline-offset:2px;
+}
+#cart .kbn-receipt-actions{
+  display:grid;gap:9px;padding:0 16px 13px;
+}
+#cart .kbn-receipt-actions>a,
+#cart .kbn-receipt-actions>button{
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;min-height:47px;width:100%;
+  border-radius:11px;font-size:14px;font-weight:850;
+  padding:11px 14px;text-decoration:none;
+}
+#cart .kbn-receipt-wa{background:#168354;color:#fff;border:1px solid #168354}
+#cart .kbn-receipt-another{background:#fff;color:#88000e;border:1px solid #a81427}
+#cart .kbn-receipt-disclaimer{
+  margin:0;padding:0 18px 20px;text-align:center;
+  color:#777071;font-size:11px;line-height:1.6;
+}
+@media(max-width:720px){
+  #cart .kbn-receipt{border-radius:15px;margin:0 0 20px}
+  #cart .kbn-receipt-paper{padding:0 14px 14px}
+  #cart .kbn-receipt-actions{padding:0 14px 12px}
+  #cart .kbn-receipt-success h2{font-size:21px}
+}
