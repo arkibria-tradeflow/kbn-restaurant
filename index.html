@@ -68,6 +68,7 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(25px,4vw,37px);letter-spacing:-1px}h2
 <link rel="stylesheet" href="./checkout-v2.css">
 <link rel="stylesheet" href="./desktop-v3.css">
 <link rel="stylesheet" href="./homepage-v4.css">
+<link rel="stylesheet" href="./menu-mobile-v5.css">
 </head>
 <body><div class="site">
 <header class="site-header">
@@ -157,12 +158,44 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(25px,4vw,37px);letter-spacing:-1px}h2
   <div id="tabs" class="tabs"></div>
   <div class="menu-head-row">
     <h1 class="menu-title"><span id="menuHeadingIcon" aria-hidden="true">🍽️</span><span class="menu-title-text" id="menuHeadingText" data-i18n="ourMenu">আমাদের মেনু</span></h1>
+    <span id="menuItemCount" class="menu-total-count" aria-live="polite">৫৭টি খাবার</span>
     <div class="notice menu-free-banner"><span class="banner-emoji" aria-hidden="true">🍚🥣</span><span data-i18n="freeRice">প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি</span></div>
   </div>
 </div>
-<input id="search" class="search" type="search" placeholder="খাবার খুঁজুন..." aria-label="Search menu">
+<div class="menu-search-wrap">
+  <svg aria-hidden="true" class="menu-search-icon" viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m16.5 16.5 4.5 4.5"/></svg>
+  <input id="search" class="search" type="search" placeholder="আপনার পছন্দের খাবার খুঁজুন..." autocomplete="off" aria-label="Search menu">
+</div>
+<div id="menuMobileControls" class="menu-mobile-controls">
+  <div class="menu-mode-tabs" role="group" aria-label="Browse menu by">
+    <button type="button" id="menuTypeTab" data-menu-mode="type" aria-pressed="true">খাবারের ধরন</button>
+    <button type="button" id="menuMealTab" data-menu-mode="meal" aria-pressed="false">খাবারের সময়</button>
+  </div>
+  <div id="menuMobileChips" class="menu-mobile-chips" aria-label="খাবারের বিভাগ"></div>
+  <div class="menu-mobile-subheading">
+    <h2 id="menuMobileCategoryTitle">মাংসের আইটেম</h2>
+    <label class="menu-sort-wrap">
+      <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M7 12h10M10 17h4"/></svg>
+      <span class="sr-only" id="menuSortLabel">সাজান</span>
+      <select id="menuSort" aria-labelledby="menuSortLabel">
+        <option value="recommended">সাজান</option>
+        <option value="priceAsc">দাম: কম থেকে বেশি</option>
+        <option value="priceDesc">দাম: বেশি থেকে কম</option>
+        <option value="name">নাম অনুযায়ী</option>
+      </select>
+    </label>
+  </div>
+  <p id="menuResultCount" class="menu-result-count" aria-live="polite"></p>
+</div>
 <div id="menuResults"></div>
 <button id="viewCart" class="primary sticky-cart" onclick="navigate('cart')" hidden></button>
+<button type="button" id="menuMobileCart" class="menu-mobile-cart" onclick="navigate('cart')" hidden>
+  <span aria-hidden="true" class="menu-cart-icon">🛒</span>
+  <span id="menuMobileCartItems">০টি আইটেম</span>
+  <span class="menu-cart-separator" aria-hidden="true"></span>
+  <strong id="menuMobileCartTotal">AED 0</strong>
+  <span id="menuMobileCartAction" class="menu-cart-go">কার্ট দেখুন →</span>
+</button>
 </section>
 <section id="cart" class="view">
 <h1>🛒 <span data-i18n="yourOrder">আপনার অর্ডার</span></h1>
@@ -243,6 +276,49 @@ const categoryLabel=c=>lang==='bn'?(CAT_BN[c]||c):c;
 const TRANSLATIONS={"en":{"subtitle":"Authentic Bengali Food","hero":"খাঁটি বাংলাদেশি খাবারের স্বাদ","heroSub":"Fresh Bengali favourites, made with care.","browse":"Explore Menu →","ourMenu":"Our Menu","call":"Call","directions":"Directions","yourOrder":"Your Order","subtotal":"Subtotal","total":"Total","yourName":"Your name *","yourPhone":"Phone number *","yourAddress":"Delivery address *","yourMaps":"Google Maps location (optional)","deliveryDetails":"Delivery details","deliveryHelp":"Enter your contact and delivery details before sending your order.","useLocation":"Use my current location","locationHint":"Tap to allow your phone to share its current location.","locationLoading":"Finding your location… Please allow location access.","locationSuccess":"Location added. Check the map pin and address before ordering.","locationDenied":"Location permission denied. You can paste a Google Maps link below.","locationUnavailable":"Location unavailable. Try outdoors or paste a Maps link.","locationTimeout":"Location took too long. Retry or paste a Maps link.","locationUnsupported":"Your browser cannot access GPS. Paste a Google Maps link.","locationInsecure":"Location requires HTTPS. Open the secure website or paste a Maps link.","viewLocation":"View location on Google Maps ↗","namePlaceholder":"Full name","phonePlaceholder":"+971 5X XXX XXXX","addressPlaceholder":"Area, building, apartment or shop number","mapsPlaceholder":"Paste your Google Maps link","notesPlaceholder":"E.g. no chilli, less oil…","missingName":"Please enter your name.","missingPhone":"Please enter your phone number.","invalidPhone":"Enter a valid phone number, including country code when needed.","missingAddress":"Please enter your delivery address.","invalidMap":"Paste a valid Google Maps location link, or clear the location field.","notes":"Special instructions (optional)","sendOrder":"Send Order on WhatsApp","confirmation":"WhatsApp opens with the order and delivery details filled in. Tap send to confirm.","home":"Home","menu":"Menu","cart":"Cart","search":"Search for food...","empty":"No matching dishes available.","emptyCart":"Your cart is empty. Add something delicious!","all":"All","viewCart":"View Cart","about":"About us","aboutMessage":"Browse KBN Restaurant's Bengali food menu and send your selected order through WhatsApp.","addressLabel":"Address:","phoneLabel":"Phone:","orderNow":"Order now","orderButton":"Order now","freeRice":"Free rice and dal with every item"},"bn":{"subtitle":"বাংলাদেশি খাবার","hero":"খাঁটি বাংলাদেশি খাবারের স্বাদ","heroSub":"ভালোবাসা দিয়ে তৈরি প্রিয় খাবার","browse":"মেনু দেখুন →","ourMenu":"আমাদের মেনু","call":"কল করুন","directions":"ঠিকানা","yourOrder":"আপনার অর্ডার","subtotal":"সাবটোটাল","total":"মোট","yourName":"আপনার নাম *","yourPhone":"ফোন নম্বর *","yourAddress":"ডেলিভারি ঠিকানা *","yourMaps":"Google Maps লোকেশন (ঐচ্ছিক)","deliveryDetails":"ডেলিভারির তথ্য","deliveryHelp":"অর্ডার পাঠানোর আগে আপনার নাম, ফোন ও ঠিকানা দিন।","useLocation":"আমার বর্তমান লোকেশন নিন","locationHint":"ট্যাপ করলে ফোনের লোকেশন ব্যবহারের অনুমতি চাইবে।","locationLoading":"লোকেশন খোঁজা হচ্ছে… অনুমতি দিন।","locationSuccess":"লোকেশন যোগ হয়েছে। অর্ডারের আগে ম্যাপ পিন ও ঠিকানা মিলিয়ে নিন।","locationDenied":"লোকেশন ব্যবহারের অনুমতি পাওয়া যায়নি। নিচে Google Maps লিংক পেস্ট করুন।","locationUnavailable":"লোকেশন পাওয়া যায়নি। বাইরে গিয়ে চেষ্টা করুন অথবা লিংক পেস্ট করুন।","locationTimeout":"লোকেশন পেতে বেশি সময় লাগছে। আবার চেষ্টা করুন অথবা লিংক দিন।","locationUnsupported":"এই ব্রাউজারে GPS কাজ করছে না। Google Maps লিংক পেস্ট করুন।","locationInsecure":"লোকেশন ব্যবহারের জন্য HTTPS প্রয়োজন। নিরাপদ ওয়েবসাইট খুলুন বা লিংক দিন।","viewLocation":"Google Maps-এ লোকেশন দেখুন ↗","namePlaceholder":"আপনার সম্পূর্ণ নাম","phonePlaceholder":"+971 5X XXX XXXX","addressPlaceholder":"এলাকা, বিল্ডিং, ফ্ল্যাট বা দোকান নম্বর","mapsPlaceholder":"Google Maps লিংক পেস্ট করুন","notesPlaceholder":"যেমন: ঝাল ছাড়া, তেল কম...","missingName":"আপনার নাম লিখুন।","missingPhone":"আপনার ফোন নম্বর লিখুন।","invalidPhone":"সঠিক ফোন নম্বর লিখুন; প্রয়োজনে দেশের কোড দিন।","missingAddress":"ডেলিভারির বিস্তারিত ঠিকানা লিখুন।","invalidMap":"সঠিক Google Maps লিংক দিন অথবা লোকেশন ঘরটি খালি রাখুন।","notes":"বিশেষ নির্দেশনা (ঐচ্ছিক)","sendOrder":"হোয়াটসঅ্যাপে অর্ডার পাঠান","confirmation":"অর্ডার ও ডেলিভারির তথ্যসহ WhatsApp খুলবে। নিশ্চিত করতে Send চাপুন।","home":"হোম","menu":"মেনু","cart":"কার্ট","search":"খাবার খুঁজুন...","empty":"কোনো খাবার পাওয়া যায়নি।","emptyCart":"কার্ট খালি। মেনু থেকে খাবার যোগ করুন।","all":"সব","viewCart":"কার্ট দেখুন","about":"আমাদের সম্পর্কে","aboutMessage":"KBN Restaurant-এর বাংলা খাবারের মেনু দেখুন এবং পছন্দের খাবার WhatsApp-এ অর্ডার করুন।","addressLabel":"ঠিকানা:","phoneLabel":"ফোন:","orderNow":"অর্ডার করুন","orderButton":"অর্ডার করুন","freeRice":"প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি"}};
 let config={name:'KBN Restaurant',phone:'',whatsapp:'',address:'Address to be added',hours:'Opening hours to be added',mapsUrl:'',currency:'AED',sheetCsvUrl:''};
 let menu=[],cart={},category='All',lang='bn';const $=id=>document.getElementById(id);
+let menuMode='type',menuMeal='breakfast',menuSort='recommended';
+const isMobileMenu=()=>window.matchMedia('(max-width:720px)').matches;
+const menuTypeOrder=['Meat','Fish','Rice & Biryani','Vegetables','Bhorta','Snacks & Drinks'];
+const menuMealOrder=['breakfast','lunch','dinner'];
+const menuMealLabels={breakfast:{bn:'সকালের নাশতা',en:'Breakfast',icon:'🌅'},lunch:{bn:'দুপুরের খাবার',en:'Lunch',icon:'☀️'},dinner:{bn:'রাতের খাবার',en:'Dinner',icon:'🌙'}};
+const menuMealMatch=(item,meal)=>/^(yes|true|1)$/i.test(String(item[meal]||''));
+function menuMobileTypeName(cat){return categoryLabel(cat)}
+function menuCurrentGroupLabel(){return menuMode==='type'?menuMobileTypeName(category):(menuMealLabels[menuMeal]?.[lang]||menuMeal)}
+function menuMobileItemName(item){return lang==='bn'&&item.name_bn?item.name_bn:item.name_en}
+function menuMobileCard(item){
+ const name=menuMobileItemName(item),q=cart[item.id]||0;
+ const actions=item.price===null?'':q?controls(item):'<button type="button" class="home-food-add" data-id="'+safe(item.id)+'" data-delta="1" aria-label="'+safe((lang==='bn'?'কার্টে যোগ করুন: ':'Add to cart: ')+name)+'"><span aria-hidden="true">+</span><span class="home-add-label">'+safe(lang==='bn'?'যোগ করুন':'Add')+'</span></button>';
+ return '<article class="home-food-card menu-mobile-food-card"><img src="'+safe(photo(item))+'" alt="'+safe(name)+'" loading="lazy"><div class="home-food-detail"><h3>'+safe(name)+'</h3><div class="home-card-action-row"><div class="home-food-price">'+safe(priceLabel(item))+'</div>'+actions+'</div></div></article>';
+}
+function renderMenuMobileChips(){
+ const el=$('menuMobileChips');if(!el)return;
+ const groups=menuMode==='type'?menuTypeOrder.filter(key=>menu.some(x=>x.available&&x.category===key)):menuMealOrder.filter(key=>menu.some(x=>x.available&&menuMealMatch(x,key)));
+ const current=menuMode==='type'?category:menuMeal;
+ el.innerHTML=groups.map(key=>{
+   const title=menuMode==='type'?menuMobileTypeName(key):(menuMealLabels[key]?.[lang]||key);
+   const icon=menuMode==='type'?(CAT_ICON[key]||'🍽️'):(menuMealLabels[key]?.icon||'🍽️');
+   return '<button type="button" data-menu-group="'+safe(key)+'" class="'+(key===current?'active':'')+'" aria-pressed="'+(key===current)+'"><span aria-hidden="true">'+safe(icon)+'</span>'+safe(title)+'</button>';
+ }).join('');
+}
+function renderMenuMobileControls(){
+ const isType=menuMode==='type';
+ $('menuTypeTab').classList.toggle('active',isType);$('menuMealTab').classList.toggle('active',!isType);
+ $('menuTypeTab').setAttribute('aria-pressed',String(isType));$('menuMealTab').setAttribute('aria-pressed',String(!isType));
+ $('menuTypeTab').textContent=lang==='bn'?'খাবারের ধরন':'Food type';
+ $('menuMealTab').textContent=lang==='bn'?'খাবারের সময়':'Meal time';
+ const choices=lang==='bn'?['সাজান','দাম: কম থেকে বেশি','দাম: বেশি থেকে কম','নাম অনুযায়ী']:['Sort','Price: low to high','Price: high to low','Name'];
+ Array.from($('menuSort').options).forEach((opt,i)=>opt.textContent=choices[i]);
+ $('menuSortLabel').textContent=lang==='bn'?'সাজান':'Sort';
+ $('menuSort').value=menuSort;
+ renderMenuMobileChips();
+}
+function openKBNMenu(groupMode,groupKey){
+ if(groupMode==='meal'&&menuMealOrder.includes(groupKey)){menuMode='meal';menuMeal=groupKey;}
+ else if(groupMode==='type'&&menuTypeOrder.includes(groupKey)){menuMode='type';category=groupKey;}
+ $('search').value='';navigate('menu');
+}
+window.KBNMenu={open:openKBNMenu};
+
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=n=>config.currency+' '+Number(n).toFixed(2).replace(/\.00$/,'');
 const t=k=>TRANSLATIONS[lang][k]||k;
@@ -255,7 +331,45 @@ function attachImageFallbacks(){document.querySelectorAll('img').forEach(img=>{i
 function renderCategories(){$('homeCategories').innerHTML=CATEGORIES.filter(c=>menu.some(x=>x.category===c&&x.available)).map(c=>'<button class="cat" data-category="'+safe(c)+'"><img src="'+safe(PHOTOS[c])+'" alt="" loading="lazy"><span>'+safe(categoryLabel(c))+'</span></button>').join('');document.querySelectorAll('.cat').forEach(b=>b.onclick=()=>{category=b.dataset.category;navigate('menu')});attachImageFallbacks();}
 function renderTabs(){const options=['All',...new Set([...CATEGORIES,...menu.map(x=>x.category)])];$('tabs').innerHTML=options.map(c=>'<button class="'+(category===c?'active':'')+'" data-category="'+safe(c)+'" aria-pressed="'+(category===c)+'"><span class="tab-icon" aria-hidden="true">'+safe(CAT_ICON[c]||'🍽️')+'</span><span>'+safe(c==='All'?t('all'):categoryLabel(c))+'</span></button>').join('');$('tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{category=b.dataset.category;renderMenu()})}
 function controls(item){const q=cart[item.id]||0;if(!q&&window.matchMedia&&matchMedia('(min-width:721px)').matches)return '<button type="button" class="order-btn" data-id="'+safe(item.id)+'" data-delta="1"><span class="order-icon" aria-hidden="true">🛒</span>'+safe(t('orderButton'))+'</button>';return '<div class="qty"><button data-id="'+safe(item.id)+'" data-delta="-1" aria-label="Remove one">−</button><b>'+q+'</b><button data-id="'+safe(item.id)+'" data-delta="1" aria-label="Add one">+</button></div>'}
-function renderMenu(){renderTabs();$('menuHeadingText').textContent=category==='All'?t('ourMenu'):categoryLabel(category);$('menuHeadingIcon').textContent=CAT_ICON[category]||'🍽️';const query=$('search').value.toLowerCase().trim();const items=menu.filter(x=>x.available&&(category==='All'||x.category===category)&&[x.name_en,x.name_bn,x.description,x.category].some(s=>String(s||'').toLowerCase().includes(query)));$('menuResults').innerHTML=items.length?'<div class="menu-grid">'+items.map(x=>'<article class="dish"><img loading="lazy" src="'+safe(photo(x))+'" alt="'+safe(lang==='bn'&&x.name_bn?x.name_bn:x.name_en)+'"><div class="dish-content"><div class="dish-title">'+safe(lang==='bn'&&x.name_bn?x.name_bn:x.name_en)+'</div><div class="bn">'+(x.name_en===x.name_bn?'':safe(lang==='bn'?x.name_en:x.name_bn))+'</div><p class="desc">'+safe(x.description)+'</p><div class="dish-end"><span class="price '+(x.price===null?'unpriced':'')+'">'+safe(priceLabel(x))+'</span>'+(x.price===null?'':controls(x))+'</div></div></article>').join('')+'</div>':'<p class="empty">'+t('empty')+'</p>';wireQty();attachImageFallbacks();const count=cartCount();$('viewCart').hidden=!count;$('viewCart').textContent=t('viewCart')+' ('+count+') · '+money(cartTotal())+' →'}
+function renderMenu(){
+ renderTabs();
+ const mobile=isMobileMenu();
+ if(mobile&&category==='All')category='Meat';
+ const query=$('search').value.toLowerCase().trim();
+ let items=menu.filter(x=>x.available);
+ if(mobile){
+   renderMenuMobileControls();
+   if(query){
+     items=items.filter(x=>[x.name_bn,x.name_en,x.description,x.category].some(s=>String(s||'').toLowerCase().includes(query)));
+   }else if(menuMode==='type'){
+     items=items.filter(x=>x.category===category);
+   }else{
+     items=items.filter(x=>menuMealMatch(x,menuMeal));
+   }
+   if(menuSort==='priceAsc')items.sort((a,b)=>(a.price??Infinity)-(b.price??Infinity));
+   else if(menuSort==='priceDesc')items.sort((a,b)=>(b.price??-Infinity)-(a.price??-Infinity));
+   else if(menuSort==='name')items.sort((a,b)=>menuMobileItemName(a).localeCompare(menuMobileItemName(b),lang==='bn'?'bn':'en'));
+   $('menuHeadingText').textContent=t('ourMenu');
+   $('menuMobileCategoryTitle').textContent=query?(lang==='bn'?'অনুসন্ধানের ফলাফল':'Search results'):menuCurrentGroupLabel();
+   $('menuResultCount').textContent=lang==='bn'?items.length+'টি খাবার পাওয়া গেছে':items.length+' dishes found';
+   $('menuItemCount').textContent=lang==='bn'?menu.filter(x=>x.available).length+'টি খাবার':menu.filter(x=>x.available).length+' dishes';
+   $('menuResults').innerHTML=items.length?'<div class="menu-mobile-grid">'+items.map(menuMobileCard).join('')+'</div>':'<p class="empty">'+t('empty')+'</p>';
+ }else{
+   $('menuHeadingText').textContent=category==='All'?t('ourMenu'):categoryLabel(category);
+   const desktopItems=items.filter(x=>(category==='All'||x.category===category)&&[x.name_en,x.name_bn,x.description,x.category].some(s=>String(s||'').toLowerCase().includes(query)));
+   $('menuResults').innerHTML=desktopItems.length?'<div class="menu-grid">'+desktopItems.map(x=>'<article class="dish"><img loading="lazy" src="'+safe(photo(x))+'" alt="'+safe(menuMobileItemName(x))+'"><div class="dish-content"><div class="dish-title">'+safe(menuMobileItemName(x))+'</div><div class="bn">'+(x.name_en===x.name_bn?'':safe(lang==='bn'?x.name_en:x.name_bn))+'</div><p class="desc">'+safe(x.description)+'</p><div class="dish-end"><span class="price '+(x.price===null?'unpriced':'')+'">'+safe(priceLabel(x))+'</span>'+(x.price===null?'':controls(x))+'</div></div></article>').join('')+'</div>':'<p class="empty">'+t('empty')+'</p>';
+ }
+ $('menuHeadingIcon').textContent=CAT_ICON[category]||'🍽️';
+ wireQty();attachImageFallbacks();
+ const count=cartCount();
+ $('viewCart').hidden=!count||mobile;
+ $('viewCart').textContent=t('viewCart')+' ('+count+') · '+money(cartTotal())+' →';
+ const sticky=$('menuMobileCart');sticky.hidden=!mobile||!count;
+ $('menuMobileCartItems').textContent=lang==='bn'?count+'টি আইটেম':count+' items';
+ $('menuMobileCartTotal').textContent=money(cartTotal());
+ $('menuMobileCartAction').textContent=lang==='bn'?'কার্ট দেখুন →':'View cart →';
+ $('menu').classList.toggle('menu-has-cart',mobile&&count>0);
+}
 function validCart(){for(const id in cart){const item=menu.find(x=>x.id===id&&x.available&&x.price!==null);if(!item)delete cart[id]}}
 function cartCount(){return Object.values(cart).reduce((a,b)=>a+b,0)}function cartTotal(){return menu.reduce((s,x)=>s+(cart[x.id]||0)*(x.price??0),0)}
 function changeQty(id,delta){const item=menu.find(x=>x.id===id&&x.available&&x.price!==null);if(!item)return;cart[id]=Math.min(99,Math.max(0,(cart[id]||0)+delta));if(!cart[id])delete cart[id];persist();renderMenu();renderCart();updateBadge()}
@@ -274,5 +388,12 @@ function clearCheckoutError(){$('checkoutError').hidden=true;for(const id of ['c
 function showCheckoutError(key,id){const e=$('checkoutError');e.hidden=false;e.textContent=t(key);const input=$(id);input.setAttribute('aria-invalid','true');input.focus();input.scrollIntoView({block:'center',behavior:'smooth'})}
 function sendOrder(){const digits=String(config.whatsapp||'').replace(/\D/g,'');if(!/^\d{8,15}$/.test(digits)){alert('Restaurant WhatsApp number has not been configured yet.');return}validCart();const items=menu.filter(x=>cart[x.id]);if(!items.length){alert(t('emptyCart'));return}clearCheckoutError();const name=$('customerName').value.trim(),phone=$('customerPhone').value.trim(),address=$('customerAddress').value.trim(),notes=$('customerNotes').value.trim(),rawMap=$('customerMaps').value.trim(),map=mapsUrl(rawMap);if(!name){showCheckoutError('missingName','customerName');return}if(!phone){showCheckoutError('missingPhone','customerPhone');return}const phoneDigits=phone.replace(/\D/g,'');if(!/^[+\d\s()\-]+$/.test(phone)||phoneDigits.length<8||phoneDigits.length>15){showCheckoutError('invalidPhone','customerPhone');return}if(!address){showCheckoutError('missingAddress','customerAddress');return}if(rawMap&&!map){showCheckoutError('invalidMap','customerMaps');return}const lines=['*'+config.name+' — নতুন অর্ডার*','',...items.map(x=>cart[x.id]+' × '+(x.name_bn||x.name_en)+' — '+money(cart[x.id]*x.price)),'','*মোট: '+money(cartTotal())+'*','*প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি*','','*ডেলিভারির তথ্য*','নাম: '+name,'ফোন: '+phone,'ঠিকানা: '+address];if(map)lines.push('Google Maps: '+map);if(notes)lines.push('বিশেষ নির্দেশনা: '+notes);lines.push('','দয়া করে খাবার, দাম ও ডেলিভারি ঠিকানা নিশ্চিত করুন।');const url='https://wa.me/'+digits+'?text='+encodeURIComponent(lines.join('\n'));const w=window.open(url,'_blank','noopener,noreferrer');if(!w)window.location.href=url}
 async function init(){try{const r=await fetch('./config.json',{cache:'no-store'});if(r.ok)config={...config,...await r.json()}}catch(e){console.warn('Using default config',e)}details();renderCategories();try{const path=config.sheetCsvUrl||'./menu.csv';const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw Error('Menu request failed '+response.status);menu=normalized(parseCSV(await response.text()));if(!menu.length)throw Error('No valid menu rows')}catch(e){console.error('Menu could not load:',e);$('menuResults').innerHTML='<div class="notice">Menu unavailable. Please try again later.</div>'}try{cart=JSON.parse(sessionStorage.getItem('kbn-cart')||'{}')||{}}catch{cart={}}validCart();renderCategories();renderMenu();renderCart();updateBadge();setLanguage('bn');navigate('home');}
-document.querySelectorAll('[data-nav]').forEach(x=>x.onclick=()=>navigate(x.dataset.nav));$('search').oninput=renderMenu;$('enBtn').onclick=()=>setLanguage('en');$('bnBtn').onclick=()=>setLanguage('bn');$('useCurrentLocation').onclick=getCurrentLocation;$('customerMaps').addEventListener('input',()=>{previewLocation();clearCheckoutError();setLocationStatus('locationHint','hint')});for(const id of ['customerName','customerPhone','customerAddress'])$(id).addEventListener('input',clearCheckoutError);$('sendOrder').onclick=sendOrder;if(window.matchMedia){const bp=window.matchMedia('(min-width:721px)');if(bp.addEventListener)bp.addEventListener('change',()=>renderMenu())}init();
+document.querySelectorAll('[data-nav]').forEach(x=>x.onclick=()=>navigate(x.dataset.nav));$('search').oninput=renderMenu;$('enBtn').onclick=()=>setLanguage('en');$('bnBtn').onclick=()=>setLanguage('bn');$('useCurrentLocation').onclick=getCurrentLocation;$('customerMaps').addEventListener('input',()=>{previewLocation();clearCheckoutError();setLocationStatus('locationHint','hint')});for(const id of ['customerName','customerPhone','customerAddress'])$(id).addEventListener('input',clearCheckoutError);$('sendOrder').onclick=sendOrder;if(window.matchMedia){const bp=window.matchMedia('(min-width:721px)');if(bp.addEventListener)bp.addEventListener('change',()=>renderMenu())}$('menuMobileControls').addEventListener('click',e=>{
+ const m=e.target.closest('[data-menu-mode]');
+ if(m){menuMode=m.dataset.menuMode;renderMenu();return}
+ const chip=e.target.closest('[data-menu-group]');
+ if(chip){if(menuMode==='type')category=chip.dataset.menuGroup;else menuMeal=chip.dataset.menuGroup;renderMenu();return}
+});
+$('menuSort').addEventListener('change',e=>{menuSort=e.target.value;renderMenu()});
+init();
 </script><script defer src="./checkout-v2.js"></script><script defer src="./homepage-v4.js"></script></body></html>

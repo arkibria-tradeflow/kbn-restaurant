@@ -134,7 +134,7 @@
     const add=e.target.closest('[data-home-delta]');
     if(add){const id=add.dataset.homeId,delta=Number(add.dataset.homeDelta);changeQty(id,delta);renderSections();return}
     const expand=e.target.closest('[data-home-expand]');
-    if(expand){const key=mode+'|'+expand.dataset.homeExpand;expanded.has(key)?expanded.delete(key):expanded.add(key);renderSections();return}
+    if(expand){if(onPhone()&&window.KBNMenu){window.KBNMenu.open(mode,expand.dataset.homeExpand);return}const key=mode+'|'+expand.dataset.homeExpand;expanded.has(key)?expanded.delete(key):expanded.add(key);renderSections();return}
     const jump=e.target.closest('[data-home-jump]');
     if(jump){jumpToGroup(jump.dataset.homeJump);return}
     const slide=e.target.closest('[data-home-slide]');
