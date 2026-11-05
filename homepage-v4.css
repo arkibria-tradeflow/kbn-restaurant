@@ -1,17 +1,17 @@
 /* KBN Restaurant Homepage v4 — burgundy / cream, responsive, no fixed-width page */
 #home{--home-wine:#92000d;--home-wine-deep:#730006;--home-cream:#fff0d2;--home-border:#eadedc;--home-ink:#29161a}
-#home .home-slider{position:relative;display:grid;grid-template-columns:48% 52%;overflow:hidden;isolation:isolate;min-height:clamp(250px,24vw,395px);background:radial-gradient(circle at 36% 80%,#ba0c1a 0%,#92000d 42%,#710008 90%);border-radius:24px;box-shadow:0 10px 28px #5b000f24;color:white}
+#home .home-slider{position:relative;display:grid;grid-template-columns:48% 52%;overflow:hidden;isolation:isolate;height:clamp(165px,16vw,260px);min-height:0;background:radial-gradient(circle at 36% 80%,#ba0c1a 0%,#92000d 42%,#710008 90%);border-radius:24px;box-shadow:0 10px 28px #5b000f24;color:white}
 #home .home-slider:focus-within{outline-offset:3px}
-#home .home-slider-copy{z-index:2;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:7px;padding:clamp(30px,5vw,78px) clamp(35px,6vw,100px)}
-#home .home-slider-tag{max-width:100%;padding:7px 23px;border-radius:24px;background:#fff4d9;color:#83020e;font-size:clamp(13px,1.2vw,20px);font-weight:850}
-#home .home-slider-title{margin:4px 0 0;font-size:clamp(33px,3.9vw,65px);font-weight:950;line-height:1.13;letter-spacing:-1.4px;text-wrap:balance;color:#fff}
-#home .home-slider-sub{color:#fff6ef;font-size:clamp(14px,1.35vw,20px);line-height:1.6;margin:0 0 11px;max-width:580px}
-#home .home-slider-action{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:43px;background:linear-gradient(90deg,#fff4dd,#ffe9b2);color:#8b0011;border:0;border-radius:50px;padding:8px 23px;font-weight:900;font-size:clamp(14px,1.1vw,18px);box-shadow:0 5px 10px #3b000d28}
+#home .home-slider-copy{z-index:2;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:5px;padding:12px clamp(32px,4vw,65px)}
+#home .home-slider-tag{max-width:100%;padding:5px 14px;border-radius:24px;background:#fff4d9;color:#83020e;font-size:clamp(12px,.95vw,16px);font-weight:850}
+#home .home-slider-title{margin:4px 0 0;font-size:clamp(27px,2.9vw,46px);font-weight:950;line-height:1.13;letter-spacing:-1.4px;text-wrap:balance;color:#fff}
+#home .home-slider-sub{color:#fff6ef;font-size:clamp(12px,1.05vw,17px);line-height:1.3;margin:0 0 3px;max-width:580px}
+#home .home-slider-action{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:36px;background:linear-gradient(90deg,#fff4dd,#ffe9b2);color:#8b0011;border:0;border-radius:50px;padding:6px 17px;font-weight:900;font-size:clamp(12px,1vw,16px);box-shadow:0 5px 10px #3b000d28}
 #home .home-slider-action:hover{background:#fff}
-#home .home-slider-media{overflow:hidden;position:relative;min-height:100%}
+#home .home-slider-media{overflow:hidden;position:relative;min-height:0}
 #home .home-slider-media:before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(94deg,#88000e 0%,#8e000d18 19%,transparent 40%)}
 #home .home-slider-media:after{content:"";position:absolute;z-index:1;top:-10%;bottom:-10%;left:-34px;width:65px;transform:rotate(8deg);border-left:5px solid #e2ad59;border-radius:65%;pointer-events:none;box-shadow:-10px 0 9px #6e000e44}
-#home .home-slider-media img{width:100%;height:100%;min-height:100%;display:block;object-fit:cover;object-position:center center}
+#home .home-slider-media img{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;object-position:center center}
 #home .home-slider-arrow{position:absolute;top:50%;z-index:5;transform:translateY(-50%);width:43px;height:43px;display:grid;place-items:center;border:0;border-radius:50%;color:#89000d;background:#fff9ea;box-shadow:0 4px 16px #0002;font-size:31px;line-height:1}
 #home .home-slider-arrow:hover{background:#ffe3b1}
 #home .home-slider-prev{left:18px}
@@ -86,23 +86,23 @@
  #home .home-food-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
  #home .home-food-card{grid-template-columns:42% minmax(0,1fr)}
  #home .home-benefit-row{grid-template-columns:1fr}
- #home .home-slider-copy{padding:35px 40px}
- #home .home-slider-title{font-size:34px}
- #home .home-slider-sub{font-size:14px}
+ #home .home-slider-copy{padding:10px 30px;gap:4px}
+ #home .home-slider-title{font-size:28px}
+ #home .home-slider-sub{font-size:12px}
  #home .home-chip{min-width:125px}
 }
 @media(max-width:720px){
- #home .home-slider{border-radius:17px;grid-template-columns:57% 43%;min-height:226px;box-shadow:0 5px 17px #68000925}
- #home .home-slider-copy{padding:19px 9px 25px 23px;gap:6px}
- #home .home-slider-tag{font-size:10px;padding:5px 9px}
- #home .home-slider-title{font-size:clamp(21px,6vw,33px);line-height:1.2;letter-spacing:-.3px}
- #home .home-slider-sub{font-size:11px;line-height:1.5;margin:0 0 3px}
- #home .home-slider-action{font-size:12px;min-height:39px;padding:6px 11px;line-height:1.2;text-align:center}
- #home .home-slider-arrow{height:29px;width:29px;font-size:22px;top:auto;bottom:6px;transform:none;background:#fff2ddb8}
+ #home .home-slider{border-radius:17px;grid-template-columns:57% 43%;height:150px;min-height:0;box-shadow:0 5px 17px #68000925}
+ #home .home-slider-copy{padding:9px 7px 12px 15px;gap:3px}
+ #home .home-slider-tag{font-size:9px;padding:3px 7px}
+ #home .home-slider-title{font-size:clamp(17px,4.8vw,25px);line-height:1.15;letter-spacing:-.2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+ #home .home-slider-sub{display:none}
+ #home .home-slider-action{font-size:11px;min-height:31px;padding:5px 10px;line-height:1.2;text-align:center}
+ #home .home-slider-arrow{display:none}
  #home .home-slider-prev{left:7px}
  #home .home-slider-next{right:7px}
  #home .home-slider-media:after{display:none}
- #home .home-slider-dots{bottom:15px}
+ #home .home-slider-dots{bottom:6px}
  #home .home-benefit-row{display:flex;flex-direction:column;gap:9px;margin:11px 0 16px}
  #home .home-rice-banner{min-height:61px;font-size:15px;text-align:center;padding:9px 12px;gap:5px}
  #home .home-rice-banner .rice-emoji{font-size:30px}
@@ -139,7 +139,7 @@
  #home .home-food-grid{gap:7px}
  #home .home-food-card{padding:5px}
  #home .home-food-detail h3{font-size:12px}
- #home .home-slider-title{font-size:20px}
+ #home .home-slider-title{font-size:17px}
  #home .home-rice-banner{font-size:13px}
 }
 @media(prefers-reduced-motion:reduce){
