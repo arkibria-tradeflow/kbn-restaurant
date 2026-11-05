@@ -7,10 +7,10 @@
       items:'টি খাবার',phone:'মোবাইল নম্বর *',deliveryHint:'শুধু ফোন নম্বর এবং লোকেশন বা ঠিকানা দিলেই হবে।',
       yourName:'আপনার নাম (ঐচ্ছিক)',yourAddress:'বিল্ডিং / ফ্ল্যাট / দোকান (ঐচ্ছিক)',yourMaps:'Google Maps লিংক (ঐচ্ছিক)',
       optionalMore:'আরও তথ্য (ঐচ্ছিক)',manualLocation:'লোকেশন লিংক হাতে লিখুন / পেস্ট করুন',
-      next:'পরের ধাপ: অর্ডার নিশ্চিত করুন',submit:'অর্ডার সাবমিট করুন',
+      next:'পরের ধাপ: অর্ডার নিশ্চিত করুন',submit:'হোয়াটসঅ্যাপে অর্ডার শেয়ার করুন',
       unconfigured:'অনলাইন অর্ডার সার্ভার সংযোগের কাজ বাকি। আপাতত নিচের বিকল্প দিয়ে অর্ডার পাঠানো যাবে।',
       fallback:'সাময়িক বিকল্প: WhatsApp অর্ডার',ready:'অর্ডার সরাসরি রেস্টুরেন্টের ড্যাশবোর্ডে জমা হবে।',
-      sending:'অর্ডার পাঠানো হচ্ছে…',confirm:'অর্ডার পাঠালে রেস্টুরেন্ট ফোনে নিশ্চিত করতে পারে।',
+      sending:'অর্ডার পাঠানো হচ্ছে…',confirm:'WhatsApp খুলবে। অর্ডার পাঠাতে সেখানে Send চাপুন।',
       phoneError:'সঠিক মোবাইল নম্বর দিন।',locationError:'লোকেশন নিন অথবা একটি ডেলিভারি ঠিকানা লিখুন।',
       mapError:'সঠিক Google Maps লিংক দিন অথবা ঘরটি খালি রাখুন।',
       noItems:'কার্টে অন্তত একটি খাবার যোগ করুন।', empty:'কার্ট খালি। মেনু থেকে খাবার যোগ করুন।',
@@ -21,10 +21,10 @@
       items:'items',phone:'Mobile number *',deliveryHint:'Just add your phone and a location or address.',
       yourName:'Your name (optional)',yourAddress:'Building / apartment / shop (optional)',yourMaps:'Google Maps link (optional)',
       optionalMore:'More details (optional)',manualLocation:'Paste a Maps link manually',
-      next:'Next: Confirm order',submit:'Submit order',
+      next:'Next: Confirm order',submit:'Share order on WhatsApp',
       unconfigured:'Online order service is not connected yet. You can temporarily use the alternative below.',
       fallback:'Temporary alternative: WhatsApp order',ready:'Orders are saved directly to the restaurant dashboard.',
-      sending:'Submitting order…',confirm:'The restaurant may call to confirm delivery.',
+      sending:'Submitting order…',confirm:'WhatsApp will open with your order. Tap Send there to place it.',
       phoneError:'Enter a valid phone number.',locationError:'Share your location or provide a delivery address.',
       mapError:'Enter a valid Google Maps link or leave it blank.',
       noItems:'Add at least one food item to your cart.',empty:'Your cart is empty. Add items from the menu.',
@@ -33,8 +33,6 @@
   };
   const $=id=>document.getElementById(id);
   const text=k=>labels[lang]?.[k]||labels.bn[k]||k;
-  const endpoint=()=>String(config.orderApiUrl||'').trim();
-  const hasApi=()=>/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec(?:\?.*)?$/.test(endpoint());
   const phoneOk=v=>/^[+\d\s()\-]+$/.test(v)&&v.replace(/\D/g,'').length>=8&&v.replace(/\D/g,'').length<=15;
   function stepLabels() {
     document.querySelectorAll('[data-checkout-label]').forEach(el=>{el.textContent=text(el.dataset.checkoutLabel)});
@@ -43,10 +41,8 @@
     if($('confirmCount'))$('confirmCount').textContent=n+' '+text('items');
     if($('confirmTotal'))$('confirmTotal').textContent=money(cartTotal());
     if($('cartEmptyNotice'))$('cartEmptyNotice').textContent=text('empty');
-    const configured=hasApi();
-    if($('apiNotice'))$('apiNotice').textContent=configured?text('ready'):text('unconfigured');
-    if($('legacyWhatsapp'))$('legacyWhatsapp').hidden=configured;
-    if($('sendOrder')){$('sendOrder').textContent=configured?text('submit'):(lang==='bn'?'অনলাইন অর্ডার সংযোগ বাকি':'Online ordering not connected yet');$('sendOrder').disabled=!configured;}
+    if($('apiNotice'))$('apiNotice').textContent=text('confirm');
+    if($('sendOrder')){$('sendOrder').textContent=text('submit');$('sendOrder').disabled=false;}
     if($('checkoutArea'))$('cartEmptyNotice').hidden=cartCount()>0;
   }
   function validateDelivery() {
@@ -69,18 +65,8 @@
     for(const step of document.querySelectorAll('details.kbn-step'))step.open=step.id===id;
     $(id).scrollIntoView({block:'start',behavior:'smooth'});
   }
-  function newRequestId() {
-    const key='kbn-request-v2';
-    let val='';
-    try{val=sessionStorage.getItem(key)||''}catch(_){}
-    if(!val){
-      val=window.crypto?.randomUUID?.() || ('kbn_'+Date.now()+'_'+Math.random().toString(36).slice(2,14));
-      try{sessionStorage.setItem(key,val)}catch(_){}
-    }
-    return val;
-  }
-  function temporarilySendWhatsApp() {
-    const d=validateDelivery();if(!d)return;
+  function shareOrderWhatsApp() {
+    const d=validateDelivery();if(!d){openStep('stepDelivery');return}
     if(!cartCount()){raise('noItems','stepOrder');return}
     const digits=String(config.whatsapp||'').replace(/\D/g,'');
     if(!/^\d{8,15}$/.test(digits))return;
@@ -94,25 +80,6 @@
     const url='https://wa.me/'+digits+'?text='+encodeURIComponent(lines.join('\n'));
     const w=window.open(url,'_blank','noopener,noreferrer');if(!w)location.href=url;
   }
-  function submitOrder() {
-    if(!cartCount()){raise('noItems','stepOrder');return}
-    const details=validateDelivery();
-    if(!details){openStep('stepDelivery');return}
-    if(!hasApi()){$('apiNotice').textContent=text('unconfigured');$('apiNotice').scrollIntoView({block:'center'});return}
-    const payload={
-      source:'KBN Website',requestId:newRequestId(),
-      phone:details.phone,name:details.name,address:details.address,maps:details.maps,notes:details.notes,
-      items:menu.filter(x=>cart[x.id]).map(x=>({id:x.id,quantity:cart[x.id]}))
-    };
-    if(!payload.items.length)return;
-    const f=document.createElement('form');
-    f.method='POST';f.action=endpoint();f.target='_self';f.acceptCharset='UTF-8';
-    const p=document.createElement('input');p.type='hidden';p.name='payload';p.value=JSON.stringify(payload);f.appendChild(p);
-    const hp=document.createElement('input');hp.type='hidden';hp.name='website';hp.value='';f.appendChild(hp);
-    document.body.appendChild(f);
-    $('sendOrder').disabled=true;$('sendOrder').textContent=text('sending');
-    f.submit(); // Standard browser POST: no opaque CORS response and no false success.
-  }
   function init() {
     if(!$('stepDelivery'))return;
     Object.assign(TRANSLATIONS.bn,{yourName:labels.bn.yourName,yourAddress:labels.bn.yourAddress,yourMaps:labels.bn.yourMaps});
@@ -121,14 +88,11 @@
     setLanguage=function(next){oldSetLanguage(next);stepLabels()};
     const oldRenderCart=renderCart;
     renderCart=function(){oldRenderCart();stepLabels()};
-    const oldPersist=persist;
-    persist=function(){try{sessionStorage.removeItem('kbn-request-v2')}catch(_){}oldPersist()};
     for(const d of document.querySelectorAll('details.kbn-step')){
       d.addEventListener('toggle',()=>{if(d.open){for(const other of document.querySelectorAll('details.kbn-step'))if(other!==d)other.open=false}});
     }
     $('nextStepConfirm').onclick=()=>{if(validateDelivery())openStep('stepConfirm')};
-    $('sendOrder').onclick=submitOrder;
-    $('legacyWhatsapp').onclick=temporarilySendWhatsApp;
+    $('sendOrder').onclick=shareOrderWhatsApp;
     $('customerPhone').addEventListener('input',clearCheckoutError);
     $('customerAddress').addEventListener('input',clearCheckoutError);
     $('customerMaps').addEventListener('input',clearCheckoutError);
