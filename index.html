@@ -69,6 +69,7 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(25px,4vw,37px);letter-spacing:-1px}h2
 <link rel="stylesheet" href="./desktop-v3.css">
 <link rel="stylesheet" href="./homepage-v4.css">
 <link rel="stylesheet" href="./menu-mobile-v5.css">
+<link rel="stylesheet" href="./menu-accordion-v6.css">
 </head>
 <body><div class="site">
 <header class="site-header">
@@ -277,6 +278,37 @@ const TRANSLATIONS={"en":{"subtitle":"Authentic Bengali Food","hero":"খাঁ�
 let config={name:'KBN Restaurant',phone:'',whatsapp:'',address:'Address to be added',hours:'Opening hours to be added',mapsUrl:'',currency:'AED',sheetCsvUrl:''};
 let menu=[],cart={},category='All',lang='bn';const $=id=>document.getElementById(id);
 let menuMode='type',menuMeal='breakfast',menuSort='recommended';
+const menuCollapsed={type:new Set(),meal:new Set()};
+const menuAccordionId=key=>'menu-accordion-'+key.replace(/[^a-z0-9]+/gi,'-');
+function menuGroupOrder(){
+  const keys=menuMode==='type'?menuTypeOrder:menuMealOrder;
+  const available=keys.filter(key=>menu.some(item=>item.available&&(menuMode==='type'?item.category===key:menuMealMatch(item,key))));
+  const selected=menuMode==='type'?category:menuMeal;
+  return available.includes(selected)?[selected,...available.filter(key=>key!==selected)]:available;
+}
+function menuSortItems(items){
+  if(menuSort==='recommended')return items;
+  const sorted=[...items];
+  if(menuSort==='priceAsc')sorted.sort((a,b)=>(a.price??Infinity)-(b.price??Infinity));
+  else if(menuSort==='priceDesc')sorted.sort((a,b)=>(b.price??-Infinity)-(a.price??-Infinity));
+  else if(menuSort==='name')sorted.sort((a,b)=>menuMobileItemName(a).localeCompare(menuMobileItemName(b),lang==='bn'?'bn':'en'));
+  return sorted;
+}
+function menuSectionMarkup(key,items,searching){
+  const isType=menuMode==='type';
+  const title=isType?menuMobileTypeName(key):(menuMealLabels[key]?.[lang]||key);
+  const icon=isType?(CAT_ICON[key]||'🍽️'):(menuMealLabels[key]?.icon||'🍽️');
+  const open=!menuCollapsed[menuMode].has(key);
+  const region=menuAccordionId(key);
+  const countText=lang==='bn'?items.length+'টি খাবার':items.length+' dishes';
+  return '<section class="menu-accordion-group" data-menu-section="'+safe(key)+'" id="'+safe(region)+'">'
+    +'<button type="button" class="menu-accordion-header" data-menu-accordion="'+safe(key)+'" aria-expanded="'+open+'" aria-controls="'+safe(region)+'-items">'
+    +'<span class="menu-accordion-heading"><span class="menu-accordion-icon" aria-hidden="true">'+safe(icon)+'</span><span class="menu-accordion-name">'+safe(title)+'</span></span>'
+    +'<span class="menu-accordion-meta"><span class="menu-accordion-count">'+safe(countText)+'</span><span class="menu-accordion-chevron" aria-hidden="true">'+(open?'⌃':'⌄')+'</span></span></button>'
+    +'<div class="menu-accordion-items" id="'+safe(region)+'-items"'+(open?'':' hidden')+'>'+(open?items.map(menuMobileCard).join(''):'')+'</div>'
+    +'</section>';
+}
+
 const isMobileMenu=()=>window.matchMedia('(max-width:720px)').matches;
 const menuTypeOrder=['Meat','Fish','Rice & Biryani','Vegetables','Bhorta','Snacks & Drinks'];
 const menuMealOrder=['breakfast','lunch','dinner'];
@@ -287,9 +319,13 @@ function menuCurrentGroupLabel(){return menuMode==='type'?menuMobileTypeName(cat
 function menuMobileItemName(item){return lang==='bn'&&item.name_bn?item.name_bn:item.name_en}
 function menuMobileCard(item){
  const name=menuMobileItemName(item),q=cart[item.id]||0;
- const actions=item.price===null?'':q?controls(item):'<button type="button" class="home-food-add" data-id="'+safe(item.id)+'" data-delta="1" aria-label="'+safe((lang==='bn'?'কার্টে যোগ করুন: ':'Add to cart: ')+name)+'"><span aria-hidden="true">+</span><span class="home-add-label">'+safe(lang==='bn'?'যোগ করুন':'Add')+'</span></button>';
- return '<article class="home-food-card menu-mobile-food-card"><img src="'+safe(photo(item))+'" alt="'+safe(name)+'" loading="lazy"><div class="home-food-detail"><h3>'+safe(name)+'</h3><div class="home-card-action-row"><div class="home-food-price">'+safe(priceLabel(item))+'</div>'+actions+'</div></div></article>';
+ const actions=item.price===null?'':q?controls(item):'<button type="button" class="menu-list-add" data-id="'+safe(item.id)+'" data-delta="1" aria-label="'+safe((lang==='bn'?'কার্টে যোগ করুন: ':'Add to cart: ')+name)+'"><span aria-hidden="true">+</span></button>';
+ return '<article class="menu-list-item">'
+   +'<img src="'+safe(photo(item))+'" alt="'+safe(name)+'" loading="lazy">'
+   +'<div class="menu-list-info"><h3>'+safe(name)+'</h3><span class="menu-list-price">'+safe(priceLabel(item))+'</span></div>'
+   +'<div class="menu-list-controls">'+actions+'</div></article>';
 }
+
 function renderMenuMobileChips(){
  const el=$('menuMobileChips');if(!el)return;
  const groups=menuMode==='type'?menuTypeOrder.filter(key=>menu.some(x=>x.available&&x.category===key)):menuMealOrder.filter(key=>menu.some(x=>x.available&&menuMealMatch(x,key)));
@@ -313,8 +349,8 @@ function renderMenuMobileControls(){
  renderMenuMobileChips();
 }
 function openKBNMenu(groupMode,groupKey){
- if(groupMode==='meal'&&menuMealOrder.includes(groupKey)){menuMode='meal';menuMeal=groupKey;}
- else if(groupMode==='type'&&menuTypeOrder.includes(groupKey)){menuMode='type';category=groupKey;}
+ if(groupMode==='meal'&&menuMealOrder.includes(groupKey)){menuMode='meal';menuMeal=groupKey;menuCollapsed.meal.delete(groupKey);}
+ else if(groupMode==='type'&&menuTypeOrder.includes(groupKey)){menuMode='type';category=groupKey;menuCollapsed.type.delete(groupKey);}
  $('search').value='';navigate('menu');
 }
 window.KBNMenu={open:openKBNMenu};
@@ -336,28 +372,26 @@ function renderMenu(){
  const mobile=isMobileMenu();
  if(mobile&&category==='All')category='Meat';
  const query=$('search').value.toLowerCase().trim();
- let items=menu.filter(x=>x.available);
+ const available=menu.filter(x=>x.available);
  if(mobile){
    renderMenuMobileControls();
-   if(query){
-     items=items.filter(x=>[x.name_bn,x.name_en,x.description,x.category].some(s=>String(s||'').toLowerCase().includes(query)));
-   }else if(menuMode==='type'){
-     items=items.filter(x=>x.category===category);
-   }else{
-     items=items.filter(x=>menuMealMatch(x,menuMeal));
-   }
-   if(menuSort==='priceAsc')items.sort((a,b)=>(a.price??Infinity)-(b.price??Infinity));
-   else if(menuSort==='priceDesc')items.sort((a,b)=>(b.price??-Infinity)-(a.price??-Infinity));
-   else if(menuSort==='name')items.sort((a,b)=>menuMobileItemName(a).localeCompare(menuMobileItemName(b),lang==='bn'?'bn':'en'));
+   const matches=x=>[x.name_bn,x.name_en,x.description,x.category].some(s=>String(s||'').toLowerCase().includes(query));
+   const sections=menuGroupOrder().map(key=>{
+     let items=available.filter(x=>menuMode==='type'?x.category===key:menuMealMatch(x,key));
+     if(query)items=items.filter(matches);
+     return {key,items:menuSortItems(items)};
+   }).filter(group=>group.items.length);
    $('menuHeadingText').textContent=t('ourMenu');
-   $('menuMobileCategoryTitle').textContent=query?(lang==='bn'?'অনুসন্ধানের ফলাফল':'Search results'):menuCurrentGroupLabel();
-   $('menuResultCount').textContent=lang==='bn'?items.length+'টি খাবার পাওয়া গেছে':items.length+' dishes found';
-   $('menuItemCount').textContent=lang==='bn'?menu.filter(x=>x.available).length+'টি খাবার':menu.filter(x=>x.available).length+' dishes';
-   $('menuResults').innerHTML=items.length?'<div class="menu-mobile-grid">'+items.map(menuMobileCard).join('')+'</div>':'<p class="empty">'+t('empty')+'</p>';
+   $('menuMobileCategoryTitle').textContent=query?(lang==='bn'?'অনুসন্ধানের ফলাফল':'Search results'):(lang==='bn'?'সব খাবারের বিভাগ':'All food categories');
+   const unique=new Set(sections.flatMap(g=>g.items.map(x=>x.id))).size;
+   const groupCount=sections.length;
+   $('menuResultCount').textContent=lang==='bn'?unique+'টি খাবার · '+groupCount+'টি বিভাগ':unique+' dishes · '+groupCount+' categories';
+   $('menuItemCount').textContent=lang==='bn'?available.length+'টি খাবার':available.length+' dishes';
+   $('menuResults').innerHTML=sections.length?'<div class="menu-accordion-list">'+sections.map(g=>menuSectionMarkup(g.key,g.items,!!query)).join('')+'</div>':'<p class="empty">'+t('empty')+'</p>';
  }else{
    $('menuHeadingText').textContent=category==='All'?t('ourMenu'):categoryLabel(category);
-   const desktopItems=items.filter(x=>(category==='All'||x.category===category)&&[x.name_en,x.name_bn,x.description,x.category].some(s=>String(s||'').toLowerCase().includes(query)));
-   $('menuResults').innerHTML=desktopItems.length?'<div class="menu-grid">'+desktopItems.map(x=>'<article class="dish"><img loading="lazy" src="'+safe(photo(x))+'" alt="'+safe(menuMobileItemName(x))+'"><div class="dish-content"><div class="dish-title">'+safe(menuMobileItemName(x))+'</div><div class="bn">'+(x.name_en===x.name_bn?'':safe(lang==='bn'?x.name_en:x.name_bn))+'</div><p class="desc">'+safe(x.description)+'</p><div class="dish-end"><span class="price '+(x.price===null?'unpriced':'')+'">'+safe(priceLabel(x))+'</span>'+(x.price===null?'':controls(x))+'</div></div></article>').join('')+'</div>':'<p class="empty">'+t('empty')+'</p>';
+   const items=available.filter(x=>(category==='All'||x.category===category)&&[x.name_en,x.name_bn,x.description,x.category].some(s=>String(s||'').toLowerCase().includes(query)));
+   $('menuResults').innerHTML=items.length?'<div class="menu-grid">'+items.map(x=>'<article class="dish"><img loading="lazy" src="'+safe(photo(x))+'" alt="'+safe(menuMobileItemName(x))+'"><div class="dish-content"><div class="dish-title">'+safe(menuMobileItemName(x))+'</div><div class="bn">'+(x.name_en===x.name_bn?'':safe(lang==='bn'?x.name_en:x.name_bn))+'</div><p class="desc">'+safe(x.description)+'</p><div class="dish-end"><span class="price '+(x.price===null?'unpriced':'')+'">'+safe(priceLabel(x))+'</span>'+(x.price===null?'':controls(x))+'</div></div></article>').join('')+'</div>':'<p class="empty">'+t('empty')+'</p>';
  }
  $('menuHeadingIcon').textContent=CAT_ICON[category]||'🍽️';
  wireQty();attachImageFallbacks();
@@ -388,11 +422,29 @@ function clearCheckoutError(){$('checkoutError').hidden=true;for(const id of ['c
 function showCheckoutError(key,id){const e=$('checkoutError');e.hidden=false;e.textContent=t(key);const input=$(id);input.setAttribute('aria-invalid','true');input.focus();input.scrollIntoView({block:'center',behavior:'smooth'})}
 function sendOrder(){const digits=String(config.whatsapp||'').replace(/\D/g,'');if(!/^\d{8,15}$/.test(digits)){alert('Restaurant WhatsApp number has not been configured yet.');return}validCart();const items=menu.filter(x=>cart[x.id]);if(!items.length){alert(t('emptyCart'));return}clearCheckoutError();const name=$('customerName').value.trim(),phone=$('customerPhone').value.trim(),address=$('customerAddress').value.trim(),notes=$('customerNotes').value.trim(),rawMap=$('customerMaps').value.trim(),map=mapsUrl(rawMap);if(!name){showCheckoutError('missingName','customerName');return}if(!phone){showCheckoutError('missingPhone','customerPhone');return}const phoneDigits=phone.replace(/\D/g,'');if(!/^[+\d\s()\-]+$/.test(phone)||phoneDigits.length<8||phoneDigits.length>15){showCheckoutError('invalidPhone','customerPhone');return}if(!address){showCheckoutError('missingAddress','customerAddress');return}if(rawMap&&!map){showCheckoutError('invalidMap','customerMaps');return}const lines=['*'+config.name+' — নতুন অর্ডার*','',...items.map(x=>cart[x.id]+' × '+(x.name_bn||x.name_en)+' — '+money(cart[x.id]*x.price)),'','*মোট: '+money(cartTotal())+'*','*প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি*','','*ডেলিভারির তথ্য*','নাম: '+name,'ফোন: '+phone,'ঠিকানা: '+address];if(map)lines.push('Google Maps: '+map);if(notes)lines.push('বিশেষ নির্দেশনা: '+notes);lines.push('','দয়া করে খাবার, দাম ও ডেলিভারি ঠিকানা নিশ্চিত করুন।');const url='https://wa.me/'+digits+'?text='+encodeURIComponent(lines.join('\n'));const w=window.open(url,'_blank','noopener,noreferrer');if(!w)window.location.href=url}
 async function init(){try{const r=await fetch('./config.json',{cache:'no-store'});if(r.ok)config={...config,...await r.json()}}catch(e){console.warn('Using default config',e)}details();renderCategories();try{const path=config.sheetCsvUrl||'./menu.csv';const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw Error('Menu request failed '+response.status);menu=normalized(parseCSV(await response.text()));if(!menu.length)throw Error('No valid menu rows')}catch(e){console.error('Menu could not load:',e);$('menuResults').innerHTML='<div class="notice">Menu unavailable. Please try again later.</div>'}try{cart=JSON.parse(sessionStorage.getItem('kbn-cart')||'{}')||{}}catch{cart={}}validCart();renderCategories();renderMenu();renderCart();updateBadge();setLanguage('bn');navigate('home');}
-document.querySelectorAll('[data-nav]').forEach(x=>x.onclick=()=>navigate(x.dataset.nav));$('search').oninput=renderMenu;$('enBtn').onclick=()=>setLanguage('en');$('bnBtn').onclick=()=>setLanguage('bn');$('useCurrentLocation').onclick=getCurrentLocation;$('customerMaps').addEventListener('input',()=>{previewLocation();clearCheckoutError();setLocationStatus('locationHint','hint')});for(const id of ['customerName','customerPhone','customerAddress'])$(id).addEventListener('input',clearCheckoutError);$('sendOrder').onclick=sendOrder;if(window.matchMedia){const bp=window.matchMedia('(min-width:721px)');if(bp.addEventListener)bp.addEventListener('change',()=>renderMenu())}$('menuMobileControls').addEventListener('click',e=>{
+document.querySelectorAll('[data-nav]').forEach(x=>x.onclick=()=>navigate(x.dataset.nav));$('search').oninput=()=>{menuCollapsed[menuMode].clear();renderMenu()};$('enBtn').onclick=()=>setLanguage('en');$('bnBtn').onclick=()=>setLanguage('bn');$('useCurrentLocation').onclick=getCurrentLocation;$('customerMaps').addEventListener('input',()=>{previewLocation();clearCheckoutError();setLocationStatus('locationHint','hint')});for(const id of ['customerName','customerPhone','customerAddress'])$(id).addEventListener('input',clearCheckoutError);$('sendOrder').onclick=sendOrder;if(window.matchMedia){const bp=window.matchMedia('(min-width:721px)');if(bp.addEventListener)bp.addEventListener('change',()=>renderMenu())}$('menuMobileControls').addEventListener('click',e=>{
  const m=e.target.closest('[data-menu-mode]');
  if(m){menuMode=m.dataset.menuMode;renderMenu();return}
  const chip=e.target.closest('[data-menu-group]');
- if(chip){if(menuMode==='type')category=chip.dataset.menuGroup;else menuMeal=chip.dataset.menuGroup;renderMenu();return}
+ if(chip){
+   const key=chip.dataset.menuGroup;
+   if(menuMode==='type')category=key;else menuMeal=key;
+   menuCollapsed[menuMode].delete(key);
+   renderMenu();
+   const section=document.getElementById(menuAccordionId(key));
+   if(section)section.scrollIntoView({block:'start',behavior:'smooth'});
+   return;
+ }
+});
+$('menuResults').addEventListener('click',e=>{
+ const accordion=e.target.closest('[data-menu-accordion]');
+ if(!accordion||!isMobileMenu())return;
+ const key=accordion.dataset.menuAccordion;
+ const collapsed=menuCollapsed[menuMode];
+ if(collapsed.has(key))collapsed.delete(key);else collapsed.add(key);
+ renderMenu();
+ const updated=document.getElementById(menuAccordionId(key))?.querySelector('.menu-accordion-header');
+ if(updated){updated.focus({preventScroll:true});}
 });
 $('menuSort').addEventListener('change',e=>{menuSort=e.target.value;renderMenu()});
 init();

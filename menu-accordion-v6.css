@@ -1,0 +1,69 @@
+/* KBN Restaurant · Mobile Menu v6
+   All categories appear in one scrollable page. Each category is independently
+   collapsible. Category pills reorder the selected category to the top.
+   Desktop layout and Homepage design are intentionally untouched. */
+@media(max-width:720px){
+  #menu{color:#241f20;padding-bottom:30px}
+  #menu #menuResults{margin:14px 0 0}
+  #menu .menu-mobile-subheading h2{color:#282122;font-size:clamp(18px,4.9vw,23px);line-height:1.3}
+  #menu .menu-mobile-subheading{margin:5px 0 0;padding:0}
+  #menu .menu-result-count{font-size:12px;color:#777272;margin:-9px 0 1px}
+  #menu .menu-mobile-chips{padding-bottom:11px}
+  #menu .menu-mobile-chips button.active{border-color:#990013;color:#84000d;background:#fff;box-shadow:0 0 0 1px #99001312}
+  #menu .menu-accordion-list{display:flex;flex-direction:column;gap:22px}
+  #menu .menu-accordion-group{width:100%;min-width:0;scroll-margin-top:85px}
+  #menu .menu-accordion-header{appearance:none;width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;
+    border:0;background:transparent;border-bottom:1px solid #e8e5e3;border-radius:0;
+    padding:7px 1px 12px;min-height:58px;color:#282122;text-align:left}
+  #menu .menu-accordion-heading{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+  #menu .menu-accordion-icon{display:grid;place-items:center;width:37px;height:37px;border-radius:11px;
+    background:#faf6f3;color:#65121b;font-size:21px;flex-shrink:0}
+  #menu .menu-accordion-name{font-size:clamp(17px,4.4vw,21px);font-weight:870;line-height:1.3;overflow-wrap:anywhere}
+  #menu .menu-accordion-meta{display:flex;align-items:center;gap:9px;white-space:nowrap;flex-shrink:0}
+  #menu .menu-accordion-count{font-size:12px;color:#827f7e;font-weight:650}
+  #menu .menu-accordion-chevron{display:grid;place-items:center;font-size:24px;font-weight:700;color:#696667;
+    line-height:1;width:20px;transform:none}
+  #menu .menu-accordion-header:focus-visible{outline:2px solid #980015;outline-offset:3px;border-radius:6px}
+  #menu .menu-accordion-header:hover .menu-accordion-name{color:#8b0010}
+  #menu .menu-accordion-items{display:flex;flex-direction:column;margin-top:11px;border:1px solid #ebe6e2;
+    border-radius:16px;background:#fff;overflow:hidden;box-shadow:0 2px 12px #40000b09}
+  #menu .menu-list-item{display:grid;grid-template-columns:90px minmax(0,1fr) auto;align-items:center;gap:12px;
+    padding:11px 12px;min-height:106px;background:#fff;width:100%;min-width:0}
+  #menu .menu-list-item+.menu-list-item{border-top:1px solid #efebea}
+  #menu .menu-list-item>img{width:90px;height:90px;aspect-ratio:1/1;object-fit:cover;border-radius:11px;
+    display:block;background:#f8f6f4}
+  #menu .menu-list-info{align-self:stretch;display:flex;flex-direction:column;justify-content:center;gap:8px;min-width:0}
+  #menu .menu-list-info h3{font-size:clamp(14px,3.75vw,17px);line-height:1.4;color:#231d1e;
+    font-weight:830;letter-spacing:0;margin:0;overflow-wrap:anywhere}
+  #menu .menu-list-price{font-size:clamp(14px,3.75vw,17px);line-height:1.3;font-weight:900;color:#90000f;
+    overflow-wrap:anywhere}
+  #menu .menu-list-controls{display:flex;align-items:center;justify-content:flex-end;min-width:40px}
+  #menu .menu-list-add{border:1.5px solid #a6001b;border-radius:50%;background:#fff;
+    display:grid;place-items:center;width:42px;height:42px;min-width:42px;min-height:42px;padding:0;color:#96000f}
+  #menu .menu-list-add span{font-size:25px;line-height:1;font-weight:500}
+  #menu .menu-list-add:focus-visible{outline:2px solid #a6001b;outline-offset:2px}
+  #menu .menu-list-add:hover{background:#fff7f5}
+  #menu .menu-list-controls .qty{display:flex;align-items:center;justify-content:space-between;height:39px;
+    min-width:93px;max-width:99px;border:1.5px solid #9b000e;border-radius:11px;overflow:hidden}
+  #menu .menu-list-controls .qty button{width:29px;min-width:29px;height:38px;min-height:38px;border:0;
+    background:#fff;color:#8e0010;font-size:19px;font-weight:700;padding:0}
+  #menu .menu-list-controls .qty button:last-child{background:#90000b;color:#fff}
+  #menu .menu-list-controls .qty b{min-width:22px;text-align:center;font-size:14px;font-weight:800}
+  #menu .menu-mobile-cart{background:linear-gradient(90deg,#fff0d2,#fff9ee);border-color:#efdfc3}
+  #menu .menu-accordion-items[hidden]{display:none!important}
+}
+@media(max-width:390px){
+  #menu .menu-list-item{grid-template-columns:74px minmax(0,1fr) auto;gap:9px;padding:9px 9px;min-height:95px}
+  #menu .menu-list-item>img{width:74px;height:74px;border-radius:9px}
+  #menu .menu-list-info{gap:6px}
+  #menu .menu-list-info h3{font-size:13px}
+  #menu .menu-list-price{font-size:14px}
+  #menu .menu-list-controls .qty{min-width:85px;max-width:85px}
+  #menu .menu-list-controls .qty button{width:25px;min-width:25px}
+  #menu .menu-list-controls .qty b{min-width:20px}
+  #menu .menu-list-add{width:40px;height:40px;min-width:40px;min-height:40px}
+  #menu .menu-accordion-count{font-size:11px}
+}
+@media(prefers-reduced-motion:reduce){
+  #menu .menu-accordion-header{scroll-behavior:auto}
+}
