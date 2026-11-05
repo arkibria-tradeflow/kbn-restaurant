@@ -12,8 +12,8 @@
     {key:'dinner',icon:'🌙',img:'./menu-images/chicken-biryani-v3.jpg',bn:'রাতের খাবার',en:'Dinner'}
   ];
   const dict={
-    bn:{byType:'খাবারের ধরন অনুযায়ী',byMeal:'খাবারের সময় অনুযায়ী',seeAll:'সব দেখুন',showLess:'কম দেখুন',order:'অর্ডার করুন',empty:'এই বিভাগে খাবার পাওয়া যায়নি',heroCta:'এখনই অর্ডার করুন',rice:'প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি',whatsapp:'WhatsApp-এ অর্ডার',steps:'খাবার বাছুন · লোকেশন দিন · WhatsApp-এ পাঠান',menuHeading:'আমাদের খাবারের মেনু'},
-    en:{byType:'Browse by food type',byMeal:'Browse by meal time',seeAll:'See all',showLess:'Show less',order:'Order now',empty:'No dishes available in this group',heroCta:'Order now',rice:'Free rice and dal with every item',whatsapp:'Order on WhatsApp',steps:'Choose food · Share location · Send via WhatsApp',menuHeading:'Our food menu'}
+    bn:{byType:'খাবারের ধরন অনুযায়ী',byMeal:'খাবারের সময় অনুযায়ী',seeAll:'সব দেখুন',showLess:'কম দেখুন',order:'অর্ডার করুন',empty:'এই বিভাগে খাবার পাওয়া যায়নি',heroCta:'এখনই অর্ডার করুন',rice:'প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি',whatsapp:'WhatsApp-এ অর্ডার',steps:'খাবার বাছুন · লোকেশন দিন · WhatsApp-এ পাঠান',menuHeading:'খাবার খুঁজুন'},
+    en:{byType:'Browse by food type',byMeal:'Browse by meal time',seeAll:'See all',showLess:'Show less',order:'Order now',empty:'No dishes available in this group',heroCta:'Order now',rice:'Free rice and dal with every item',whatsapp:'Order on WhatsApp',steps:'Choose food · Share location · Send via WhatsApp',menuHeading:'Browse dishes'}
   };
   const $=id=>document.getElementById(id);
   const L=k=>dict[lang]?.[k]||dict.bn[k]||k;
@@ -89,8 +89,8 @@
     if(!$('home'))return;
     if($('homeTypeTab')){$('homeTypeTab').setAttribute('aria-selected',String(mode==='type'));$('homeTypeTab').classList.toggle('active',mode==='type')}
     if($('homeMealTab')){$('homeMealTab').setAttribute('aria-selected',String(mode==='meal'));$('homeMealTab').classList.toggle('active',mode==='meal')}
-    if($('homeTypeTab'))$('homeTypeTab').textContent='▱  '+L('byType');
-    if($('homeMealTab'))$('homeMealTab').textContent='▦  '+L('byMeal');
+    if($('homeTypeTab'))$('homeTypeTab').textContent=onPhone()?(lang==='bn'?'খাবারের ধরন':'Food type'):'▱  '+L('byType');
+    if($('homeMealTab'))$('homeMealTab').textContent=onPhone()?(lang==='bn'?'খাবারের সময়':'Meal time'):'▦  '+L('byMeal');
     if($('homeSectionIntro'))$('homeSectionIntro').textContent=L('menuHeading');
     if($('homeFreeRice'))$('homeFreeRice').textContent=L('rice');
     if($('homeWhatsText'))$('homeWhatsText').textContent=L('whatsapp');
