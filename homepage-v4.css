@@ -1,0 +1,148 @@
+/* KBN Restaurant Homepage v4 — burgundy / cream, responsive, no fixed-width page */
+#home{--home-wine:#92000d;--home-wine-deep:#730006;--home-cream:#fff0d2;--home-border:#eadedc;--home-ink:#29161a}
+#home .home-slider{position:relative;display:grid;grid-template-columns:48% 52%;overflow:hidden;isolation:isolate;min-height:clamp(250px,24vw,395px);background:radial-gradient(circle at 36% 80%,#ba0c1a 0%,#92000d 42%,#710008 90%);border-radius:24px;box-shadow:0 10px 28px #5b000f24;color:white}
+#home .home-slider:focus-within{outline-offset:3px}
+#home .home-slider-copy{z-index:2;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:7px;padding:clamp(30px,5vw,78px) clamp(35px,6vw,100px)}
+#home .home-slider-tag{max-width:100%;padding:7px 23px;border-radius:24px;background:#fff4d9;color:#83020e;font-size:clamp(13px,1.2vw,20px);font-weight:850}
+#home .home-slider-title{margin:4px 0 0;font-size:clamp(33px,3.9vw,65px);font-weight:950;line-height:1.13;letter-spacing:-1.4px;text-wrap:balance;color:#fff}
+#home .home-slider-sub{color:#fff6ef;font-size:clamp(14px,1.35vw,20px);line-height:1.6;margin:0 0 11px;max-width:580px}
+#home .home-slider-action{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:43px;background:linear-gradient(90deg,#fff4dd,#ffe9b2);color:#8b0011;border:0;border-radius:50px;padding:8px 23px;font-weight:900;font-size:clamp(14px,1.1vw,18px);box-shadow:0 5px 10px #3b000d28}
+#home .home-slider-action:hover{background:#fff}
+#home .home-slider-media{overflow:hidden;position:relative;min-height:100%}
+#home .home-slider-media:before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(94deg,#88000e 0%,#8e000d18 19%,transparent 40%)}
+#home .home-slider-media:after{content:"";position:absolute;z-index:1;top:-10%;bottom:-10%;left:-34px;width:65px;transform:rotate(8deg);border-left:5px solid #e2ad59;border-radius:65%;pointer-events:none;box-shadow:-10px 0 9px #6e000e44}
+#home .home-slider-media img{width:100%;height:100%;min-height:100%;display:block;object-fit:cover;object-position:center center}
+#home .home-slider-arrow{position:absolute;top:50%;z-index:5;transform:translateY(-50%);width:43px;height:43px;display:grid;place-items:center;border:0;border-radius:50%;color:#89000d;background:#fff9ea;box-shadow:0 4px 16px #0002;font-size:31px;line-height:1}
+#home .home-slider-arrow:hover{background:#ffe3b1}
+#home .home-slider-prev{left:18px}
+#home .home-slider-next{right:18px}
+#home .home-slider-dots{position:absolute;z-index:5;bottom:20px;left:50%;transform:translateX(-50%);display:flex;gap:9px;align-items:center}
+#home .home-slider-dots button{width:9px;height:9px;min-height:9px;padding:0;border:0;border-radius:99px;background:#ffffff6b}
+#home .home-slider-dots button.active{width:27px;background:#ffe19b}
+#home .home-benefit-row{margin:17px 0 20px;display:grid;grid-template-columns:1fr 1fr;gap:18px}
+#home .home-rice-banner,#home .home-benefits{min-height:78px;border:1px solid #f0e5d9;border-radius:19px;background:linear-gradient(90deg,#fff3dc,#fff8ef);box-shadow:0 4px 14px #6b000c0a;display:flex;align-items:center;justify-content:center;gap:13px;padding:12px 18px;color:#89000d;font-weight:900;font-size:clamp(16px,1.5vw,24px);line-height:1.5}
+#home .home-rice-banner .rice-emoji{font-size:44px;line-height:1}
+#home .home-benefits{background:#fff;gap:13px;font-size:clamp(12px,1.05vw,16px);color:#242020;font-weight:800}
+#home .home-benefit{display:flex;justify-content:center;align-items:center;gap:9px;flex:1;text-align:center;min-width:0}
+#home .home-benefit+.home-benefit{border-left:1px solid #e8d4cf;padding-left:12px}
+#home .home-benefit svg{width:25px;height:25px;stroke:#900010;flex-shrink:0}
+#home .home-browse{scroll-margin-top:112px}
+#home .home-mode-tabs{display:grid;grid-template-columns:1fr 1fr;width:min(870px,100%);margin:12px auto 19px;padding:3px;background:#fff;border:1px solid #e6d6d5;border-radius:99px;box-shadow:0 4px 13px #50000d10}
+#home .home-mode-tabs button{min-height:54px;border:0;border-radius:99px;background:none;color:#291c1c;font-size:clamp(14px,1.35vw,20px);font-weight:900;transition:background .15s,box-shadow .15s}
+#home .home-mode-tabs button.active{background:linear-gradient(90deg,#b60017,#890007);color:#fff;box-shadow:0 3px 12px #79000c3b}
+#home .home-mode-tabs button:focus-visible{outline:3px solid #eaba60;outline-offset:1px}
+#home .home-category-chips{display:flex;gap:10px;overflow-x:auto;scrollbar-width:thin;padding:3px 1px 11px;margin-bottom:14px}
+#home .home-chip{display:flex;flex:1;min-width:145px;min-height:97px;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:1px solid #e6d7d6;border-radius:18px;background:#fff;box-shadow:0 4px 15px #57000e0d;color:#201718;font-size:clamp(13px,1.17vw,18px);font-weight:830;padding:9px 14px;white-space:normal;line-height:1.25;text-align:center}
+#home .home-chip:hover{border-color:#b11a27;background:#fff9f6}
+#home .home-chip:focus-visible{outline:3px solid #b00012}
+#home .home-chip-icon{font-size:30px;line-height:1.25}
+#home .home-chip.active{background:linear-gradient(135deg,#b10a19,#85000c);color:#fff;border-color:#a30013;box-shadow:0 4px 15px #87001138}
+#home .home-meal-chip{flex-direction:row;gap:9px;justify-content:center;min-width:225px;min-height:95px;border-color:#eddac7;background:linear-gradient(110deg,#fff1d9,#fffaf0)}
+#home .home-meal-chip img{width:66px;height:64px;aspect-ratio:1;object-fit:cover;border-radius:12px;flex-shrink:0}
+#home .home-meal-chip .home-chip-icon{font-size:22px}
+#home .home-section-intro{font-size:13px;color:#765b5b;margin:10px 0 0}
+#home .home-food-section{margin:12px 0 30px;scroll-margin-top:112px}
+#home .home-food-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 12px}
+#home .home-food-heading h2{display:flex;align-items:center;gap:12px;min-width:0;margin:0;color:#8f000c;font-size:clamp(23px,2.35vw,36px);font-weight:950}
+#home .home-section-symbol{width:55px;height:55px;flex-shrink:0;display:grid;place-items:center;border-radius:50%;background:linear-gradient(125deg,#c9001a,#87000b);box-shadow:0 4px 9px #85000923;font-size:27px;color:#fff}
+#home .home-section-title{position:relative;padding-bottom:9px;overflow-wrap:anywhere}
+#home .home-section-title:after{content:"";position:absolute;left:0;bottom:2px;height:4px;width:min(150px,72%);border-radius:15px;background:linear-gradient(90deg,#b30014 60%,#ece4e3 60%)}
+#home .home-seeall{border:1.5px solid #a30617;border-radius:40px;color:#8a000d;background:#fff;font-size:clamp(12px,1.05vw,16px);font-weight:850;white-space:nowrap;min-height:39px;padding:7px 17px}
+#home .home-seeall:hover{background:#fff3ee}
+#home .home-seeall[hidden]{display:none}
+#home .home-food-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(10px,1.15vw,17px)}
+#home .home-food-card{min-width:0;display:grid;grid-template-columns:48% minmax(0,1fr);align-items:stretch;gap:10px;padding:10px;background:#fff;border-radius:20px;border:1px solid #ece0df;box-shadow:0 4px 11px #68000a12;transition:transform .17s,box-shadow .17s}
+#home .home-food-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px #68000a22}
+#home .home-food-card>img{width:100%;height:100%;min-height:150px;aspect-ratio:1/1;object-fit:cover;border-radius:14px}
+#home .home-food-detail{min-width:0;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:10px}
+#home .home-food-detail h3{font-size:clamp(15px,1.12vw,20px);line-height:1.3;letter-spacing:0;font-weight:890;margin:0;color:#161010;overflow-wrap:anywhere}
+#home .home-food-price{font-size:clamp(15px,1.2vw,21px);font-weight:930;color:#9b000f}
+#home .home-food-add{border:1.4px solid #ac0817;background:#fff;color:#9c0012;display:flex;align-items:center;justify-content:center;gap:5px;border-radius:11px;padding:7px 8px;min-height:35px;font-size:clamp(11px,.85vw,14px);line-height:1.1;font-weight:850;white-space:nowrap;max-width:100%}
+#home .home-food-add:hover{background:#fff0f0}
+#home .home-food-add span{font-size:17px}
+#home .home-food-qty{display:flex;align-items:center;max-width:100%;border:1.5px solid #9b000e;border-radius:12px;overflow:hidden;height:36px}
+#home .home-food-qty button{border:0;background:#fff;color:#97000a;min-width:28px;height:35px;font-size:19px;font-weight:800;padding:0 5px}
+#home .home-food-qty button:last-child{color:#fff;background:#93000b}
+#home .home-food-qty b{font-size:14px;min-width:21px;text-align:center}
+#home .home-contact{margin:30px 0 3px;padding:22px clamp(18px,3vw,44px);border-radius:20px;border:1px solid #eaddd4;background:linear-gradient(115deg,#fff7ec,#fff);display:flex;align-items:center;justify-content:space-between;gap:17px;flex-wrap:wrap}
+#home .home-contact h2{font-size:21px;margin:0 0 4px;color:#89000d}
+#home .home-contact p{font-size:14px;color:#5d4545;margin:3px 0}
+#home .home-contact-actions{display:flex;gap:9px;flex-wrap:wrap}
+#home .home-contact-actions a{border:1px solid #a80013;color:#92000f;background:#fff;border-radius:12px;min-height:43px;padding:10px 15px;font-weight:800;display:inline-flex;align-items:center;justify-content:center}
+#home .home-contact-actions a:first-child{background:#92000f;color:#fff}
+#home .home-cart-cue{position:fixed;bottom:20px;right:18px;z-index:45;border:0;border-radius:22px;color:#fff;background:#8b000b;box-shadow:0 7px 20px #79000b6b;padding:10px 19px;font-weight:850;display:flex;gap:12px;align-items:center}
+#home .home-cart-cue[hidden]{display:none}
+#home .home-cart-cue span:nth-child(1){background:#fff;color:#90000d;border-radius:10px;padding:4px 8px}
+@media(min-width:1050px) and (max-width:1420px){
+ #home .home-food-card{grid-template-columns:45% minmax(0,1fr);gap:8px}
+ #home .home-food-card>img{min-height:135px}
+ #home .home-food-add{white-space:normal;text-align:center}
+}
+@media(min-width:900px) and (max-width:1199px){
+ #home .home-food-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ #home .home-food-card{grid-template-columns:45% minmax(0,1fr)}
+}
+@media(min-width:721px) and (max-width:899px){
+ #home .home-food-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #home .home-food-card{grid-template-columns:42% minmax(0,1fr)}
+ #home .home-benefit-row{grid-template-columns:1fr}
+ #home .home-slider-copy{padding:35px 40px}
+ #home .home-slider-title{font-size:34px}
+ #home .home-slider-sub{font-size:14px}
+ #home .home-chip{min-width:125px}
+}
+@media(max-width:720px){
+ #home .home-slider{border-radius:17px;grid-template-columns:57% 43%;min-height:226px;box-shadow:0 5px 17px #68000925}
+ #home .home-slider-copy{padding:19px 9px 25px 23px;gap:6px}
+ #home .home-slider-tag{font-size:10px;padding:5px 9px}
+ #home .home-slider-title{font-size:clamp(21px,6vw,33px);line-height:1.2;letter-spacing:-.3px}
+ #home .home-slider-sub{font-size:11px;line-height:1.5;margin:0 0 3px}
+ #home .home-slider-action{font-size:12px;min-height:39px;padding:6px 11px;line-height:1.2;text-align:center}
+ #home .home-slider-arrow{height:29px;width:29px;font-size:22px;top:auto;bottom:6px;transform:none;background:#fff2ddb8}
+ #home .home-slider-prev{left:7px}
+ #home .home-slider-next{right:7px}
+ #home .home-slider-media:after{display:none}
+ #home .home-slider-dots{bottom:15px}
+ #home .home-benefit-row{display:flex;flex-direction:column;gap:9px;margin:11px 0 16px}
+ #home .home-rice-banner{min-height:61px;font-size:15px;text-align:center;padding:9px 12px;gap:5px}
+ #home .home-rice-banner .rice-emoji{font-size:30px}
+ #home .home-benefits{min-height:58px;gap:7px;padding:8px;font-size:11px}
+ #home .home-benefit{gap:5px}
+ #home .home-benefit svg{width:20px;height:20px}
+ #home .home-benefit+.home-benefit{padding-left:7px}
+ #home .home-mode-tabs{margin:9px auto 12px;padding:3px}
+ #home .home-mode-tabs button{min-height:44px;font-size:12px;padding:8px 7px}
+ #home .home-category-chips{gap:7px;margin-bottom:11px}
+ #home .home-chip{min-width:112px;min-height:76px;border-radius:13px;padding:7px;font-size:12px}
+ #home .home-chip-icon{font-size:24px}
+ #home .home-meal-chip{min-width:155px;gap:6px}
+ #home .home-meal-chip img{width:40px;height:40px;border-radius:9px}
+ #home .home-meal-chip .home-chip-icon{font-size:14px}
+ #home .home-food-section{margin:12px 0 24px;scroll-margin-top:92px}
+ #home .home-food-heading{margin-bottom:11px}
+ #home .home-food-heading h2{font-size:21px;gap:8px}
+ #home .home-section-symbol{width:37px;height:37px;font-size:18px}
+ #home .home-seeall{min-height:33px;font-size:11px;padding:6px 10px}
+ #home .home-food-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ #home .home-food-card{grid-template-columns:1fr;gap:0;padding:7px;border-radius:13px}
+ #home .home-food-card>img{height:auto;min-height:0;aspect-ratio:4 / 3;border-radius:10px}
+ #home .home-food-detail{align-items:center;text-align:center;gap:6px;padding:9px 3px 4px}
+ #home .home-food-detail h3{font-size:14px;line-height:1.4;min-height:38px}
+ #home .home-food-price{font-size:16px}
+ #home .home-food-add{min-height:34px;font-size:11px;padding:6px 10px}
+ #home .home-contact{margin:18px 0 0;padding:17px}
+ #home .home-contact h2{font-size:19px}
+ #home .home-contact-actions a{font-size:13px}
+ #home .home-cart-cue{right:10px;bottom:calc(78px + env(safe-area-inset-bottom));font-size:12px;padding:9px 12px}
+}
+@media(max-width:360px){
+ #home .home-food-grid{gap:7px}
+ #home .home-food-card{padding:5px}
+ #home .home-food-detail h3{font-size:12px}
+ #home .home-slider-title{font-size:20px}
+ #home .home-rice-banner{font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){
+ #home .home-food-card,#home .home-mode-tabs button{transition:none}
+ #home .home-slider *{scroll-behavior:auto}
+}

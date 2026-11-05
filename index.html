@@ -66,6 +66,7 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(25px,4vw,37px);letter-spacing:-1px}h2
 </style>
 <link rel="stylesheet" href="./checkout-v2.css">
 <link rel="stylesheet" href="./desktop-v3.css">
+<link rel="stylesheet" href="./homepage-v4.css">
 </head>
 <body><div class="site">
 <header class="site-header">
@@ -93,10 +94,60 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(25px,4vw,37px);letter-spacing:-1px}h2
 </header>
 <main>
 <section id="home" class="view active">
-<div class="hero"><div class="hero-copy"><h1 data-i18n="hero">খাঁটি বাংলাদেশি খাবারের স্বাদ</h1><div class="accent"></div><p data-i18n="heroSub">Fresh Bengali favourites, made with care.</p><button class="primary" onclick="navigate('menu')" data-i18n="browse">Explore Menu →</button></div><div class="hero-art" role="img" aria-label="Biryani"></div></div>
-<div class="details"><div class="detail">📍 <span id="address"></span></div><div class="detail">◷ <span id="hours"></span></div><div class="detail">☎ <span id="phone"></span></div></div>
-<div class="notice" style="background:var(--yellow);border:0;font-weight:900;text-align:center;font-size:16px">🍚 প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি</div><div class="actions"><a class="action" id="whatsLink" target="_blank" rel="noopener">WhatsApp</a><a class="action" id="callLink">☎ <span data-i18n="call">Call</span></a><a class="action" id="mapsLink" target="_blank" rel="noopener">📍 <span data-i18n="directions">Directions</span></a></div>
-<h2 class="section-title" data-i18n="ourMenu">আমাদের মেনু</h2><div class="categories" id="homeCategories"></div>
+  <div class="home-slider" id="homeSlider" aria-roledescription="carousel" aria-label="KBN Restaurant খাবারের স্লাইডার">
+    <div class="home-slider-copy">
+      <span class="home-slider-tag" id="homeSlideTag">KBN Restaurant-এ স্বাগতম</span>
+      <h1 class="home-slider-title" id="homeSlideTitle">চিকেন বিরিয়ানি</h1>
+      <p class="home-slider-sub" id="homeSlideSub">দেশি খাবারের পরিচিত স্বাদ, আপনার পছন্দের মেনুতে</p>
+      <button type="button" class="home-slider-action" id="homeSlideAction">এখনই অর্ডার করুন →</button>
+    </div>
+    <div class="home-slider-media">
+      <img id="homeSliderImage" src="./menu-images/chicken-biryani-v3.jpg" alt="চিকেন বিরিয়ানি" fetchpriority="high" decoding="async">
+    </div>
+    <button type="button" id="homeSliderPrev" class="home-slider-arrow home-slider-prev" aria-label="আগের স্লাইড">‹</button>
+    <button type="button" id="homeSliderNext" class="home-slider-arrow home-slider-next" aria-label="পরের স্লাইড">›</button>
+    <div id="homeSliderDots" class="home-slider-dots" aria-label="স্লাইড নির্বাচন"></div>
+  </div>
+  <div class="home-benefit-row">
+    <div class="home-rice-banner">
+      <span class="rice-emoji" aria-hidden="true">🍚🥣</span>
+      <span id="homeFreeRice">প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি</span>
+    </div>
+    <div class="home-benefits">
+      <div class="home-benefit"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17 3 21l4.7-1a9 9 0 1 0-2.4-2.5z"/><path d="m9 8 2 2-1 1c1 2 2.5 3 4 3.2l1.1-1 2 1.4-1.7 1.7c-4.2 0-7.3-3.4-7.4-7.4z"/></svg><span id="homeWhatsText">WhatsApp-এ অর্ডার</span></div>
+      <div class="home-benefit"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-7 7-12A7 7 0 0 0 5 9c0 5 7 12 7 12z"/><circle cx="12" cy="9" r="2"/></svg><span>GPS লোকেশন</span></div>
+      <div class="home-benefit"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V7l9-4 9 4v14M3 11h18M8 21v-7h8v7"/></svg><span>Naif, Deira, Dubai</span></div>
+    </div>
+  </div>
+  <div id="homeBrowse" class="home-browse">
+    <div class="home-mode-tabs" role="tablist" aria-label="মেনু নেভিগেশন">
+      <button type="button" id="homeTypeTab" class="active" role="tab" aria-selected="true" aria-controls="homeFoodSections">খাবারের ধরন অনুযায়ী</button>
+      <button type="button" id="homeMealTab" role="tab" aria-selected="false" aria-controls="homeFoodSections">খাবারের সময় অনুযায়ী</button>
+    </div>
+    <div id="homeCategoryChips" class="home-category-chips" aria-label="খাবারের বিভাগ"></div>
+    <p class="home-section-intro" id="homeSectionIntro">আমাদের খাবারের মেনু</p>
+  </div>
+  <div id="homeFoodSections" aria-live="polite"></div>
+  <div class="home-contact">
+    <div>
+      <h2>KBN Restaurant</h2>
+      <p>📍 <span id="address"></span></p>
+      <p>◷ <span id="hours"></span></p>
+      <p>☎ <span id="phone"></span></p>
+      <p id="homeHowTo">খাবার বাছুন · লোকেশন দিন · WhatsApp-এ পাঠান</p>
+    </div>
+    <div class="home-contact-actions">
+      <a id="whatsLink" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+      <a id="callLink" data-i18n="call" href="#">কল করুন</a>
+      <a id="mapsLink" data-i18n="directions" target="_blank" rel="noopener noreferrer">ঠিকানা</a>
+    </div>
+  </div>
+  <button type="button" class="home-cart-cue" id="homeCartCue" hidden aria-label="কার্ট খুলুন">
+    <span id="homeCartCount">0</span>
+    <span id="homeCartTotal">AED 0</span>
+    <span aria-hidden="true">🛒 →</span>
+  </button>
+  <div id="homeCategories" hidden></div>
 </section>
 <section id="menu" class="view">
 <div class="desktop-menu-intro">
@@ -205,8 +256,8 @@ function persist(){try{sessionStorage.setItem('kbn-cart',JSON.stringify(cart))}c
 function wireQty(){document.querySelectorAll('[data-delta]').forEach(b=>b.onclick=()=>changeQty(b.dataset.id,Number(b.dataset.delta)))}
 function renderCart(){validCart();const items=menu.filter(x=>cart[x.id]);$('cartItems').innerHTML=items.length?items.map(x=>'<div class="cart-line"><img src="'+safe(photo(x))+'" alt=""><div class="cart-info"><strong>'+safe(lang==='bn'&&x.name_bn?x.name_bn:x.name_en)+'</strong><div class="bn">'+safe(x.name_bn)+'</div><div class="cart-price">'+money(x.price*cart[x.id])+'</div>'+controls(x)+'</div><button class="delete" data-remove="'+safe(x.id)+'" aria-label="Remove item">✕</button></div>').join(''):'<div class="empty">'+t('emptyCart')+'<br><br><button class="primary" onclick="navigate(\'menu\')">'+t('ourMenu')+'</button></div>';$('checkoutArea').hidden=!items.length;$('subtotal').textContent=money(cartTotal());$('total').textContent=money(cartTotal());wireQty();attachImageFallbacks();document.querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>{delete cart[b.dataset.remove];persist();renderCart();renderMenu();updateBadge()})}
 function updateBadge(){$('badge').textContent=cartCount();if($('desktopCartCount'))$('desktopCartCount').textContent=cartCount()}
-function navigate(page){if(!$(page)||!$(page).classList.contains('view'))page='home';document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===page));document.querySelectorAll('[data-nav],[data-desktop-nav]').forEach(x=>{const active=(x.dataset.nav||x.dataset.desktopNav)===page;x.classList.toggle('active',active);if(active)x.setAttribute('aria-current','page');else x.removeAttribute('aria-current')});if(page==='menu')renderMenu();if(page==='cart')renderCart();window.scrollTo({top:0,behavior:'instant'})}
-function setLanguage(next){lang=next;document.documentElement.lang=lang;document.querySelectorAll('[data-i18n]').forEach(x=>x.textContent=t(x.dataset.i18n));$('search').placeholder=t('search');$('customerName').placeholder=t('namePlaceholder');$('customerPhone').placeholder=t('phonePlaceholder');$('customerAddress').placeholder=t('addressPlaceholder');$('customerMaps').placeholder=t('mapsPlaceholder');$('customerNotes').placeholder=t('notesPlaceholder');setLocationStatus(locationStatusKey,$('locationStatus').dataset.state||'hint');$('enBtn').setAttribute('aria-pressed',String(lang==='en'));$('bnBtn').setAttribute('aria-pressed',String(lang==='bn'));renderMenu();renderCart()}
+function navigate(page){if(!$(page)||!$(page).classList.contains('view'))page='home';document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===page));document.querySelectorAll('[data-nav],[data-desktop-nav]').forEach(x=>{const active=(x.dataset.nav||x.dataset.desktopNav)===page;x.classList.toggle('active',active);if(active)x.setAttribute('aria-current','page');else x.removeAttribute('aria-current')});if(page==='menu')renderMenu();if(page==='cart')renderCart();if(page==='home'&&window.KBNHome)window.KBNHome.render();window.scrollTo({top:0,behavior:'instant'})}
+function setLanguage(next){lang=next;document.documentElement.lang=lang;document.querySelectorAll('[data-i18n]').forEach(x=>x.textContent=t(x.dataset.i18n));$('search').placeholder=t('search');$('customerName').placeholder=t('namePlaceholder');$('customerPhone').placeholder=t('phonePlaceholder');$('customerAddress').placeholder=t('addressPlaceholder');$('customerMaps').placeholder=t('mapsPlaceholder');$('customerNotes').placeholder=t('notesPlaceholder');setLocationStatus(locationStatusKey,$('locationStatus').dataset.state||'hint');$('enBtn').setAttribute('aria-pressed',String(lang==='en'));$('bnBtn').setAttribute('aria-pressed',String(lang==='bn'));renderMenu();renderCart();if(window.KBNHome)window.KBNHome.render()}
 let locationStatusKey='locationHint',locationBusy=false;
 function setLocationStatus(key,state='hint'){locationStatusKey=key;const el=$('locationStatus');el.dataset.state=state;el.textContent=t(key)}
 function mapsUrl(raw){const value=String(raw||'').trim();if(!value)return '';try{const url=new URL(value);const host=url.hostname.toLowerCase();const google=/(^|\.)google\.(com|[a-z]{2}|com\.[a-z]{2}|co\.[a-z]{2})$/i.test(host);const short=host==='maps.app.goo.gl'||(host==='goo.gl'&&url.pathname.startsWith('/maps'));if(url.protocol!=='https:'||(!google&&!short))return '';return url.href}catch{return ''}}
@@ -215,6 +266,6 @@ function getCurrentLocation(){if(locationBusy)return;if(!window.isSecureContext)
 function clearCheckoutError(){$('checkoutError').hidden=true;for(const id of ['customerName','customerPhone','customerAddress','customerMaps'])$(id).removeAttribute('aria-invalid')}
 function showCheckoutError(key,id){const e=$('checkoutError');e.hidden=false;e.textContent=t(key);const input=$(id);input.setAttribute('aria-invalid','true');input.focus();input.scrollIntoView({block:'center',behavior:'smooth'})}
 function sendOrder(){const digits=String(config.whatsapp||'').replace(/\D/g,'');if(!/^\d{8,15}$/.test(digits)){alert('Restaurant WhatsApp number has not been configured yet.');return}validCart();const items=menu.filter(x=>cart[x.id]);if(!items.length){alert(t('emptyCart'));return}clearCheckoutError();const name=$('customerName').value.trim(),phone=$('customerPhone').value.trim(),address=$('customerAddress').value.trim(),notes=$('customerNotes').value.trim(),rawMap=$('customerMaps').value.trim(),map=mapsUrl(rawMap);if(!name){showCheckoutError('missingName','customerName');return}if(!phone){showCheckoutError('missingPhone','customerPhone');return}const phoneDigits=phone.replace(/\D/g,'');if(!/^[+\d\s()\-]+$/.test(phone)||phoneDigits.length<8||phoneDigits.length>15){showCheckoutError('invalidPhone','customerPhone');return}if(!address){showCheckoutError('missingAddress','customerAddress');return}if(rawMap&&!map){showCheckoutError('invalidMap','customerMaps');return}const lines=['*'+config.name+' — নতুন অর্ডার*','',...items.map(x=>cart[x.id]+' × '+(x.name_bn||x.name_en)+' — '+money(cart[x.id]*x.price)),'','*মোট: '+money(cartTotal())+'*','*প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি*','','*ডেলিভারির তথ্য*','নাম: '+name,'ফোন: '+phone,'ঠিকানা: '+address];if(map)lines.push('Google Maps: '+map);if(notes)lines.push('বিশেষ নির্দেশনা: '+notes);lines.push('','দয়া করে খাবার, দাম ও ডেলিভারি ঠিকানা নিশ্চিত করুন।');const url='https://wa.me/'+digits+'?text='+encodeURIComponent(lines.join('\n'));const w=window.open(url,'_blank','noopener,noreferrer');if(!w)window.location.href=url}
-async function init(){try{const r=await fetch('./config.json',{cache:'no-store'});if(r.ok)config={...config,...await r.json()}}catch(e){console.warn('Using default config',e)}details();renderCategories();try{const path=config.sheetCsvUrl||'./menu.csv';const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw Error('Menu request failed '+response.status);menu=normalized(parseCSV(await response.text()));if(!menu.length)throw Error('No valid menu rows')}catch(e){console.error('Menu could not load:',e);$('menuResults').innerHTML='<div class="notice">Menu unavailable. Please try again later.</div>'}try{cart=JSON.parse(sessionStorage.getItem('kbn-cart')||'{}')||{}}catch{cart={}}validCart();renderCategories();renderMenu();renderCart();updateBadge();setLanguage('bn');if(window.matchMedia&&matchMedia('(min-width:721px)').matches)navigate('menu');}
+async function init(){try{const r=await fetch('./config.json',{cache:'no-store'});if(r.ok)config={...config,...await r.json()}}catch(e){console.warn('Using default config',e)}details();renderCategories();try{const path=config.sheetCsvUrl||'./menu.csv';const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw Error('Menu request failed '+response.status);menu=normalized(parseCSV(await response.text()));if(!menu.length)throw Error('No valid menu rows')}catch(e){console.error('Menu could not load:',e);$('menuResults').innerHTML='<div class="notice">Menu unavailable. Please try again later.</div>'}try{cart=JSON.parse(sessionStorage.getItem('kbn-cart')||'{}')||{}}catch{cart={}}validCart();renderCategories();renderMenu();renderCart();updateBadge();setLanguage('bn');navigate('home');}
 document.querySelectorAll('[data-nav]').forEach(x=>x.onclick=()=>navigate(x.dataset.nav));$('search').oninput=renderMenu;$('enBtn').onclick=()=>setLanguage('en');$('bnBtn').onclick=()=>setLanguage('bn');$('useCurrentLocation').onclick=getCurrentLocation;$('customerMaps').addEventListener('input',()=>{previewLocation();clearCheckoutError();setLocationStatus('locationHint','hint')});for(const id of ['customerName','customerPhone','customerAddress'])$(id).addEventListener('input',clearCheckoutError);$('sendOrder').onclick=sendOrder;if(window.matchMedia){const bp=window.matchMedia('(min-width:721px)');if(bp.addEventListener)bp.addEventListener('change',()=>renderMenu())}init();
-</script><script defer src="./checkout-v2.js"></script></body></html>
+</script><script defer src="./checkout-v2.js"></script><script defer src="./homepage-v4.js"></script></body></html>
