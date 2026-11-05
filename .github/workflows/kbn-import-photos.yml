@@ -43,7 +43,7 @@ jobs:
           assert len(seen)==len(LINKS),(seen,LINKS)
           with p.open("w",encoding="utf-8",newline="") as f:
               writer=csv.DictWriter(f,fieldnames=headers,lineterminator="\n");writer.writeheader();writer.writerows(rows)
-                    PY
+          PY
       - name: Commit menu photo files and links
         run: |
           git config user.name "github-actions[bot]"
