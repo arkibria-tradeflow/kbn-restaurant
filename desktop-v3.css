@@ -6,9 +6,11 @@
   .site{width:100%;max-width:none;min-height:100dvh;box-shadow:none;background:linear-gradient(180deg,#fffaf7 0%,#fff 42%)}
   header.site-header{background:linear-gradient(104deg,#790007 0%,#a40911 51%,#730007 100%);color:#fff;border:0;min-height:88px;box-shadow:0 4px 15px #50000a1e;padding:12px clamp(20px,2.7vw,65px);gap:clamp(12px,2vw,35px)}
   header.site-header .brand{gap:13px;flex-shrink:0;align-items:center;text-decoration:none}
-  header.site-header .brand>img,header.site-header .brand>.mobile-brand-label{display:none}
+  header.site-header .brand>.mobile-brand-label{display:none}
+  header.site-header .brand .kbn-official-logo{display:grid;place-items:center;width:59px;height:59px;flex-shrink:0;background:#fff9e8;border:1px solid #f2e0bc;border-radius:12px;overflow:hidden;padding:3px}
+  header.site-header .brand .kbn-official-logo img{width:100%;height:100%;max-width:none;object-fit:contain;filter:none!important}
   .desktop-brand{display:flex;gap:10px;align-items:center;color:#fff;white-space:nowrap}
-  .desktop-brand svg{width:55px;height:55px;stroke:#fff;fill:none;stroke-width:3.3;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
   .desktop-brand-words{display:flex;flex-direction:column;line-height:.88}
   .desktop-brand-words strong{font-family:Georgia,serif;font-size:clamp(30px,2.8vw,43px);font-weight:800;letter-spacing:.7px}
   .desktop-brand-words small{font-size:16px;font-weight:850;letter-spacing:.15px;margin-top:8px}
@@ -84,7 +86,7 @@
   #menu .menu-free-banner{font-size:13px!important;max-width:50%}
   #menu .menu-free-banner .banner-emoji{font-size:26px}
   #menu .menu-title #menuHeadingIcon{width:46px;height:46px;font-size:24px}
-  header.site-header .desktop-brand svg{width:43px;height:43px}
+  header.site-header .brand .kbn-official-logo{width:47px;height:47px}
   header.site-header .desktop-brand-words strong{font-size:30px}
   .desktop-order-shortcut{font-size:13px;min-height:40px}
 }
