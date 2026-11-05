@@ -54,6 +54,7 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(25px,4vw,37px);letter-spacing:-1px}h2
 .checkout-error{border:1px solid #efb2b9;background:#fff1f2;border-radius:10px;padding:12px;color:#981b34;font-size:13px;margin:13px 0}
 @media(max-width:720px){.checkout-card{padding:14px;border-radius:15px}.location-button{min-height:50px}}
 </style>
+<link rel="stylesheet" href="./checkout-v2.css">
 </head>
 <body><div class="site">
 <header><div class="brand"><img src="./assets/kbn-logo.svg" alt="KBN logo" onerror="this.style.display='none'"><div><div class="brand-text">KBN Restaurant</div><div class="tagline" data-i18n="subtitle">Authentic Bengali Food</div></div></div><div class="langset"><button class="lang" id="enBtn" aria-pressed="false">EN</button><button class="lang" id="bnBtn" aria-pressed="true">বাংলা</button></div></header>
@@ -65,15 +66,48 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(25px,4vw,37px);letter-spacing:-1px}h2
 <h2 class="section-title" data-i18n="ourMenu">আমাদের মেনু</h2><div class="categories" id="homeCategories"></div>
 </section>
 <section id="menu" class="view"><h1 data-i18n="ourMenu">আমাদের মেনু</h1><div class="notice" style="background:var(--yellow);border:0;font-weight:900;text-align:center">🍚 প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি</div><div id="tabs" class="tabs"></div><input id="search" class="search" type="search" placeholder="খাবার খুঁজুন..." aria-label="Search menu"><div id="menuResults"></div><button id="viewCart" class="primary sticky-cart" onclick="navigate('cart')" hidden></button></section>
-<section id="cart" class="view"><h1>🛒 <span data-i18n="yourOrder">আপনার অর্ডার</span></h1><div id="cartItems"></div><div id="checkoutArea"><div class="notice" style="background:var(--yellow);border:0;font-weight:850">🍚 প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি</div><div class="summary"><div class="summary-row"><span data-i18n="subtotal">সাবটোটাল</span><strong id="subtotal"></strong></div><div class="summary-row total"><span data-i18n="total">মোট</span><span id="total"></span></div></div><div class="checkout-card">
-<h2 class="checkout-heading" data-i18n="deliveryDetails">ডেলিভারির তথ্য</h2>
-<p class="checkout-sub" data-i18n="deliveryHelp">অর্ডার পাঠানোর আগে আপনার নাম, ফোন ও ঠিকানা দিন।</p>
-<div class="field"><label for="customerName" data-i18n="yourName">আপনার নাম *</label><input id="customerName" autocomplete="name" maxlength="80" placeholder="আপনার সম্পূর্ণ নাম" required></div>
-<div class="field"><label for="customerPhone" data-i18n="yourPhone">ফোন নম্বর *</label><input id="customerPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="25" placeholder="+971 5X XXX XXXX" required></div>
-<div class="field"><label for="customerAddress" data-i18n="yourAddress">ডেলিভারি ঠিকানা *</label><textarea id="customerAddress" autocomplete="street-address" maxlength="350" rows="2" placeholder="এলাকা, বিল্ডিং, ফ্ল্যাট বা দোকান নম্বর" required></textarea></div>
-<div class="field"><label for="customerMaps" data-i18n="yourMaps">Google Maps লোকেশন (ঐচ্ছিক)</label><button type="button" id="useCurrentLocation" class="location-button"><span aria-hidden="true">📍</span> <span data-i18n="useLocation">আমার বর্তমান লোকেশন নিন</span></button><p id="locationStatus" class="location-status" data-state="hint" role="status" aria-live="polite">ট্যাপ করলে ফোনের লোকেশন ব্যবহারের অনুমতি চাইবে।</p><input id="customerMaps" type="url" inputmode="url" maxlength="1000" placeholder="Google Maps লিংক পেস্ট করুন" aria-describedby="locationStatus"><a id="locationPreview" class="location-preview" href="#" target="_blank" rel="noopener noreferrer" hidden data-i18n="viewLocation">Google Maps-এ লোকেশন দেখুন ↗</a></div>
-<div class="field"><label for="customerNotes" data-i18n="notes">বিশেষ নির্দেশনা (ঐচ্ছিক)</label><textarea id="customerNotes" maxlength="500" placeholder="যেমন: ঝাল ছাড়া, তেল কম..."></textarea></div>
-</div><p id="checkoutError" class="checkout-error" role="alert" hidden></p><button id="sendOrder" class="primary checkout" data-i18n="sendOrder">হোয়াটসঅ্যাপে অর্ডার পাঠান</button><p class="help" data-i18n="confirmation">WhatsApp will open with your order prefilled. Tap send to confirm.</p></div></section>
+<section id="cart" class="view">
+<h1>🛒 <span data-i18n="yourOrder">আপনার অর্ডার</span></h1>
+<p id="cartEmptyNotice" hidden>কার্ট খালি। মেনু থেকে খাবার যোগ করুন।</p>
+<div id="checkoutArea">
+  <details id="stepOrder" class="kbn-step">
+    <summary><span data-checkout-label="stepOrder">১. অর্ডারের সারাংশ</span><span class="step-mini" id="stepOrderMini"></span></summary>
+    <div class="step-content">
+      <div id="cartItems"></div>
+      <div class="notice" style="background:var(--yellow);border:0;font-weight:850">🍚 প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি</div>
+      <div class="summary"><div class="summary-row"><span data-i18n="subtotal">সাবটোটাল</span><strong id="subtotal"></strong></div><div class="summary-row total"><span data-i18n="total">মোট</span><span id="total"></span></div></div>
+    </div>
+  </details>
+  <details id="stepDelivery" class="kbn-step" open>
+    <summary><span data-checkout-label="stepDelivery">২. ডেলিভারি তথ্য</span></summary>
+    <div class="step-content">
+      <p class="kbn-mini-label" data-checkout-label="deliveryHint">শুধু ফোন নম্বর এবং লোকেশন বা ঠিকানা দিলেই হবে।</p>
+      <div class="field"><label for="customerPhone" data-checkout-label="phone">মোবাইল নম্বর *</label><input id="customerPhone" type="tel" inputmode="tel" autocomplete="tel" maxlength="25" placeholder="+971 5X XXX XXXX" required></div>
+      <div class="field">
+        <button type="button" id="useCurrentLocation" class="location-button"><span aria-hidden="true">📍</span><span data-i18n="useLocation">আমার বর্তমান লোকেশন নিন</span></button>
+        <p id="locationStatus" class="location-status" data-state="hint" role="status" aria-live="polite">ট্যাপ করলে ফোনের লোকেশন ব্যবহারের অনুমতি চাইবে।</p>
+        <a id="locationPreview" class="location-preview" href="#" target="_blank" rel="noopener noreferrer" hidden data-i18n="viewLocation">Google Maps-এ লোকেশন দেখুন ↗</a>
+      </div>
+      <div class="field"><label for="customerAddress" data-i18n="yourAddress">বিল্ডিং / ফ্ল্যাট / দোকান (ঐচ্ছিক)</label><textarea id="customerAddress" autocomplete="street-address" maxlength="250" rows="2" placeholder="বিল্ডিং, ফ্ল্যাট, দোকান — GPS না হলে বিস্তারিত ঠিকানা দিন"></textarea></div>
+      <details class="kbn-small" id="locationManual"><summary data-checkout-label="manualLocation">লোকেশন লিংক হাতে লিখুন / পেস্ট করুন</summary><div class="inside"><div class="field"><label for="customerMaps" data-i18n="yourMaps">Google Maps লিংক (ঐচ্ছিক)</label><input id="customerMaps" type="url" inputmode="url" maxlength="1000" placeholder="Google Maps লিংক পেস্ট করুন" aria-describedby="locationStatus"></div></div></details>
+      <details class="kbn-small" id="deliveryOptional"><summary data-checkout-label="optionalMore">আরও তথ্য (ঐচ্ছিক)</summary><div class="inside"><div class="field"><label for="customerName" data-i18n="yourName">আপনার নাম (ঐচ্ছিক)</label><input id="customerName" autocomplete="name" maxlength="80" placeholder="আপনার নাম"></div><div class="field"><label for="customerNotes" data-i18n="notes">বিশেষ নির্দেশনা (ঐচ্ছিক)</label><textarea id="customerNotes" maxlength="350" placeholder="যেমন: ঝাল কম, দরজায় ফোন দিন..."></textarea></div></div></details>
+      <p id="checkoutError" class="checkout-error" role="alert" hidden></p>
+      <button id="nextStepConfirm" type="button" class="kbn-action kbn-next" data-checkout-label="next">পরের ধাপ: অর্ডার নিশ্চিত করুন</button>
+    </div>
+  </details>
+  <details id="stepConfirm" class="kbn-step">
+    <summary><span data-checkout-label="stepConfirm">৩. অর্ডার নিশ্চিত করুন</span></summary>
+    <div class="step-content">
+      <div class="kbn-proof"><div><div data-checkout-label="orderTitle">আপনার অর্ডার</div><span id="confirmCount" class="kbn-mini-label"></span></div><strong id="confirmTotal"></strong></div>
+      <p class="kbn-info" data-checkout-label="confirm">অর্ডার পাঠালে রেস্টুরেন্ট ফোনে নিশ্চিত করতে পারে।</p>
+      <button id="sendOrder" type="button" class="kbn-action kbn-main" data-checkout-label="submit">অর্ডার সাবমিট করুন</button>
+      <p id="apiNotice" class="kbn-info" role="status">অর্ডার সার্ভার সংযোগের প্রস্তুতি চলছে।</p>
+      <button id="legacyWhatsapp" type="button" class="kbn-action kbn-legacy" data-checkout-label="fallback">সাময়িক বিকল্প: WhatsApp অর্ডার</button>
+      <p class="help" data-i18n="confirmation">অর্ডার ও ডেলিভারির তথ্যসহ WhatsApp খুলবে। নিশ্চিত করতে Send চাপুন।</p>
+    </div>
+  </details>
+</div>
+</section>
 <div style="padding:0 20px 12px;text-align:center;font-size:11px;color:#555">Illustrative biryani photo: <a href="https://commons.wikimedia.org/wiki/File:CHICKEN_BIRYANI_accompanied_by_roasted_potato.jpg" target="_blank" rel="noopener" style="text-decoration:underline">Ami abhik / Wikimedia Commons</a> · CC BY-SA 4.0. Menu photos are examples, not KBN dishes.</div></main><nav class="bottom" aria-label="Main navigation"><button data-nav="home" class="active"><span class="ico">⌂</span><span data-i18n="home">হোম</span></button><button data-nav="menu"><span class="ico">☰</span><span data-i18n="menu">মেনু</span></button><button data-nav="cart"><span class="ico">🛒 <span id="badge" class="cart-count">0</span></span><span data-i18n="cart">কার্ট</span></button></nav>
 </div>
 <script>
@@ -133,4 +167,4 @@ function showCheckoutError(key,id){const e=$('checkoutError');e.hidden=false;e.t
 function sendOrder(){const digits=String(config.whatsapp||'').replace(/\D/g,'');if(!/^\d{8,15}$/.test(digits)){alert('Restaurant WhatsApp number has not been configured yet.');return}validCart();const items=menu.filter(x=>cart[x.id]);if(!items.length){alert(t('emptyCart'));return}clearCheckoutError();const name=$('customerName').value.trim(),phone=$('customerPhone').value.trim(),address=$('customerAddress').value.trim(),notes=$('customerNotes').value.trim(),rawMap=$('customerMaps').value.trim(),map=mapsUrl(rawMap);if(!name){showCheckoutError('missingName','customerName');return}if(!phone){showCheckoutError('missingPhone','customerPhone');return}const phoneDigits=phone.replace(/\D/g,'');if(!/^[+\d\s()\-]+$/.test(phone)||phoneDigits.length<8||phoneDigits.length>15){showCheckoutError('invalidPhone','customerPhone');return}if(!address){showCheckoutError('missingAddress','customerAddress');return}if(rawMap&&!map){showCheckoutError('invalidMap','customerMaps');return}const lines=['*'+config.name+' — নতুন অর্ডার*','',...items.map(x=>cart[x.id]+' × '+(x.name_bn||x.name_en)+' — '+money(cart[x.id]*x.price)),'','*মোট: '+money(cartTotal())+'*','*প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি*','','*ডেলিভারির তথ্য*','নাম: '+name,'ফোন: '+phone,'ঠিকানা: '+address];if(map)lines.push('Google Maps: '+map);if(notes)lines.push('বিশেষ নির্দেশনা: '+notes);lines.push('','দয়া করে খাবার, দাম ও ডেলিভারি ঠিকানা নিশ্চিত করুন।');const url='https://wa.me/'+digits+'?text='+encodeURIComponent(lines.join('\n'));const w=window.open(url,'_blank','noopener,noreferrer');if(!w)window.location.href=url}
 async function init(){try{const r=await fetch('./config.json',{cache:'no-store'});if(r.ok)config={...config,...await r.json()}}catch(e){console.warn('Using default config',e)}details();if(config.whatsapp&&config.phone&&config.address&&!config.address.includes('update'))$('demoNotice').hidden=true;renderCategories();try{const path=config.sheetCsvUrl||'./menu.csv';const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw Error('Menu request failed '+response.status);menu=normalized(parseCSV(await response.text()));if(!menu.length)throw Error('No valid menu rows')}catch(e){console.error('Menu could not load:',e);$('menuResults').innerHTML='<div class="notice">Menu unavailable. Please try again later.</div>'}try{cart=JSON.parse(sessionStorage.getItem('kbn-cart')||'{}')||{}}catch{cart={}}validCart();renderCategories();renderMenu();renderCart();updateBadge();setLanguage('bn');}
 document.querySelectorAll('[data-nav]').forEach(x=>x.onclick=()=>navigate(x.dataset.nav));$('search').oninput=renderMenu;$('enBtn').onclick=()=>setLanguage('en');$('bnBtn').onclick=()=>setLanguage('bn');$('useCurrentLocation').onclick=getCurrentLocation;$('customerMaps').addEventListener('input',()=>{previewLocation();clearCheckoutError();setLocationStatus('locationHint','hint')});for(const id of ['customerName','customerPhone','customerAddress'])$(id).addEventListener('input',clearCheckoutError);$('sendOrder').onclick=sendOrder;init();
-</script></body></html>
+</script><script defer src="./checkout-v2.js"></script></body></html>

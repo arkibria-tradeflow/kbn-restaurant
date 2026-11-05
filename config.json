@@ -6,5 +6,6 @@
   "hours": "সময়সূচি জানতে কল করুন",
   "mapsUrl": "https://maps.app.goo.gl/V1ZG2F4AvasZBz8w6?g_st=ic",
   "currency": "AED",
-  "sheetCsvUrl": ""
+  "sheetCsvUrl": "",
+  "orderApiUrl": ""
 }
