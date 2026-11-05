@@ -1,0 +1,107 @@
+/* KBN Restaurant — desktop/tablet fluid menu inspired by approved visual.
+   All visual overrides start above 720px; the mobile experience stays intact. */
+@media (min-width:721px){
+  :root{--wine:#90000a;--wine-2:#ad0715;--wine-deep:#700009;--cream:#fff8f0;--text:#221212}
+  body{background:#fffaf7}
+  .site{width:100%;max-width:none;min-height:100dvh;box-shadow:none;background:linear-gradient(180deg,#fffaf7 0%,#fff 42%)}
+  header.site-header{background:linear-gradient(104deg,#790007 0%,#a40911 51%,#730007 100%);color:#fff;border:0;min-height:88px;box-shadow:0 4px 15px #50000a1e;padding:12px clamp(20px,2.7vw,65px);gap:clamp(12px,2vw,35px)}
+  header.site-header .brand{gap:13px;flex-shrink:0;align-items:center;text-decoration:none}
+  header.site-header .brand>img,header.site-header .brand>.mobile-brand-label{display:none}
+  .desktop-brand{display:flex;gap:10px;align-items:center;color:#fff;white-space:nowrap}
+  .desktop-brand svg{width:55px;height:55px;stroke:#fff;fill:none;stroke-width:3.3;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+  .desktop-brand-words{display:flex;flex-direction:column;line-height:.88}
+  .desktop-brand-words strong{font-family:Georgia,serif;font-size:clamp(30px,2.8vw,43px);font-weight:800;letter-spacing:.7px}
+  .desktop-brand-words small{font-size:16px;font-weight:850;letter-spacing:.15px;margin-top:8px}
+  .desktop-primary-nav{display:none;align-items:center;justify-content:center;gap:clamp(3px,.7vw,13px);flex:1;min-width:0}
+  .desktop-primary-nav button{font-weight:800;white-space:nowrap;font-size:clamp(14px,1.23vw,18px);border:0;padding:12px clamp(9px,.95vw,19px);border-radius:32px;color:#fff;background:transparent;min-height:47px;display:inline-flex;align-items:center;gap:8px}
+  .desktop-primary-nav button:hover,.desktop-primary-nav button:focus-visible{background:#ffffff23}
+  .desktop-primary-nav button.active,.desktop-primary-nav button[aria-current=page]{background:linear-gradient(135deg,#fff8e5,#f5d8a1);color:var(--wine-deep);box-shadow:0 4px 12px #4d000a35}
+  .desktop-primary-nav .nav-icon{font-size:23px;line-height:1}
+  .desktop-right{display:flex;align-items:center;gap:14px;flex-shrink:0;margin-left:auto}
+  .desktop-order-shortcut{border:2px solid #fff;color:#fff;background:#00814e;border-radius:35px;min-height:44px;white-space:nowrap;padding:8px clamp(13px,1.2vw,22px);font-weight:850;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 10px #3f050b32}
+  .desktop-order-shortcut:hover,.desktop-order-shortcut:focus-visible{background:#006c41}
+  .desktop-order-shortcut span:first-child{font-size:20px;line-height:1}
+  header.site-header .langset{gap:5px}
+  header.site-header .lang{padding:8px 10px;border-radius:12px;background:#ffffff0d;color:#fff;border:1px solid #ffffff60;font-size:13px;min-height:39px}
+  header.site-header .lang[aria-pressed=true]{background:#fff5dd;color:var(--wine-deep);border-color:#fff4c9}
+  main{padding:27px clamp(18px,2.4vw,64px) 48px;width:100%}
+  .view#menu.active{display:block}
+  #menu .desktop-menu-intro{display:flex;flex-direction:column}
+  #menu .tabs{order:1;display:flex;gap:10px;overflow-x:auto;scrollbar-width:thin;flex-wrap:nowrap;padding:5px 2px 17px;margin-bottom:11px}
+  #menu .tabs button{display:inline-flex;align-items:center;justify-content:center;gap:9px;min-height:53px;flex-shrink:0;border:1px solid #ebe2df;background:#fff;box-shadow:0 2px 7px #54000a08;border-radius:18px;padding:11px clamp(12px,1.1vw,23px);font-size:clamp(14px,1.08vw,18px);font-weight:820;color:#292020;transition:background .17s,color .17s,box-shadow .17s}
+  #menu .tabs button:hover{border-color:#ca9296}
+  #menu .tabs button.active{background:linear-gradient(120deg,#a70010,#8a0009);color:#fff;border-color:#fff;box-shadow:0 0 0 3px #e59fa540,0 5px 16px #84000a30}
+  #menu .tabs .tab-icon{font-size:25px;line-height:1.2}
+  #menu .menu-head-row{order:2;display:flex;align-items:center;justify-content:space-between;gap:20px;margin:9px 0 12px}
+  #menu .menu-title{font-size:clamp(28px,2.6vw,44px);font-weight:950;letter-spacing:-1.25px;color:var(--wine);display:flex;align-items:center;gap:12px;min-width:0;line-height:1.2;margin:0}
+  #menu .menu-title #menuHeadingIcon{width:58px;height:58px;flex-shrink:0;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#ce2233,#98000e);color:#fff;font-size:32px;box-shadow:0 4px 12px #8e040f24}
+  #menu .menu-title-text{position:relative;min-width:0;padding-bottom:12px}
+  #menu .menu-title-text::after{content:"";position:absolute;bottom:1px;left:0;width:min(100%,170px);height:4px;background:linear-gradient(90deg,#b20016 0 57%,#e9e6e5 57% 100%);border-radius:10px}
+  #menu .menu-free-banner{margin:0;display:flex;align-items:center;justify-content:center;gap:12px;flex-shrink:0;min-height:67px;background:linear-gradient(120deg,#fff1d3,#fff5e2,#ffedd2)!important;border:0!important;color:var(--wine)!important;border-radius:17px;padding:12px clamp(15px,1.3vw,24px);font-size:clamp(14px,1.37vw,21px)!important;box-shadow:0 5px 16px #a86e1515;text-align:center;font-weight:900}
+  #menu .menu-free-banner .banner-emoji{font-size:37px;line-height:1.2}
+  #menu .search{display:block;margin:0 0 15px auto;width:min(310px,100%);background:#fff;border:1px solid #ece0de;padding:12px 15px;border-radius:13px;font-size:14px}
+  #menu .menu-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:clamp(12px,1.25vw,22px);align-items:stretch}
+  #menu .dish{display:flex;flex-direction:column;justify-content:space-between;min-width:0;min-height:0;height:100%;padding:10px 10px 12px;gap:0;border:1px solid #ebe6e4;border-radius:20px;background:#fff;box-shadow:0 2px 16px #59030d13;transition:box-shadow .2s,transform .2s}
+  #menu .dish:hover{transform:translateY(-2px);box-shadow:0 7px 23px #59030d1a}
+  #menu .dish>img{display:block;flex-shrink:0;width:100%;height:auto;aspect-ratio:3 / 2;object-fit:cover;border-radius:13px}
+  #menu .dish-content{display:flex;flex-direction:column;align-items:center;justify-content:space-between;min-width:0;flex:1;gap:6px;padding:10px 5px 0;width:100%;text-align:center}
+  #menu .dish-title{font-size:clamp(16px,1.3vw,22px);font-weight:870;line-height:1.35;color:#141010;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+  #menu .dish .bn,#menu .dish .desc{display:none}
+  #menu .dish-end{display:flex;flex-direction:column;gap:9px;justify-content:flex-end;align-items:center;margin-top:auto;width:100%}
+  #menu .price{font-size:clamp(17px,1.42vw,24px);font-weight:900;color:#97000d;white-space:normal}
+  #menu .price.unpriced{font-size:12px;max-width:100%;line-height:1.3}
+  #menu .order-btn{border:1.5px solid #a30013;color:#9e0012;background:#fff;border-radius:12px;padding:6px 15px;min-height:36px;display:inline-flex;align-items:center;justify-content:center;gap:7px;font-size:clamp(12px,.95vw,16px);font-weight:800;white-space:nowrap;max-width:100%}
+  #menu .order-btn:hover,#menu .order-btn:focus-visible{background:#fff0f0;border-color:#7a0008}
+  #menu .order-btn .order-icon{font-size:20px;line-height:1}
+  #menu .qty{border:1.5px solid #ad0715;border-radius:15px;min-height:36px;max-width:100%}
+  #menu .qty button{width:38px;min-height:35px;color:#8e000e;font-weight:800;background:#fff}
+  #menu .qty button:last-child{background:#9e0313;color:#fff}
+  #menu .qty b{min-width:32px;font-size:15px}
+  #menu #viewCart{position:sticky;bottom:14px;max-width:340px;margin:16px 0 0 auto;background:var(--wine);color:#fff;border:0;box-shadow:0 7px 23px #6d03092a}
+  #about{max-width:860px;margin:24px auto}
+  #about h1{color:var(--wine)}
+  #about .about-panel{border:1px solid #e8e1e0;border-radius:20px;padding:27px;background:#fff;box-shadow:0 2px 17px #4d00120b;line-height:1.7}
+  #about .about-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:19px}
+  #about .about-actions a{border:1px solid #ab0411;border-radius:12px;color:#98000d;padding:9px 16px;font-weight:800}
+  #home .primary{background:#a60012;color:#fff;border-color:#a60012}
+}
+@media(min-width:1100px){
+  .desktop-primary-nav{display:flex}
+  .bottom{display:none}
+  .site{padding-bottom:0}
+}
+@media(min-width:721px) and (max-width:1099px){
+  .desktop-primary-nav{display:none}
+  .bottom{display:flex}
+  .site{padding-bottom:calc(80px + env(safe-area-inset-bottom))}
+}
+@media(min-width:900px) and (max-width:1199px){
+  #menu .menu-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(min-width:721px) and (max-width:899px){
+  #menu .menu-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #menu .menu-head-row{gap:12px}
+  #menu .menu-free-banner{font-size:13px!important;max-width:50%}
+  #menu .menu-free-banner .banner-emoji{font-size:26px}
+  #menu .menu-title #menuHeadingIcon{width:46px;height:46px;font-size:24px}
+  header.site-header .desktop-brand svg{width:43px;height:43px}
+  header.site-header .desktop-brand-words strong{font-size:30px}
+  .desktop-order-shortcut{font-size:13px;min-height:40px}
+}
+@media(min-width:721px) and (max-width:1039px){
+  header.site-header{min-height:76px}
+  .desktop-order-shortcut{display:none}
+}
+@media(min-width:721px) and (max-width:800px){
+  #menu .menu-head-row{flex-direction:column;align-items:stretch}
+  #menu .menu-free-banner{max-width:none}
+}
+@media(max-width:720px){
+  .desktop-brand,.desktop-primary-nav,.desktop-order-shortcut{display:none!important}
+  .desktop-right{display:contents}
+  #menu .menu-title #menuHeadingIcon{display:none}
+  #menu .menu-free-banner .banner-emoji{margin-right:5px}
+  .about-panel{border:1px solid #eaeaea;border-radius:15px;padding:16px}
+  .about-actions{display:flex;flex-wrap:wrap;gap:10px}
+  .about-actions a{background:#fff2b1;border:1px solid #d4a511;border-radius:12px;padding:10px;font-weight:750}
+}
