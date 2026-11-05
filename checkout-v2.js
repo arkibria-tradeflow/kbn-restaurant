@@ -43,14 +43,10 @@
   let submitting=false;
   function requestId(){
     const key='kbn-pending-request-id';
-    const cartKey=JSON.stringify(Object.keys(cart).sort().map(id=>[id,cart[id]]));
-    try{
-      const old=sessionStorage.getItem(key);
-      if(sessionStorage.getItem('kbn-pending-cart-key')===cartKey&&old&&/^[A-Za-z0-9_-]{12,90}$/.test(old))return old;
-    }catch(_){} 
+    try{const old=sessionStorage.getItem(key);if(old&&/^[A-Za-z0-9_-]{12,90}$/.test(old))return old}catch(_){}
     const id=typeof crypto!=='undefined'&&typeof crypto.randomUUID==='function'
       ?crypto.randomUUID():'kbn_'+Date.now()+'_'+Math.random().toString(36).slice(2,14);
-    try{sessionStorage.setItem(key,id);sessionStorage.setItem('kbn-pending-cart-key',cartKey)}catch(_){}
+    try{sessionStorage.setItem(key,id)}catch(_){}
     return id;
   }
   function stepLabels() {
