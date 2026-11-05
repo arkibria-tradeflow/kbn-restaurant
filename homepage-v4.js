@@ -18,6 +18,14 @@
   const $=id=>document.getElementById(id);
   const L=k=>dict[lang]?.[k]||dict.bn[k]||k;
   let mode='type',activeSlide=0,autoplay=null,paused=false;
+  const mobileSelected={type:'Meat',meal:'breakfast'};
+  const onPhone=()=>window.matchMedia('(max-width:720px)').matches;
+  function selectedGroup(groups){
+    const chosen=mobileSelected[mode];
+    if(groups.includes(chosen))return chosen;
+    mobileSelected[mode]=groups[0]||'';
+    return mobileSelected[mode];
+  }
   const expanded=new Set();
   function validMeal(item,k){return /^(yes|true|1)$/i.test(String(item[k]||''))}
   function itemMatches(item,key){return mode==='type'?item.category===key:validMeal(item,key)}
@@ -29,8 +37,8 @@
     const purchasable=item.price!==null;
     const control=!purchasable?'':q
       ?'<div class="home-food-qty" aria-label="'+safe(name)+'"><button type="button" data-home-delta="-1" data-home-id="'+safe(item.id)+'" aria-label="'+(lang==='bn'?'একটি কমান':'Decrease quantity')+'">−</button><b>'+q+'</b><button type="button" data-home-delta="1" data-home-id="'+safe(item.id)+'" aria-label="'+(lang==='bn'?'একটি বাড়ান':'Increase quantity')+'">+</button></div>'
-      :'<button type="button" class="home-food-add" data-home-delta="1" data-home-id="'+safe(item.id)+'"><span aria-hidden="true">🛒</span> '+safe(L('order'))+'</button>';
-    return '<article class="home-food-card"><img src="'+safe(photo(item))+'" alt="'+safe(name)+'" loading="lazy"><div class="home-food-detail"><h3>'+safe(name)+'</h3><div class="home-food-price">'+safe(priceLabel(item))+'</div>'+control+'</div></article>';
+      :'<button type="button" class="home-food-add" data-home-delta="1" data-home-id="'+safe(item.id)+'" aria-label="'+safe((lang==='bn'?'কার্টে যোগ করুন: ':'Add to cart: ')+name)+'"><span aria-hidden="true">+</span><span class="home-add-label">'+safe(L('order'))+'</span></button>';
+    return '<article class="home-food-card"><img src="'+safe(photo(item))+'" alt="'+safe(name)+'" loading="lazy"><div class="home-food-detail"><h3>'+safe(name)+'</h3><div class="home-card-action-row"><div class="home-food-price">'+safe(priceLabel(item))+'</div>'+control+'</div></div></article>';
   }
   function getGroups(){return mode==='type'?['Meat','Fish','Rice & Biryani','Vegetables','Bhorta','Snacks & Drinks'].filter(cat=>menu.some(item=>item.available&&item.category===cat)) :meals.filter(m=>menu.some(item=>item.available&&validMeal(item,m.key))).map(m=>m.key)}
   function groupMarkup(key,index){
@@ -43,17 +51,20 @@
   function renderChips(){
     const groups=getGroups();
     const el=$('homeCategoryChips');if(!el)return;
+    const chosen=selectedGroup(groups);
     el.innerHTML=groups.map(key=>{
       const name=groupName(key);
-      if(mode==='type')return '<button type="button" class="home-chip '+(key===groups[0]?'active':'')+'" data-home-jump="'+safe(key)+'"><span class="home-chip-icon" aria-hidden="true">'+groupIcon(key)+'</span><span>'+safe(name)+'</span></button>';
+      if(mode==='type')return '<button type="button" class="home-chip '+(key===chosen?'active':'')+'" data-home-jump="'+safe(key)+'" aria-pressed="'+(key===chosen)+'"><span class="home-chip-icon" aria-hidden="true">'+groupIcon(key)+'</span><span>'+safe(name)+'</span></button>';
       const meal=meals.find(m=>m.key===key);
-      return '<button type="button" class="home-chip home-meal-chip" data-home-jump="'+safe(key)+'"><img src="'+safe(meal.img)+'" onerror="this.onerror=null;this.src='+String.fromCharCode(39)+safe(meal.fallback||'./menu-images/parota-v1.webp')+String.fromCharCode(39)+'" alt="" loading="lazy"><span class="home-chip-icon" aria-hidden="true">'+meal.icon+'</span><span>'+safe(name)+'</span></button>';
+      return '<button type="button" class="home-chip home-meal-chip '+(key===chosen?'active':'')+'" data-home-jump="'+safe(key)+'" aria-pressed="'+(key===chosen)+'"><img src="'+safe(meal.img)+'" onerror="this.onerror=null;this.src='+String.fromCharCode(39)+safe(meal.fallback||'./menu-images/parota-v1.webp')+String.fromCharCode(39)+'" alt="" loading="lazy"><span class="home-chip-icon" aria-hidden="true">'+meal.icon+'</span><span>'+safe(name)+'</span></button>';
     }).join('');
   }
   function renderSections(){
     const el=$('homeFoodSections');if(!el)return;
     if(!menu.length){el.innerHTML='';updateCartCue();return}
-    el.innerHTML=getGroups().map(groupMarkup).join('');
+    const groups=getGroups();
+    const visibleGroups=onPhone()?[selectedGroup(groups)].filter(Boolean):groups;
+    el.innerHTML=visibleGroups.map(groupMarkup).join('');
     if(typeof attachImageFallbacks==='function')attachImageFallbacks();
     updateCartCue();
   }
@@ -61,6 +72,7 @@
     const cue=$('homeCartCue');if(!cue)return;
     const qty=cartCount();
     cue.hidden=!qty;
+    $('home').classList.toggle('has-cart',qty>0);
     const count=$('homeCartCount'),cost=$('homeCartTotal');
     if(count)count.textContent=String(qty);
     if(cost)cost.textContent=money(cartTotal());
@@ -105,6 +117,12 @@
   }
   function switchMode(next){if(next!=='type'&&next!=='meal')return;mode=next;render();$('homeBrowse').scrollIntoView({block:'start',behavior:'smooth'})}
   function jumpToGroup(key){
+    if(onPhone()){
+      mobileSelected[mode]=key;
+      expanded.delete(mode+'|'+key);
+      renderChips();
+      renderSections();
+    }
     const section=Array.from(document.querySelectorAll('.home-food-section')).find(s=>s.dataset.group===key);
     if(section)section.scrollIntoView({block:'start',behavior:'smooth'});
   }
@@ -118,7 +136,7 @@
     const expand=e.target.closest('[data-home-expand]');
     if(expand){const key=mode+'|'+expand.dataset.homeExpand;expanded.has(key)?expanded.delete(key):expanded.add(key);renderSections();return}
     const jump=e.target.closest('[data-home-jump]');
-    if(jump){document.querySelectorAll('.home-chip').forEach(b=>b.classList.toggle('active',b===jump));jumpToGroup(jump.dataset.homeJump);return}
+    if(jump){jumpToGroup(jump.dataset.homeJump);return}
     const slide=e.target.closest('[data-home-slide]');
     if(slide){selectSlide(Number(slide.dataset.homeSlide));return}
     if(e.target.closest('#homeSliderPrev')){selectSlide(activeSlide-1);return}
@@ -142,6 +160,8 @@
       slider.addEventListener('touchend',ev=>{if(touchX!==null){const dx=ev.changedTouches[0].screenX-touchX;if(Math.abs(dx)>45)selectSlide(activeSlide+(dx<0?1:-1));touchX=null}paused=false;startAutoplay()},{passive:true});
     }
     document.addEventListener('visibilitychange',()=>{document.hidden?stopAutoplay():startAutoplay()});
+    const breakpoint=window.matchMedia('(max-width:720px)');
+    if(breakpoint.addEventListener)breakpoint.addEventListener('change',()=>render());
     render();startAutoplay();
   }
   window.KBNHome={render,renderSections,updateCartCue};
