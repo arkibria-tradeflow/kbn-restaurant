@@ -46,7 +46,7 @@
     const configured=hasApi();
     if($('apiNotice'))$('apiNotice').textContent=configured?text('ready'):text('unconfigured');
     if($('legacyWhatsapp'))$('legacyWhatsapp').hidden=configured;
-    if($('sendOrder'))$('sendOrder').textContent=text('submit');
+    if($('sendOrder')){$('sendOrder').textContent=configured?text('submit'):(lang==='bn'?'অনলাইন অর্ডার সংযোগ বাকি':'Online ordering not connected yet');$('sendOrder').disabled=!configured;}
     if($('checkoutArea'))$('cartEmptyNotice').hidden=cartCount()>0;
   }
   function validateDelivery() {
@@ -132,7 +132,7 @@
     $('customerPhone').addEventListener('input',clearCheckoutError);
     $('customerAddress').addEventListener('input',clearCheckoutError);
     $('customerMaps').addEventListener('input',clearCheckoutError);
-    window.addEventListener('pageshow',()=>{$('sendOrder').disabled=false;stepLabels()});
+    window.addEventListener('pageshow',()=>{stepLabels()});
     stepLabels();
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});
