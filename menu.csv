@@ -47,3 +47,12 @@ BH04,Bhorta,ডাল ভর্তা,ডাল ভর্তা,বাংলা 
 BH05,Bhorta,টমেটো ভর্তা,টমেটো ভর্তা,বাংলা হোটেল-স্টাইল ভর্তা · দাম অস্থায়ী · ভাত ও ডাল ফ্রি,5,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/tomato-bhorta-v1.webp,tomato-bhorta-v1.webp,450
 BH06,Bhorta,ডিম ভর্তা,ডিম ভর্তা,বাংলা হোটেল-স্টাইল ভর্তা · দাম অস্থায়ী · ভাত ও ডাল ফ্রি,7,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/dim-bhorta-v1.webp,dim-bhorta-v1.webp,460
 BH07,Bhorta,ধনেপাতা ভর্তা,ধনেপাতা ভর্তা,বাংলা হোটেল-স্টাইল ভর্তা · দাম অস্থায়ী · ভাত ও ডাল ফ্রি,5,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/dhonepata-bhorta-v1.webp,dhonepata-bhorta-v1.webp,470
+SN01,Snacks & Drinks,পরোটা,পরোটা,বাংলা নাশতা,1,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/parota-v1.webp,parota-v1.webp,510
+SN02,Snacks & Drinks,রুটি,রুটি,বাংলা নাশতা,1,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/ruti-v1.webp,ruti-v1.webp,520
+SN03,Snacks & Drinks,বুটের ডাল,বুটের ডাল,বাংলা নাশতা,2,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/buter-dal-v1.webp,buter-dal-v1.webp,530
+SN04,Snacks & Drinks,চনার ডাল,চনার ডাল,বাংলা নাশতা,3,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/chonar-dal-v1.webp,chonar-dal-v1.webp,540
+SN05,Snacks & Drinks,মুগ ডাল,মুগ ডাল,বাংলা নাশতা,3,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/mug-dal-v1.webp,mug-dal-v1.webp,550
+SN06,Snacks & Drinks,চাইনিজ ভেজিটেবল,চাইনিজ ভেজিটেবল,বাংলা নাশতা,3,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/chinese-vegetable-v1.webp,chinese-vegetable-v1.webp,560
+SN07,Snacks & Drinks,হালুয়া,হালুয়া,বাংলা নাশতা,1,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/haluwa-v1.webp,haluwa-v1.webp,570
+SN08,Snacks & Drinks,ডিম অমলেট,ডিম অমলেট,বাংলা নাশতা,2,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/dim-omlet-v1.webp,dim-omlet-v1.webp,580
+SN09,Snacks & Drinks,ডিম পোচ (সানি সাইড আপ),ডিম পোচ (সানি সাইড আপ),বাংলা নাশতা,2,yes,https://arkibria-tradeflow.github.io/kbn-restaurant/menu-images/sunny-side-up-v1.webp,sunny-side-up-v1.webp,590
