@@ -1,0 +1,23 @@
+/* Live Google Sheets menu price status; do not show stale data as verified. */
+.kbn-menu-sync-notice[hidden]{display:none!important}
+.kbn-menu-sync-notice{
+  box-sizing:border-box;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin:0 auto 13px;padding:10px 13px;
+  width:100%;max-width:1320px;
+  border:1px solid #ebd9b9;border-radius:11px;
+  background:#fff9ed;color:#705026;
+  font-size:12px;line-height:1.5;
+}
+.kbn-menu-sync-notice>span{flex:1;min-width:0}
+.kbn-menu-sync-notice button{
+  border:1px solid #8e0010;border-radius:9px;
+  color:#8e0010;background:#fff;flex:0 0 auto;
+  font-size:12px;font-weight:750;padding:8px 10px;
+  min-height:37px;cursor:pointer;
+}
+.kbn-menu-sync-notice button:focus-visible{outline:2px solid #8e0010;outline-offset:2px}
+@media(max-width:720px){
+  .kbn-menu-sync-notice{margin:0 0 10px;padding:9px 10px;font-size:11px}
+  .kbn-menu-sync-notice button{font-size:11px}
+}

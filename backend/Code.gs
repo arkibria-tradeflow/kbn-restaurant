@@ -19,6 +19,26 @@ var TZ = 'Asia/Dubai';
  * Fixed callback name avoids arbitrary script injection through JSONP.
  */
 function doGet(e) {
+  // Public menu read: only published food fields, no order/customer information.
+  if (e && e.parameter && e.parameter.action === 'menu') {
+    var requestToken=String(e.parameter.requestToken||'').slice(0,64);
+    if(!/^[A-Za-z0-9_-]{6,64}$/.test(requestToken))requestToken='';
+    var reply={ok:false,requestToken:requestToken,items:[]};
+    if(requestToken){
+      try{
+        reply.items=readPublicMenu_();
+        reply.ok=true;
+      }catch(err){
+        console.error('KBN live menu read failed: '+String(err));
+      }
+    }
+    var json=JSON.stringify(reply)
+      .replace(/</g,'\\u003c')
+      .replace(/\u2028/g,'\\u2028')
+      .replace(/\u2029/g,'\\u2029');
+    return ContentService.createTextOutput('KBNMenuData('+json+');')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
   if (e && e.parameter && e.parameter.action === 'status') {
     var id=String(e.parameter.requestId||'');
     var reply={requestId:id,found:false};
@@ -55,6 +75,57 @@ function doGet(e) {
     '<h2>KBN Restaurant Order Service</h2><p>Backend is ready to receive checkout orders.</p>'+
     '<a href="'+RETURN_URL+'">Return to KBN Restaurant</a></body></html>'
   );
+}
+
+/**
+ * Read ONLY the public Menu Items columns from the private menu spreadsheet.
+ * The spreadsheet and its other tabs remain private. Do not expose IDs
+ * from the Orders Sheet, staff information, or Script Properties here.
+ * A menu item is visible when G=YES/TRUE/1 (or left blank, matching
+ * the existing order-price validation). Invalid or empty prices are omitted.
+ */
+function readPublicMenu_(){
+  var sheet=SpreadsheetApp.openById(MENU_SHEET_ID).getSheetByName('Menu Items');
+  if(!sheet)throw new Error('Menu Items tab missing');
+  var last=sheet.getLastRow();
+  if(last<1)throw new Error('Menu header missing');
+  var values=sheet.getRange(1,1,last,13).getValues();
+  var headers=values[0].map(function(h){return String(h||'').toLowerCase().trim()});
+  ['id','category','name_en','name_bn','price','available'].forEach(function(name){
+    if(headers.indexOf(name)<0)throw new Error('Menu header missing: '+name);
+  });
+  function field(row,name){
+    var n=headers.indexOf(name);
+    return n<0?'':row[n];
+  }
+  function yes(v){
+    return v===true || /^(yes|true|1)$/i.test(String(v||'').trim());
+  }
+  var items=[];
+  for(var i=1;i<values.length;i++){
+    var r=values[i],id=String(field(r,'id')||'').trim();
+    var cat=String(field(r,'category')||'').trim();
+    var en=String(field(r,'name_en')||'').trim();
+    var bn=String(field(r,'name_bn')||'').trim();
+    var raw=field(r,'price'),price=Number(raw);
+    var rawVisible=field(r,'available');
+    var visible=String(rawVisible==null?'':rawVisible).trim()===''?true:yes(rawVisible);
+    if(!id||!cat||!(en||bn)||!visible||
+       raw===''||raw==null||!isFinite(price)||price<0)continue;
+    var sort=Number(field(r,'sort_order'))||9999;
+    items.push({
+      id:id,category:cat,name_en:en,name_bn:bn,description:String(field(r,'description')||''),
+      price:Math.round(price*100)/100,available:'yes',
+      image_url:String(field(r,'image_url')||''),
+      image_file:String(field(r,'image_file')||''),
+      sort_order:String(sort),
+      breakfast:yes(field(r,'breakfast'))?'yes':'no',
+      lunch:yes(field(r,'lunch'))?'yes':'no',
+      dinner:yes(field(r,'dinner'))?'yes':'no'
+    });
+  }
+  items.sort(function(a,b){return Number(a.sort_order)-Number(b.sort_order)});
+  return items;
 }
 
 function doPost(e) {

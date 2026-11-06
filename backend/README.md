@@ -1,5 +1,64 @@
 # KBN Restaurant — Direct Order Submission + Confirmation Slip
 
+## Live Google Sheets menu pricing and visibility (November 2026)
+
+**Google Sheets is the source of truth for menu price, food category,
+name, image, meal-time eligibility and Public View.** The existing private
+Menu Database remains private:
+https://docs.google.com/spreadsheets/d/1Lb1q6TPS1ccpvId6BT93ew5cyWcMDEQtEpOK-6vi97g/edit
+Tab: **Menu Items**.
+
+The website uses the existing Orders Apps Script Web App URL in
+`config.json` for two read-only APIs:
+- `GET /exec?action=menu&requestToken=...`: JavaScript/JSONP callback
+  `KBNMenuData({...})`. Returns **public, visible, valid-priced items only**.
+- `GET /exec?action=status&requestId=...`: Existing receipt confirmation;
+  never includes customer name, phone, delivery address or Google Maps URL.
+
+**The Menu Sheet is not published or shared with website visitors.** Google
+Apps Script runs as the owner and returns only public menu data. The website
+uses Google Sheet prices, hides rows with Available/Visibility set to No,
+and filters Breakfast/Lunch/Dinner using the corresponding Sheet columns.
+
+### Mandatory activation — deploy updated Apps Script once
+
+1. Open the private Orders Dashboard under the owner account:
+   https://docs.google.com/spreadsheets/d/18oODmgnzwak5XsszFbB67rG3qat1lDroua8V0BTq2V8/edit
+2. Open **Extensions → Apps Script**, replace the full `Code.gs` with the
+   current repository [Code.gs](./Code.gs), then **Save**.
+3. **Deploy → Manage deployments → Edit existing deployment → New version →
+   Deploy**. Keep **Execute as Me**, **Who has access: Anyone**. Reuse the
+   existing Web App URL so no new website config is required.
+4. Reload KBN Website on a phone. Change a Menu Items `price` (F column)
+   in Google Sheets and reload the website to verify the new AED price.
+   Toggle `available` (G column) between yes and no to test public
+   hide/unhide, and verify Breakfast/Lunch/Dinner checkboxes work.
+5. Test an order and compare the website cart price with the price stored
+   in the private Orders tab. The backend recalculates amounts from the
+   exact same Menu Sheet at the point of order receipt.
+
+**Safe transition:** `menu.csv` was refreshed once from the live Google
+Sheet as a browsing-only snapshot. Until the new Apps Script deployment is
+active (or if the API is unavailable), a notice appears on the website and
+checkout is **blocked before submission** to avoid charging a different
+amount from an unverified displayed price. After successful API connection
+the notice disappears and the Google Sheet drives the public menu without
+further GitHub CSV editing. The website checks again when reopening the
+tab and immediately before each new order. A changed cart price asks the
+customer to review their cart before placing an order.
+
+### Privacy and reliability
+
+- Only Menu Items public fields are returned: id, names, description, price,
+  category, image URL, order, visibility, and meal flags. No other tabs.
+- The Sheets document **must remain private**; never enable public edit.
+- The API response uses a **fixed read-only JSONP callback**, because regular
+  cross-origin browser fetch to Apps Script is not reliably supported.
+- Do not add customer data or credentials to this API.
+- If the price service fails, the restaurant can still be contacted by phone,
+  but direct online orders are intentionally not submitted from stale prices.
+
+
 ## New live workflow (November 2026)
 
 Website checkout: **Order now → hidden form POST to Apps Script → read-only status check confirms the saved Sheet row → KBN's own mobile Order Slip → optional WhatsApp share**.

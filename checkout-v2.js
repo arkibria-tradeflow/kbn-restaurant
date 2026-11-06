@@ -16,7 +16,7 @@
       noItems:'কার্টে অন্তত একটি খাবার যোগ করুন।', empty:'কার্ট খালি। মেনু থেকে খাবার যোগ করুন।',
       orderTitle:'আপনার অর্ডার', optionalNotes:'বিশেষ নির্দেশনা (ঐচ্ছিক)',
       reviewTitle:'ডেলিভারির তথ্য',reviewPhone:'ফোন',reviewLocation:'লোকেশন / ঠিকানা',reviewMissing:'এখনো যোগ করা হয়নি',
-      subOrder:'খাবার ও মোট দাম দেখুন',subDelivery:'ফোন ও লোকেশন',subConfirm:'রেস্টুরেন্টে সরাসরি পাঠান',waUnavailable:'রেস্টুরেন্টের WhatsApp নম্বর পাওয়া যাচ্ছে না।',retry:'আবার পাঠান',checkStatus:'অর্ডারের অবস্থা পরীক্ষা করুন',checking:'অর্ডার জমা হয়েছে কি না যাচাই করছি…',pendingNotice:'এখনও অর্ডার নিশ্চিত করা যায়নি। একই অর্ডার আবার পাঠাতে পারেন অথবা অবস্থা পরীক্ষা করুন।',serviceRequired:'Order Confirmation Service আপডেট হয়নি বা সংযোগ পাওয়া যাচ্ছে না। অর্ডার পাঠানো হয়নি। অনুগ্রহ করে আবার চেষ্টা করুন।',receiptTitle:'অর্ডার জমা হয়েছে',receiptNote:'রেস্টুরেন্টের ড্যাশবোর্ডে জমা হয়েছে।',receiptId:'অর্ডার নম্বর',receiptItems:'অর্ডারের বিবরণ',receiptTotal:'মোট',receiptDelivery:'ডেলিভারির তথ্য',receiptWhats:'WhatsApp-এ শেয়ার করুন (ঐচ্ছিক)',receiptAnother:'নতুন অর্ডার করুন',receiptDisclaimer:'দ্রুত নিশ্চিতকরণের জন্য WhatsApp-এ শেয়ার করতে পারেন।',apiUnavailable:'অনলাইন অর্ডার সেবা আপাতত পাওয়া যাচ্ছে না। অনুগ্রহ করে রেস্টুরেন্টে কল করুন।',limit:'এক অর্ডারে সর্বোচ্চ ২৫ ধরনের খাবার, প্রতিটির সর্বোচ্চ ৩০টি এবং মোট ৯৯টি খাবার দেওয়া যাবে।',sending:'অর্ডার পাঠানো হচ্ছে…'
+      subOrder:'খাবার ও মোট দাম দেখুন',subDelivery:'ফোন ও লোকেশন',subConfirm:'রেস্টুরেন্টে সরাসরি পাঠান',waUnavailable:'রেস্টুরেন্টের WhatsApp নম্বর পাওয়া যাচ্ছে না।',retry:'আবার পাঠান',checkStatus:'অর্ডারের অবস্থা পরীক্ষা করুন',checking:'অর্ডার জমা হয়েছে কি না যাচাই করছি…',pendingNotice:'এখনও অর্ডার নিশ্চিত করা যায়নি। একই অর্ডার আবার পাঠাতে পারেন অথবা অবস্থা পরীক্ষা করুন।',serviceRequired:'Order Confirmation Service আপডেট হয়নি বা সংযোগ পাওয়া যাচ্ছে না। অর্ডার পাঠানো হয়নি। অনুগ্রহ করে আবার চেষ্টা করুন।',receiptTitle:'অর্ডার জমা হয়েছে',receiptNote:'রেস্টুরেন্টের ড্যাশবোর্ডে জমা হয়েছে।',receiptId:'অর্ডার নম্বর',receiptItems:'অর্ডারের বিবরণ',receiptTotal:'মোট',receiptDelivery:'ডেলিভারির তথ্য',receiptWhats:'WhatsApp-এ শেয়ার করুন (ঐচ্ছিক)',receiptAnother:'নতুন অর্ডার করুন',receiptDisclaimer:'দ্রুত নিশ্চিতকরণের জন্য WhatsApp-এ শেয়ার করতে পারেন।',apiUnavailable:'অনলাইন অর্ডার সেবা আপাতত পাওয়া যাচ্ছে না। অনুগ্রহ করে রেস্টুরেন্টে কল করুন।',menuNotVerified:'Google Sheets থেকে বর্তমান দাম যাচাই করা যাচ্ছে না। ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।',priceUpdated:'কিছু খাবারের দাম বা উপলব্ধতা পরিবর্তন হয়েছে। আপডেট হওয়া অর্ডারটি দেখে আবার সাবমিট করুন।',limit:'এক অর্ডারে সর্বোচ্চ ২৫ ধরনের খাবার, প্রতিটির সর্বোচ্চ ৩০টি এবং মোট ৯৯টি খাবার দেওয়া যাবে।',sending:'অর্ডার পাঠানো হচ্ছে…'
     },
     en:{
       stepOrder:'1. Order summary',stepDelivery:'2. Delivery details',stepConfirm:'3. Place order',
@@ -32,7 +32,7 @@
       noItems:'Add at least one food item to your cart.',empty:'Your cart is empty. Add items from the menu.',
       orderTitle:'Your order',optionalNotes:'Special instructions (optional)',
       reviewTitle:'Delivery details',reviewPhone:'Phone',reviewLocation:'Location / address',reviewMissing:'Not added yet',
-      subOrder:'Review your food and total',subDelivery:'Phone and location',subConfirm:'Send directly to restaurant',waUnavailable:'The restaurant WhatsApp number is unavailable.',retry:'Resend order',checkStatus:'Check order status',checking:'Checking whether your order was saved…',pendingNotice:'Order not yet verified. You can check status or resend the same order.',serviceRequired:'The Order Confirmation Service is not updated or cannot be reached. Your order has not been sent. Please try again.',receiptTitle:'Order submitted',receiptNote:'Saved to the restaurant dashboard.',receiptId:'Order number',receiptItems:'Order details',receiptTotal:'Total',receiptDelivery:'Delivery details',receiptWhats:'Share on WhatsApp (optional)',receiptAnother:'Place another order',receiptDisclaimer:'WhatsApp sharing is optional and may speed up confirmation.',apiUnavailable:'Online ordering is currently unavailable. Please call the restaurant.',limit:'Maximum 25 different items, 30 of each, and 99 total per order.',sending:'Submitting order…'
+      subOrder:'Review your food and total',subDelivery:'Phone and location',subConfirm:'Send directly to restaurant',waUnavailable:'The restaurant WhatsApp number is unavailable.',retry:'Resend order',checkStatus:'Check order status',checking:'Checking whether your order was saved…',pendingNotice:'Order not yet verified. You can check status or resend the same order.',serviceRequired:'The Order Confirmation Service is not updated or cannot be reached. Your order has not been sent. Please try again.',receiptTitle:'Order submitted',receiptNote:'Saved to the restaurant dashboard.',receiptId:'Order number',receiptItems:'Order details',receiptTotal:'Total',receiptDelivery:'Delivery details',receiptWhats:'Share on WhatsApp (optional)',receiptAnother:'Place another order',receiptDisclaimer:'WhatsApp sharing is optional and may speed up confirmation.',apiUnavailable:'Online ordering is currently unavailable. Please call the restaurant.',menuNotVerified:'Current prices could not be verified against Google Sheets. Check your connection and try again.',priceUpdated:'Some menu prices or availability changed. Please review the updated cart and submit again.',limit:'Maximum 25 different items, 30 of each, and 99 total per order.',sending:'Submitting order…'
     }
   };
   const $=id=>document.getElementById(id);
@@ -285,9 +285,25 @@
     pollAttempts=0;
     transportTimer=setTimeout(()=>{transportTimer=null;pollAttempts++;lookupStatus(false)},1600);
   }
-  function submitOrder(){
+  async function submitOrder(){
     if(submitting)return;
     if(!pending){
+      // Never submit from the stale GitHub CSV snapshot. Just before a new
+      // order, re-read current prices and visibility from Google Sheets.
+      submitting=true;stepLabels();
+      const live=window.KBNLiveMenu;
+      let result={ok:false,changed:false};
+      try{if(live)result=await live.refresh(true)}catch(e){console.warn('Menu verification failed',e)}
+      submitting=false;stepLabels();
+      if(!result.ok){
+        showStatus(text('menuNotVerified'),false,true);
+        return;
+      }
+      if(result.changed){
+        openStep('stepOrder');
+        alert(text('priceUpdated'));
+        return;
+      }
       if(!cartCount()){alert(text('noItems'));openStep('stepOrder');return}
       const d=validateDelivery();if(!d)return;
       updateConfirmReview();

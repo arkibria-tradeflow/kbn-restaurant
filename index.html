@@ -71,6 +71,7 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(25px,4vw,37px);letter-spacing:-1px}h2
 <link rel="stylesheet" href="./menu-mobile-v5.css">
 <link rel="stylesheet" href="./menu-accordion-v6.css">
 <link rel="stylesheet" href="./checkout-v3.css?v=20261105-compact3">
+<link rel="stylesheet" href="./menu-live.css?v=20261107-1">
 </head>
 <body><div class="site">
 <header class="site-header">
@@ -99,6 +100,7 @@ h1,h2,h3,p{margin-top:0}h1{font-size:clamp(25px,4vw,37px);letter-spacing:-1px}h2
 </div>
 </header>
 <main>
+<div id="kbnMenuSyncNotice" class="kbn-menu-sync-notice" hidden role="status" aria-live="polite"><span id="kbnMenuSyncText">Google Sheets-এর সাথে মেনুর দাম যাচাই করা হচ্ছে।</span><button type="button" id="kbnMenuSyncRetry">আবার চেষ্টা করুন</button></div>
 <section id="home" class="view active">
   <div class="home-slider" id="homeSlider" aria-roledescription="carousel" aria-label="KBN Restaurant খাবারের স্লাইডার">
     <div class="home-slider-copy">
@@ -388,6 +390,77 @@ const money=n=>config.currency+' '+Number(n).toFixed(2).replace(/\.00$/,'');
 const t=k=>TRANSLATIONS[lang][k]||k;
 function parseCSV(text){const rows=[];let row=[],cell='',quoted=false;for(let i=0;i<text.length;i++){const ch=text[i];if(ch==='"'){if(quoted&&text[i+1]==='"'){cell+='"';i++}else quoted=!quoted}else if(ch===','&&!quoted){row.push(cell);cell=''}else if((ch==='\n'||ch==='\r')&&!quoted){if(ch==='\r'&&text[i+1]==='\n')i++;row.push(cell);if(row.some(x=>x.trim()))rows.push(row);row=[];cell=''}else cell+=ch}row.push(cell);if(row.some(x=>x.trim()))rows.push(row);const head=rows.shift()?.map(s=>s.trim().replace(/^\uFEFF/,''))||[];return rows.map(r=>Object.fromEntries(head.map((k,i)=>[k,(r[i]||'').trim()])));}
 function normalized(rows){return rows.filter(x=>x.id&&(x.name_bn||x.name_en)&&x.category).map(x=>{const raw=String(x.price??'').trim();const parsed=raw===''?null:Number(raw);return {...x,price:parsed!==null&&Number.isFinite(parsed)&&parsed>=0?parsed:null,available:/^(yes|true|1)$/i.test(x.available||'yes'),image:x.image_url||'',sortOrder:Number(x.sort_order)||9999}}).sort((a,b)=>a.sortOrder-b.sortOrder);}
+
+/* Menu price/availability single source: private Menu Items Google Sheet.
+ * Until the owner redeploys Apps Script, GitHub CSV is only a temporary
+ * display snapshot; unverified prices are NOT accepted for checkout. */
+let liveMenuVerified=false,liveMenuLastChecked=0,menuLiveRequest=null;
+const KBN_LIVE_MENU_WARNING={
+  bn:'মেনুর লাইভ দাম যাচাই করা যাচ্ছে না। Google Sheets সংযোগ চালু হলে অর্ডার করা যাবে।',
+  en:'Live menu prices cannot be verified. Ordering will be available when Google Sheets reconnects.'
+};
+function menuSyncError(){
+  const notice=$('kbnMenuSyncNotice');if(!notice)return;
+  notice.hidden=false;
+  $('kbnMenuSyncText').textContent=KBN_LIVE_MENU_WARNING[lang]||KBN_LIVE_MENU_WARNING.bn;
+  $('kbnMenuSyncRetry').textContent=lang==='bn'?'আবার চেষ্টা করুন':'Retry';
+}
+function menuSyncSuccess(){
+  const notice=$('kbnMenuSyncNotice');if(notice)notice.hidden=true;
+}
+async function refreshLiveMenu(force=true){
+  if(menuLiveRequest)return menuLiveRequest;
+  if(!force&&liveMenuVerified&&Date.now()-liveMenuLastChecked<60000)
+    return {ok:true,changed:false};
+  const endpoint=String(config.orderApiUrl||'').trim();
+  if(!/^https:\/\/script\.google\.com\/macros\/s\/[A-Za-z0-9_-]+\/exec(?:\?.*)?$/.test(endpoint)){
+    liveMenuVerified=false;menuSyncError();return {ok:false};
+  }
+  const token='menu_'+Date.now()+'_'+Math.random().toString(36).slice(2,12);
+  menuLiveRequest=new Promise(resolve=>{
+    const script=document.createElement('script');
+    let completed=false;
+    const timer=setTimeout(()=>finish(null),14000);
+    function finish(result){
+      if(completed)return;completed=true;
+      clearTimeout(timer);
+      script.remove();
+      if(window.KBNMenuData===response)delete window.KBNMenuData;
+      if(result&&result.ok===true&&Array.isArray(result.items)){
+        const before=Object.fromEntries(menu.filter(x=>cart[x.id]).map(x=>[x.id,x.price]));
+        const after=normalized(result.items);
+        const change=Object.keys(before).some(id=>!after.some(x=>x.id===id&&x.available&&x.price===before[id]));
+        menu=after;
+        liveMenuVerified=true;liveMenuLastChecked=Date.now();
+        validCart();persist();renderCategories();renderMenu();renderCart();updateBadge();
+        if(window.KBNHome)window.KBNHome.render();
+        menuSyncSuccess();
+        resolve({ok:true,changed:change});
+      }else{
+        liveMenuVerified=false;menuSyncError();
+        resolve({ok:false,changed:false});
+      }
+    }
+    function response(result){
+      if(result&&result.requestToken===token)finish(result);
+    }
+    window.KBNMenuData=response;
+    script.async=true;
+    script.referrerPolicy='no-referrer';
+    script.onerror=()=>finish(null);
+    script.onload=()=>{if(!completed)finish(null)};
+    script.src=endpoint+(endpoint.includes('?')?'&':'?')+
+      'action=menu&requestToken='+encodeURIComponent(token)+'&_='+Date.now();
+    document.head.appendChild(script);
+  });
+  try{return await menuLiveRequest}finally{menuLiveRequest=null}
+}
+window.KBNLiveMenu={
+  refresh:refreshLiveMenu,
+  isVerified:()=>liveMenuVerified,
+  lastChecked:()=>liveMenuLastChecked
+};
+
 function priceLabel(item){return item.price===null?(lang==='bn'?'দাম জানতে যোগাযোগ করুন':'Ask for price'):money(item.price)}
 function photo(item){return item.image||IMAGE_FALLBACK}
 function details(){const digits=String(config.whatsapp||config.phone||'').replace(/\D/g,'');$('address').textContent=config.address;$('hours').textContent=config.hours;$('phone').textContent=config.phone||'Contact number coming soon';$('callLink').href=config.phone?'tel:'+config.phone:'#';$('mapsLink').href=config.mapsUrl||'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(config.address);$('whatsLink').href=digits?'https://wa.me/'+digits:'#';$('whatsLink').setAttribute('aria-disabled',digits?'false':'true');;if($('aboutAddress')){$('aboutAddress').textContent=config.address;$('aboutPhone').textContent=config.phone;$('aboutCall').href=config.phone?'tel:'+config.phone:'#';$('aboutMaps').href=$('mapsLink').href;$('aboutWhats').href=digits?'https://wa.me/'+digits:'#';}}
@@ -449,7 +522,34 @@ function getCurrentLocation(){if(locationBusy)return;if(!window.isSecureContext)
 function clearCheckoutError(){$('checkoutError').hidden=true;for(const id of ['customerName','customerPhone','customerAddress','customerMaps'])$(id).removeAttribute('aria-invalid')}
 function showCheckoutError(key,id){const e=$('checkoutError');e.hidden=false;e.textContent=t(key);const input=$(id);input.setAttribute('aria-invalid','true');input.focus();input.scrollIntoView({block:'center',behavior:'smooth'})}
 function sendOrder(){const digits=String(config.whatsapp||'').replace(/\D/g,'');if(!/^\d{8,15}$/.test(digits)){alert('Restaurant WhatsApp number has not been configured yet.');return}validCart();const items=menu.filter(x=>cart[x.id]);if(!items.length){alert(t('emptyCart'));return}clearCheckoutError();const name=$('customerName').value.trim(),phone=$('customerPhone').value.trim(),address=$('customerAddress').value.trim(),notes=$('customerNotes').value.trim(),rawMap=$('customerMaps').value.trim(),map=mapsUrl(rawMap);if(!name){showCheckoutError('missingName','customerName');return}if(!phone){showCheckoutError('missingPhone','customerPhone');return}const phoneDigits=phone.replace(/\D/g,'');if(!/^[+\d\s()\-]+$/.test(phone)||phoneDigits.length<8||phoneDigits.length>15){showCheckoutError('invalidPhone','customerPhone');return}if(!address){showCheckoutError('missingAddress','customerAddress');return}if(rawMap&&!map){showCheckoutError('invalidMap','customerMaps');return}const lines=['*'+config.name+' — নতুন অর্ডার*','',...items.map(x=>cart[x.id]+' × '+(x.name_bn||x.name_en)+' — '+money(cart[x.id]*x.price)),'','*মোট: '+money(cartTotal())+'*','*প্রতিটি আইটেমের সাথে ভাত ও ডাল ফ্রি*','','*ডেলিভারির তথ্য*','নাম: '+name,'ফোন: '+phone,'ঠিকানা: '+address];if(map)lines.push('Google Maps: '+map);if(notes)lines.push('বিশেষ নির্দেশনা: '+notes);lines.push('','দয়া করে খাবার, দাম ও ডেলিভারি ঠিকানা নিশ্চিত করুন।');const url='https://wa.me/'+digits+'?text='+encodeURIComponent(lines.join('\n'));const w=window.open(url,'_blank','noopener,noreferrer');if(!w)window.location.href=url}
-async function init(){if(new URLSearchParams(location.search).has('newOrder')){try{sessionStorage.removeItem('kbn-cart');sessionStorage.removeItem('kbn-pending-request-id')}catch(e){}}try{const r=await fetch('./config.json',{cache:'no-store'});if(r.ok)config={...config,...await r.json()}}catch(e){console.warn('Using default config',e)}details();renderCategories();try{const path=config.sheetCsvUrl||'./menu.csv';const response=await fetch(path,{cache:'no-store'});if(!response.ok)throw Error('Menu request failed '+response.status);menu=normalized(parseCSV(await response.text()));if(!menu.length)throw Error('No valid menu rows')}catch(e){console.error('Menu could not load:',e);$('menuResults').innerHTML='<div class="notice">Menu unavailable. Please try again later.</div>'}try{cart=JSON.parse(sessionStorage.getItem('kbn-cart')||'{}')||{}}catch{cart={}}validCart();renderCategories();renderMenu();renderCart();updateBadge();setLanguage('bn');navigate('home');}
+async function init(){
+  if(new URLSearchParams(location.search).has('newOrder')){
+    try{sessionStorage.removeItem('kbn-cart');sessionStorage.removeItem('kbn-pending-request-id')}catch(e){}
+  }
+  try{
+    const r=await fetch('./config.json',{cache:'no-store'});
+    if(r.ok)config={...config,...await r.json()};
+  }catch(e){console.warn('Using default config',e)}
+  details();
+  try{
+    // Synchronized legacy snapshot is for browsing before backend re-deployment.
+    const response=await fetch('./menu.csv',{cache:'no-store'});
+    if(!response.ok)throw Error('Menu snapshot unavailable '+response.status);
+    menu=normalized(parseCSV(await response.text()));
+  }catch(e){
+    console.error('Menu snapshot could not load:',e);
+    menu=[];
+  }
+  try{cart=JSON.parse(sessionStorage.getItem('kbn-cart')||'{}')||{}}catch(e){cart={}}
+  validCart();renderCategories();renderMenu();renderCart();updateBadge();setLanguage('bn');navigate('home');
+  $('kbnMenuSyncRetry').onclick=()=>refreshLiveMenu(true);
+  // As soon as the new Apps Script version is deployed, Google Sheets becomes
+  // the menu source automatically; no second GitHub deployment is required.
+  refreshLiveMenu(true);
+  document.addEventListener('visibilitychange',()=>{
+    if(!document.hidden&&Date.now()-liveMenuLastChecked>60000)refreshLiveMenu(true);
+  });
+}
 document.querySelectorAll('[data-nav]').forEach(x=>x.onclick=()=>navigate(x.dataset.nav));$('search').oninput=()=>{menuCollapsed[menuMode].clear();renderMenu()};$('enBtn').onclick=()=>setLanguage('en');$('bnBtn').onclick=()=>setLanguage('bn');$('useCurrentLocation').onclick=getCurrentLocation;$('customerMaps').addEventListener('input',()=>{previewLocation();clearCheckoutError();setLocationStatus('locationHint','hint')});for(const id of ['customerName','customerPhone','customerAddress'])$(id).addEventListener('input',clearCheckoutError);$('sendOrder').onclick=sendOrder;if(window.matchMedia){const bp=window.matchMedia('(min-width:721px)');if(bp.addEventListener)bp.addEventListener('change',()=>renderMenu())}$('menuMobileControls').addEventListener('click',e=>{
  const m=e.target.closest('[data-menu-mode]');
  if(m){menuMode=m.dataset.menuMode;renderMenu();return}
@@ -476,4 +576,4 @@ $('menuResults').addEventListener('click',e=>{
 });
 $('menuSort').addEventListener('change',e=>{menuSort=e.target.value;renderMenu()});
 init();
-</script><script defer src="./checkout-v2.js?v=20261105-compact3"></script><script defer src="./homepage-v4.js"></script></body></html>
+</script><script defer src="./checkout-v2.js?v=20261107-sheet-prices1"></script><script defer src="./homepage-v4.js"></script></body></html>
